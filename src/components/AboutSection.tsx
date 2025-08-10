@@ -1,0 +1,156 @@
+import { Users, Target, Award, Heart } from 'lucide-react';
+
+const team = [
+  {
+    name: 'Alex Rodriguez',
+    role: 'Lead Developer',
+    image: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=300&h=300&fit=crop&crop=face',
+    expertise: 'Full-Stack Development'
+  },
+  {
+    name: 'Sarah Chen',
+    role: 'UI/UX Designer',
+    image: 'https://images.unsplash.com/photo-1494790108755-2616b612b786?w=300&h=300&fit=crop&crop=face',
+    expertise: 'User Experience Design'
+  },
+  {
+    name: 'Marcus Johnson',
+    role: 'Frontend Specialist',
+    image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&h=300&fit=crop&crop=face',
+    expertise: 'React & TypeScript'
+  },
+  {
+    name: 'Emily Davis',
+    role: 'Backend Engineer',
+    image: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=300&h=300&fit=crop&crop=face',
+    expertise: 'API Development'
+  }
+];
+
+const values = [
+  {
+    icon: Target,
+    title: 'Quality First',
+    description: 'We never compromise on quality. Every line of code, every design element is crafted with precision.'
+  },
+  {
+    icon: Users,
+    title: 'Client-Centric',
+    description: 'Your success is our success. We work closely with you to understand and exceed your expectations.'
+  },
+  {
+    icon: Award,
+    title: 'Innovation',
+    description: 'We stay ahead of the curve, using cutting-edge technologies to build future-ready solutions.'
+  },
+  {
+    icon: Heart,
+    title: 'Passion',
+    description: 'We love what we do, and it shows in every project we deliver. Passion drives our excellence.'
+  }
+];
+
+const AboutSection = () => {
+  return (
+    <section id="about" className="py-20 lg:py-32">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Section Header */}
+        <div className="text-center mb-16">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-6">
+            About <span className="text-gradient">Us</span>
+          </h2>
+          <p className="text-lg lg:text-xl text-muted-foreground max-w-3xl mx-auto">
+            We're a passionate team of developers and designers committed to creating 
+            exceptional digital experiences that drive real business results.
+          </p>
+        </div>
+
+        {/* Mission Statement */}
+        <div className="max-w-4xl mx-auto text-center mb-20">
+          <div className="card-gradient p-8 lg:p-12">
+            <h3 className="text-2xl lg:text-3xl font-bold mb-6">Our Mission</h3>
+            <p className="text-lg text-muted-foreground leading-relaxed">
+              To empower businesses with cutting-edge web solutions that not only look stunning 
+              but also deliver measurable results. We believe in the power of great design and 
+              clean code to transform ideas into digital success stories.
+            </p>
+          </div>
+        </div>
+
+        {/* Values Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-20">
+          {values.map((value, index) => {
+            const IconComponent = value.icon;
+            return (
+              <div
+                key={index}
+                className="text-center group"
+                style={{ animationDelay: `${index * 0.1}s` }}
+              >
+                <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-primary/20 transition-colors duration-300">
+                  <IconComponent className="w-8 h-8 text-primary" />
+                </div>
+                <h4 className="text-xl font-semibold mb-3">{value.title}</h4>
+                <p className="text-muted-foreground leading-relaxed">
+                  {value.description}
+                </p>
+              </div>
+            );
+          })}
+        </div>
+
+        {/* Team Section */}
+        <div className="text-center mb-12">
+          <h3 className="text-2xl lg:text-3xl font-bold mb-6">Meet Our Team</h3>
+          <p className="text-muted-foreground max-w-2xl mx-auto">
+            The talented individuals who bring your digital visions to life.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+          {team.map((member, index) => (
+            <div
+              key={index}
+              className="text-center group"
+              style={{ animationDelay: `${index * 0.1}s` }}
+            >
+              <div className="relative mb-4 mx-auto w-32 h-32">
+                <img
+                  src={member.image}
+                  alt={member.name}
+                  className="w-full h-full object-cover rounded-full border-4 border-border group-hover:border-primary/50 transition-colors duration-300"
+                />
+                <div className="absolute inset-0 rounded-full bg-primary/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+              </div>
+              <h4 className="text-lg font-semibold mb-1">{member.name}</h4>
+              <p className="text-primary font-medium mb-2">{member.role}</p>
+              <p className="text-sm text-muted-foreground">{member.expertise}</p>
+            </div>
+          ))}
+        </div>
+
+        {/* Stats */}
+        <div className="mt-20 grid grid-cols-2 md:grid-cols-4 gap-8 max-w-3xl mx-auto">
+          <div className="text-center">
+            <div className="text-3xl lg:text-4xl font-bold text-primary mb-2">50+</div>
+            <div className="text-muted-foreground">Happy Clients</div>
+          </div>
+          <div className="text-center">
+            <div className="text-3xl lg:text-4xl font-bold text-primary mb-2">100+</div>
+            <div className="text-muted-foreground">Projects Completed</div>
+          </div>
+          <div className="text-center">
+            <div className="text-3xl lg:text-4xl font-bold text-primary mb-2">5+</div>
+            <div className="text-muted-foreground">Years Experience</div>
+          </div>
+          <div className="text-center">
+            <div className="text-3xl lg:text-4xl font-bold text-primary mb-2">24/7</div>
+            <div className="text-muted-foreground">Support</div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+export default AboutSection;
