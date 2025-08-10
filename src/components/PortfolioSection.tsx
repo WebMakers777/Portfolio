@@ -10,7 +10,6 @@ const projects = [
     image: 'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=600&h=400&fit=crop',
     tags: ['React', 'Node.js', 'Stripe', 'MongoDB'],
     demoUrl: '#',
-    codeUrl: '#'
   },
   {
     id: 2,
@@ -20,7 +19,6 @@ const projects = [
     image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&h=400&fit=crop',
     tags: ['React', 'TypeScript', 'Tailwind', 'Chart.js'],
     demoUrl: '#',
-    codeUrl: '#'
   },
   {
     id: 3,
@@ -30,7 +28,6 @@ const projects = [
     image: 'https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=600&h=400&fit=crop',
     tags: ['React Native', 'Node.js', 'PostgreSQL', 'JWT'],
     demoUrl: '#',
-    codeUrl: '#'
   },
   {
     id: 4,
@@ -40,7 +37,6 @@ const projects = [
     image: 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=600&h=400&fit=crop',
     tags: ['Next.js', 'Sanity', 'Vercel', 'Stripe'],
     demoUrl: '#',
-    codeUrl: '#'
   },
   {
     id: 5,
@@ -50,7 +46,6 @@ const projects = [
     image: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=600&h=400&fit=crop',
     tags: ['Flutter', 'Firebase', 'Health Kit', 'Charts'],
     demoUrl: '#',
-    codeUrl: '#'
   },
   {
     id: 6,
@@ -60,7 +55,6 @@ const projects = [
     image: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=600&h=400&fit=crop',
     tags: ['Vue.js', 'Laravel', 'MySQL', 'AWS'],
     demoUrl: '#',
-    codeUrl: '#'
   }
 ];
 
@@ -86,22 +80,6 @@ const PortfolioSection = () => {
             to quality, innovation, and client satisfaction.
           </p>
 
-          {/* Category Filter */}
-          <div className="flex flex-wrap justify-center gap-2 mb-12">
-            {categories.map((category) => (
-              <button
-                key={category}
-                onClick={() => setActiveCategory(category)}
-                className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
-                  activeCategory === category
-                    ? 'bg-primary text-primary-foreground shadow-glow'
-                    : 'bg-secondary text-secondary-foreground hover:bg-secondary-hover'
-                }`}
-              >
-                {category}
-              </button>
-            ))}
-          </div>
         </div>
 
         {/* Projects Grid */}
@@ -126,13 +104,6 @@ const PortfolioSection = () => {
                     title="View Demo"
                   >
                     <ExternalLink className="w-4 h-4" />
-                  </a>
-                  <a
-                    href={project.codeUrl}
-                    className="w-10 h-10 bg-secondary rounded-full flex items-center justify-center text-secondary-foreground hover:bg-secondary-hover transition-colors"
-                    title="View Code"
-                  >
-                    <Github className="w-4 h-4" />
                   </a>
                 </div>
               </div>

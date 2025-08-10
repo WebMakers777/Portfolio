@@ -90,18 +90,6 @@ const Footer = () => {
             </ul>
           </div>
 
-          {/* Services */}
-          <div>
-            <h4 className="font-semibold mb-4">Services</h4>
-            <ul className="space-y-2 text-muted-foreground">
-              <li className="hover:text-foreground transition-colors duration-200">Web Development</li>
-              <li className="hover:text-foreground transition-colors duration-200">UI/UX Design</li>
-              <li className="hover:text-foreground transition-colors duration-200">Mobile Development</li>
-              <li className="hover:text-foreground transition-colors duration-200">E-Commerce Solutions</li>
-              <li className="hover:text-foreground transition-colors duration-200">SEO Optimization</li>
-            </ul>
-          </div>
-
           {/* Contact Info */}
           <div>
             <h4 className="font-semibold mb-4">Contact Info</h4>

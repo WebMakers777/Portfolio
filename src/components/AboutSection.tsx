@@ -128,26 +128,6 @@ const AboutSection = () => {
             </div>
           ))}
         </div>
-
-        {/* Stats */}
-        <div className="mt-20 grid grid-cols-2 md:grid-cols-4 gap-8 max-w-3xl mx-auto">
-          <div className="text-center">
-            <div className="text-3xl lg:text-4xl font-bold text-primary mb-2">50+</div>
-            <div className="text-muted-foreground">Happy Clients</div>
-          </div>
-          <div className="text-center">
-            <div className="text-3xl lg:text-4xl font-bold text-primary mb-2">100+</div>
-            <div className="text-muted-foreground">Projects Completed</div>
-          </div>
-          <div className="text-center">
-            <div className="text-3xl lg:text-4xl font-bold text-primary mb-2">5+</div>
-            <div className="text-muted-foreground">Years Experience</div>
-          </div>
-          <div className="text-center">
-            <div className="text-3xl lg:text-4xl font-bold text-primary mb-2">24/7</div>
-            <div className="text-muted-foreground">Support</div>
-          </div>
-        </div>
       </div>
     </section>
   );

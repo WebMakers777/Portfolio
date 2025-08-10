@@ -58,33 +58,14 @@ const HeroSection = () => {
             stunning, high-performance websites that drive results and engage your audience.
           </p>
 
-          {/* CTA Buttons */}
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-            <button 
-              onClick={scrollToContact}
-              className="btn-hero group"
-            >
-              Start Your Project
-              <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
-            </button>
-            
-            <button 
-              onClick={scrollToWork}
-              className="btn-secondary group"
-            >
-              View Our Work
-              <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
-            </button>
-          </div>
-
           {/* Stats */}
           <div className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-8 max-w-2xl mx-auto">
             <div className="text-center">
-              <div className="text-2xl lg:text-3xl font-bold text-primary mb-1">50+</div>
+              <div className="text-2xl lg:text-3xl font-bold text-primary mb-1">5+</div>
               <div className="text-sm text-muted-foreground">Projects Delivered</div>
             </div>
             <div className="text-center">
-              <div className="text-2xl lg:text-3xl font-bold text-primary mb-1">98%</div>
+              <div className="text-2xl lg:text-3xl font-bold text-primary mb-1">99%</div>
               <div className="text-sm text-muted-foreground">Client Satisfaction</div>
             </div>
             <div className="text-center">
@@ -92,7 +73,7 @@ const HeroSection = () => {
               <div className="text-sm text-muted-foreground">Support Available</div>
             </div>
             <div className="text-center">
-              <div className="text-2xl lg:text-3xl font-bold text-primary mb-1">5+</div>
+              <div className="text-2xl lg:text-3xl font-bold text-primary mb-1">2+</div>
               <div className="text-sm text-muted-foreground">Years Experience</div>
             </div>
           </div>
