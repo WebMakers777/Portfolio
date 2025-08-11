@@ -54,20 +54,20 @@ const AboutSection = () => {
   return (
     <section id="about" className="py-20 lg:py-32">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Section Header */}
+        {/* Section Header (no splash) */}
         <div className="text-center mb-16">
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-6">
             About <span className="text-gradient">Us</span>
           </h2>
           <p className="text-lg lg:text-xl text-muted-foreground max-w-3xl mx-auto">
-            We're a passionate team of developers and designers committed to creating 
+            We&apos;re a passionate team of developers and designers committed to creating 
             exceptional digital experiences that drive real business results.
           </p>
         </div>
 
         {/* Mission Statement */}
         <div className="max-w-4xl mx-auto text-center mb-20">
-          <div className="card-gradient p-8 lg:p-12">
+          <div data-splash className="card-gradient p-8 lg:p-12">
             <h3 className="text-2xl lg:text-3xl font-bold mb-6">Our Mission</h3>
             <p className="text-lg text-muted-foreground leading-relaxed">
               To empower businesses with cutting-edge web solutions that not only look stunning 
@@ -84,6 +84,7 @@ const AboutSection = () => {
             return (
               <div
                 key={index}
+                data-splash
                 className="text-center group"
                 style={{ animationDelay: `${index * 0.1}s` }}
               >
@@ -111,6 +112,7 @@ const AboutSection = () => {
           {team.map((member, index) => (
             <div
               key={index}
+              data-splash
               className="text-center group"
               style={{ animationDelay: `${index * 0.1}s` }}
             >

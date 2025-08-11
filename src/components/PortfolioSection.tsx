@@ -63,8 +63,8 @@ const categories = ['All', 'Web Development', 'UI/UX Design', 'Mobile Developmen
 const PortfolioSection = () => {
   const [activeCategory, setActiveCategory] = useState('All');
 
-  const filteredProjects = activeCategory === 'All' 
-    ? projects 
+  const filteredProjects = activeCategory === 'All'
+    ? projects
     : projects.filter(project => project.category === activeCategory);
 
   return (
@@ -76,10 +76,9 @@ const PortfolioSection = () => {
             Our <span className="text-gradient">Work</span>
           </h2>
           <p className="text-lg lg:text-xl text-muted-foreground max-w-3xl mx-auto mb-8">
-            Take a look at some of our recent projects. Each one represents our commitment 
+            Take a look at some of our recent projects. Each one represents our commitment
             to quality, innovation, and client satisfaction.
           </p>
-
         </div>
 
         {/* Projects Grid */}
@@ -87,6 +86,7 @@ const PortfolioSection = () => {
           {filteredProjects.map((project, index) => (
             <div
               key={project.id}
+              data-splash
               className="group relative bg-card rounded-xl overflow-hidden border border-border hover:border-primary/30 transition-all duration-300 hover:shadow-glow hover:-translate-y-1"
               style={{ animationDelay: `${index * 0.1}s` }}
             >
@@ -139,9 +139,10 @@ const PortfolioSection = () => {
         {/* Bottom CTA */}
         <div className="text-center mt-16">
           <p className="text-muted-foreground mb-6">
-            Impressed? Let's create something amazing together.
+            Impressed? Let&apos;s create something amazing together.
           </p>
-          <button 
+          <button
+            data-splash
             onClick={() => {
               const element = document.getElementById('contact');
               if (element) element.scrollIntoView({ behavior: 'smooth' });

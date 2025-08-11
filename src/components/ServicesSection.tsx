@@ -4,33 +4,39 @@ const services = [
   {
     icon: Code,
     title: 'Web Development',
-    description: 'Custom websites and web applications built with modern technologies for optimal performance and scalability.'
+    description:
+      'Custom websites and web applications built with modern technologies for optimal performance and scalability.',
   },
   {
     icon: Palette,
     title: 'UI/UX Design',
-    description: 'Beautiful, intuitive interfaces that provide exceptional user experiences and drive conversions.'
+    description:
+      'Beautiful, intuitive interfaces that provide exceptional user experiences and drive conversions.',
   },
   {
     icon: Smartphone,
     title: 'Mobile-First Design',
-    description: 'Responsive designs that look and work perfectly on all devices, from mobile to desktop.'
+    description:
+      'Responsive designs that look and work perfectly on all devices, from mobile to desktop.',
   },
   {
     icon: Zap,
     title: 'Performance Optimization',
-    description: 'Lightning-fast websites optimized for speed, SEO, and user engagement.'
+    description:
+      'Lightning-fast websites optimized for speed, SEO, and user engagement.',
   },
   {
     icon: Globe,
     title: 'E-Commerce Solutions',
-    description: 'Complete online stores with secure payment processing and inventory management.'
+    description:
+      'Complete online stores with secure payment processing and inventory management.',
   },
   {
     icon: Shield,
     title: 'Security & Maintenance',
-    description: 'Robust security measures and ongoing maintenance to keep your site safe and updated.'
-  }
+    description:
+      'Robust security measures and ongoing maintenance to keep your site safe and updated.',
+  },
 ];
 
 const ServicesSection = () => {
@@ -43,8 +49,8 @@ const ServicesSection = () => {
             What We <span className="text-gradient">Do</span>
           </h2>
           <p className="text-lg lg:text-xl text-muted-foreground max-w-3xl mx-auto">
-            We offer comprehensive web development services to bring your digital vision to life. 
-            From concept to launch, we've got you covered.
+            We offer comprehensive web development services to bring your digital vision to life.
+            From concept to launch, we&apos;ve got you covered.
           </p>
         </div>
 
@@ -55,6 +61,7 @@ const ServicesSection = () => {
             return (
               <div
                 key={index}
+                data-splash
                 className="card-hover group"
                 style={{ animationDelay: `${index * 0.1}s` }}
               >
@@ -83,9 +90,10 @@ const ServicesSection = () => {
         {/* Bottom CTA */}
         <div className="text-center mt-16">
           <p className="text-muted-foreground mb-6">
-            Don't see what you're looking for? We love custom challenges.
+            Don&apos;t see what you&apos;re looking for? We love custom challenges.
           </p>
-          <button 
+          <button
+            data-splash
             onClick={() => {
               const element = document.getElementById('contact');
               if (element) element.scrollIntoView({ behavior: 'smooth' });

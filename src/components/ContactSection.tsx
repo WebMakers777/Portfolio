@@ -52,7 +52,7 @@ const ContactSection = () => {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 max-w-6xl mx-auto">
           {/* Contact Info */}
           <div className="space-y-8">
-            <div>
+            <div data-splash>
               <h3 className="text-2xl font-bold mb-6">Let's Start a Conversation</h3>
               <p className="text-muted-foreground mb-8 leading-relaxed">
                 Whether you have a project in mind, need a consultation, or just want to say hello, 
@@ -62,7 +62,7 @@ const ContactSection = () => {
 
             {/* Contact Details */}
             <div className="space-y-4">
-              <div className="flex items-center gap-4">
+              <div data-splash className="flex items-center gap-4">
                 <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
                   <Mail className="w-5 h-5 text-primary" />
                 </div>
@@ -72,7 +72,7 @@ const ContactSection = () => {
                 </div>
               </div>
 
-              <div className="flex items-center gap-4">
+              <div data-splash className="flex items-center gap-4">
                 <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
                   <Phone className="w-5 h-5 text-primary" />
                 </div>
@@ -82,7 +82,7 @@ const ContactSection = () => {
                 </div>
               </div>
 
-              <div className="flex items-center gap-4">
+              <div data-splash className="flex items-center gap-4">
                 <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
                   <MapPin className="w-5 h-5 text-primary" />
                 </div>
@@ -96,7 +96,7 @@ const ContactSection = () => {
             {/* Social Links */}
             <div>
               <p className="font-medium mb-4">Follow Us</p>
-              <div className="flex gap-4">
+              <div data-splash className="flex gap-4">
                 <a
                   href="#"
                   className="w-10 h-10 bg-card border border-border rounded-lg flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-colors duration-300"
@@ -120,7 +120,7 @@ const ContactSection = () => {
           </div>
 
           {/* Contact Form */}
-          <div className="card-gradient p-8">
+          <div data-splash className="card-gradient p-8">
             <form onSubmit={handleSubmit} className="space-y-6">
               <div>
                 <label htmlFor="name" className="block text-sm font-medium mb-2">
@@ -171,6 +171,7 @@ const ContactSection = () => {
               </div>
 
               <button
+                data-splash
                 type="submit"
                 disabled={isSubmitting}
                 className="w-full btn-hero group"
