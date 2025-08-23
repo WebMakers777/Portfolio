@@ -31,7 +31,7 @@ const Navigation = () => {
           {/* Logo */}
           <div className="flex-shrink-0">
             <h1 className="text-xl lg:text-2xl font-bold text-gradient">
-              DevCraft Studio
+              The Makers
             </h1>
           </div>
 

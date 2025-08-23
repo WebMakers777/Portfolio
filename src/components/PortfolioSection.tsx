@@ -1,61 +1,65 @@
-import { ExternalLink, Github } from 'lucide-react';
+import { ExternalLink } from 'lucide-react';
 import { useState } from 'react';
 
 const projects = [
   {
     id: 1,
-    title: 'E-Commerce Platform',
+    title: 'Book My CA',
     category: 'Web Development',
-    description: 'Modern e-commerce solution with advanced filtering and payment integration.',
-    image: 'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=600&h=400&fit=crop',
-    tags: ['React', 'Node.js', 'Stripe', 'MongoDB'],
-    demoUrl: '#',
+    description:
+      'BookMyCA is a financial services platform that provides end-to-end solutions including tax filing, GST, accounting, company registration, compliance, audits, and advisory. The website is designed to offer a seamless user experience, secure transactions, and easy integration of multiple financial service modules for individuals, startups, and enterprises.',
+
+    image: '/1.png', 
+    tags: ['Next js', 'Razorpay', 'MongoDB'],
+
+    demoUrl: 'https://www.bookmyca.in',
   },
-  {
-    id: 2,
-    title: 'SaaS Dashboard',
-    category: 'UI/UX Design',
-    description: 'Clean and intuitive dashboard for data analytics and user management.',
-    image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&h=400&fit=crop',
-    tags: ['React', 'TypeScript', 'Tailwind', 'Chart.js'],
-    demoUrl: '#',
-  },
-  {
-    id: 3,
-    title: 'Mobile Banking App',
-    category: 'Mobile Development',
-    description: 'Secure and user-friendly mobile banking application with biometric authentication.',
-    image: 'https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=600&h=400&fit=crop',
-    tags: ['React Native', 'Node.js', 'PostgreSQL', 'JWT'],
-    demoUrl: '#',
-  },
-  {
-    id: 4,
-    title: 'Restaurant Website',
-    category: 'Web Development',
-    description: 'Beautiful restaurant website with online reservations and menu management.',
-    image: 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=600&h=400&fit=crop',
-    tags: ['Next.js', 'Sanity', 'Vercel', 'Stripe'],
-    demoUrl: '#',
-  },
-  {
-    id: 5,
-    title: 'Fitness Tracker',
-    category: 'Mobile Development',
-    description: 'Comprehensive fitness tracking app with workout plans and progress monitoring.',
-    image: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=600&h=400&fit=crop',
-    tags: ['Flutter', 'Firebase', 'Health Kit', 'Charts'],
-    demoUrl: '#',
-  },
-  {
-    id: 6,
-    title: 'Learning Platform',
-    category: 'Web Development',
-    description: 'Interactive learning platform with video courses and progress tracking.',
-    image: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=600&h=400&fit=crop',
-    tags: ['Vue.js', 'Laravel', 'MySQL', 'AWS'],
-    demoUrl: '#',
-  }
+ {
+  id: 2,
+  title: 'Hack-Crux Website',
+  category: 'Web Development',
+  description: 'Official website for GDG HackCrux Hackathon, featuring event details, registrations, schedules, and team management with a modern UI.',
+  image: '/2.png',
+  tags: ['React', 'TypeScript', 'Tailwind', 'Vercel'],
+  demoUrl: 'https://www.hackcrux.tech',
+},
+{
+  id: 3,
+  title: 'StoreWise',
+  category: 'Web Development',
+  description: 'A secure and scalable online storage application that allows users to manage, share, and organize files with cloud integration.',
+  image: '/3.png',
+  tags: ['Next.js', 'Node.js', 'MongoDB', 'Cloudinary'],
+  demoUrl: 'https://storewise-eight.vercel.app/sign-in',
+},
+{
+  id: 4,
+  title: 'Imaginest',
+  category: 'Web Development',
+  description: 'An AI-powered SaaS platform for all image transformations including background removal, upscaling, colorization, and generative editing.',
+  image: '/4.png',
+  tags: ['Next.js', 'Cloudinary API', 'Tailwind'],
+  demoUrl: 'https://imaginestmain.vercel.app/',
+},
+
+  // {
+  //   id: 5,
+  //   title: 'Fitness Tracker',
+  //   category: 'Mobile Development',
+  //   description: 'Comprehensive fitness tracking app with workout plans and progress monitoring.',
+  //   image: '/projects/fitness.png',
+  //   tags: ['Flutter', 'Firebase', 'Health Kit', 'Charts'],
+  //   demoUrl: '#',
+  // },
+  // {
+  //   id: 6,
+  //   title: 'Learning Platform',
+  //   category: 'Web Development',
+  //   description: 'Interactive learning platform with video courses and progress tracking.',
+  //   image: '/projects/learning.png',
+  //   tags: ['Vue.js', 'Laravel', 'MySQL', 'AWS'],
+  //   demoUrl: '#',
+  // },
 ];
 
 const categories = ['All', 'Web Development', 'UI/UX Design', 'Mobile Development'];
@@ -63,9 +67,10 @@ const categories = ['All', 'Web Development', 'UI/UX Design', 'Mobile Developmen
 const PortfolioSection = () => {
   const [activeCategory, setActiveCategory] = useState('All');
 
-  const filteredProjects = activeCategory === 'All'
-    ? projects
-    : projects.filter(project => project.category === activeCategory);
+  const filteredProjects =
+    activeCategory === 'All'
+      ? projects
+      : projects.filter((project) => project.category === activeCategory);
 
   return (
     <section id="work" className="py-20 lg:py-32 bg-gradient-background">
@@ -98,13 +103,17 @@ const PortfolioSection = () => {
                   className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
                 />
                 <div className="absolute inset-0 bg-background/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center gap-4">
-                  <a
-                    href={project.demoUrl}
-                    className="w-10 h-10 bg-primary rounded-full flex items-center justify-center text-primary-foreground hover:bg-primary-hover transition-colors"
-                    title="View Demo"
-                  >
-                    <ExternalLink className="w-4 h-4" />
-                  </a>
+                  {project.demoUrl !== '#' && (
+                    <a
+                      href={project.demoUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-10 h-10 bg-primary rounded-full flex items-center justify-center text-primary-foreground hover:bg-primary-hover transition-colors"
+                      title="View Demo"
+                    >
+                      <ExternalLink className="w-4 h-4" />
+                    </a>
+                  )}
                 </div>
               </div>
 

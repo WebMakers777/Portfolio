@@ -96,16 +96,16 @@ const Footer = () => {
             <div className="space-y-3">
               <div className="flex items-center gap-3 text-muted-foreground">
                 <Mail className="w-4 h-4 text-primary" />
-                <span className="text-sm">hello@devcraftstudio.com</span>
+                <span className="text-sm">web.makers777@gmail.com</span>
               </div>
               <div className="flex items-center gap-3 text-muted-foreground">
                 <Phone className="w-4 h-4 text-primary" />
-                <span className="text-sm">+1 (555) 123-4567</span>
+                <span className="text-sm">+91 93581 01310</span>
               </div>
-              <div className="flex items-center gap-3 text-muted-foreground">
+              {/* <div className="flex items-center gap-3 text-muted-foreground">
                 <MapPin className="w-4 h-4 text-primary" />
                 <span className="text-sm">Digital City, DC 12345</span>
-              </div>
+              </div> */}
             </div>
           </div>
         </div>

@@ -68,7 +68,7 @@ const ContactSection = () => {
                 </div>
                 <div>
                   <p className="font-medium">Email Us</p>
-                  <p className="text-muted-foreground">hello@devcraftstudio.com</p>
+                  <p className="text-muted-foreground">web.makers777@gmail.com</p>
                 </div>
               </div>
 
@@ -78,7 +78,7 @@ const ContactSection = () => {
                 </div>
                 <div>
                   <p className="font-medium">Call Us</p>
-                  <p className="text-muted-foreground">+1 (555) 123-4567</p>
+                  <p className="text-muted-foreground">+91 93581 01310</p>
                 </div>
               </div>
 
@@ -88,7 +88,7 @@ const ContactSection = () => {
                 </div>
                 <div>
                   <p className="font-medium">Visit Us</p>
-                  <p className="text-muted-foreground">123 Tech Street, Digital City, DC 12345</p>
+                  <p className="text-muted-foreground">Jaipur, Rajasthan,302031</p>
                 </div>
               </div>
             </div>
