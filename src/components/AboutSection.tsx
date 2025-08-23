@@ -3,7 +3,7 @@ import { Users, Target, Award, Heart } from "lucide-react";
 
 import nikhilImg from "../assets/nikhil.jpg";
 import sankalpImg from "../assets/sankalp.jpg";
-import akshayImg from "../assets/hero-bg.jpg"; // replace with the correct file you want
+import akshayImg from "../assets/akshay.jpg"; // replace with the correct file you want
 
 
 const team = [

@@ -42,15 +42,16 @@ const projects = [
   demoUrl: 'https://imaginestmain.vercel.app/',
 },
 
-  // {
-  //   id: 5,
-  //   title: 'Fitness Tracker',
-  //   category: 'Mobile Development',
-  //   description: 'Comprehensive fitness tracking app with workout plans and progress monitoring.',
-  //   image: '/projects/fitness.png',
-  //   tags: ['Flutter', 'Firebase', 'Health Kit', 'Charts'],
-  //   demoUrl: '#',
-  // },
+ {
+  id: 5,
+  title: 'Hansha Pharmaceuticals',
+  category: 'Pharma Company',
+  description: 'Leading pharmaceutical company focused on manufacturing and supplying high-quality medicines and healthcare products.',
+  image: '/5.png',
+  tags: ['Next.js', 'Cloudinary API', 'Tailwind'],
+  demoUrl: 'https://www.hanshapharmaceuticals.com',
+},
+
   // {
   //   id: 6,
   //   title: 'Learning Platform',
