@@ -1,26 +1,32 @@
-import { Users, Target, Award, Heart } from 'lucide-react';
+// src/components/AboutSection.tsx
+import { Users, Target, Award, Heart } from "lucide-react";
+
+import nikhilImg from "../assets/nikhil.jpg";
+import sankalpImg from "../assets/sankalp.jpg";
+import akshayImg from "../assets/hero-bg.jpg"; // replace with the correct file you want
+
 
 const team = [
   {
-    name: 'Akshay Labh',
-    role: 'Fullstack Developer',
-    image: '12.png',
-    expertise: 'Full-Stack Development'
+    name: "Akshay Labh",
+    role: "Fullstack Developer",
+    image: akshayImg,
+    expertise: "Full-Stack Development",
   },
   {
-    name: 'Nikhil Mittal',
-    role: 'Operations Lead',
-    image: '12.png',
-    expertise: 'User Experience Design'
+    name: "Nikhil Mittal",
+    role: "Operations Lead",
+    image: nikhilImg,
+    expertise: "User Experience Design",
   },
   {
-    name: 'Sankalp Jain',
-    role: 'Development Head',
-    image: '12.png',
-    expertise: 'React & TypeScript'
+    name: "Sankalp Jain",
+    role: "Development Head",
+    image: sankalpImg,
+    expertise: "React & TypeScript",
   },
-
 ];
+
 
 const values = [
   {
