@@ -4,8 +4,8 @@ import { useEffect, useRef } from "react";
 
 export default function RainOverlay({
   // ===== Base (desktop) controls =====
-  density = 20,                 // number of falling drops (desktop base)
-  speed = 0.5,                    // global fall-speed multiplier
+  density = 5,                 // number of falling drops (desktop base)
+  speed = 0.3,                    // global fall-speed multiplier
   color = "#3BA7FF",
   maxLength = 22,
   minLength = 10,
@@ -14,7 +14,7 @@ export default function RainOverlay({
   collidePadding = 2,
 
   // ===== Splash realism controls =====
-  splashDroplets = 10,          // avg droplets per impact (desktop)
+  splashDroplets = 5,          // avg droplets per impact (desktop)
   splashSpreadDeg = 70,         // total spread cone angle
   splashEnergy = 1,             // splash velocity scaler
   splashDrag = 0.985,           // horizontal damping per frame
