@@ -98,7 +98,7 @@ const ServicesSection = () => {
               const element = document.getElementById('contact');
               if (element) element.scrollIntoView({ behavior: 'smooth' });
             }}
-            className="btn-secondary"
+            className="btn-secondary-1"
           >
             Discuss Your Project
           </button>

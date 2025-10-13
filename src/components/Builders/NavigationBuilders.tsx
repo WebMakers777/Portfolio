@@ -1,27 +1,32 @@
 import { Link } from "react-router-dom";
 
 export default function NavigationBuilders() {
+  const scrollToSection = (id: string) => {
+    const el = document.getElementById(id);
+    if (el) el.scrollIntoView({ behavior: 'smooth' });
+  };
+
   return (
-    <header className="sticky top-0 z-50 bg-white/75 backdrop-blur-md border-b border-border shadow-sm">
+    <header className="sticky top-0 z-50 bg-card/75 backdrop-blur-md border-b border-border shadow-sm">
       <div className="mx-auto max-w-6xl px-4 py-3 flex items-center justify-between">
         <Link to="/builders" className="text-lg md:text-xl font-semibold gradient-text">
           The Builders
         </Link>
 
         <nav className="hidden md:flex items-center gap-6 text-sm">
-          <a href="#services" className="text-black/70 hover:text-black nav-link">Services</a>
-          <a href="#portfolio" className="text-black/70 hover:text-black nav-link">Work</a>
-          <a href="#about" className="text-black/70 hover:text-black nav-link">About</a>
-          <a href="#contact" className="text-black/70 hover:text-black nav-link">Contact</a>
-          <Link to="/makers" className="text-black/50 hover:text-black">← Makers</Link>
+          <button onClick={() => scrollToSection('services')} className="text-foreground/70 hover:text-foreground nav-link">Services</button>
+          <button onClick={() => scrollToSection('portfolio')} className="text-foreground/70 hover:text-foreground nav-link">Work</button>
+          <button onClick={() => scrollToSection('about')} className="text-foreground/70 hover:text-foreground nav-link">About</button>
+          <button onClick={() => scrollToSection('contact')} className="text-foreground/70 hover:text-foreground nav-link">Contact</button>
+          <Link to="/makers" className="text-foreground/50 hover:text-foreground">← Makers</Link>
         </nav>
 
-        <a
-          href="#contact"
+        <button
+          onClick={() => scrollToSection('contact')}
           className="ml-4 inline-flex items-center gap-2 rounded-xl bg-[hsl(var(--primary))] text-white px-4 py-2 text-sm font-medium hover:opacity-90 shadow-md"
         >
           Get Proposal
-        </a>
+        </button>
       </div>
     </header>
   );

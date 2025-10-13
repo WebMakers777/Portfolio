@@ -26,14 +26,14 @@ export default function HeroBuilders() {
             <span className="block gradient-text">Scroll-Stopping Era</span>
           </h1>
 
-          <p className="mt-4 text-lg text-black/65">
+          <p className="mt-4 text-lg text-foreground/80">
             Performance-driven digital marketing and studio-quality social content:
             reels, shorts, carousels, UGC, influencer collabs, and paid ads that convert.
           </p>
 
           <div className="mt-8 flex flex-wrap gap-3">
-            <a href="#services" className="btn-hero">Explore Services</a>
-            <a href="#portfolio" className="btn-secondary">See Our Work</a>
+            <button onClick={() => document.getElementById('services')?.scrollIntoView({ behavior: 'smooth' })} className="btn-hero">Explore Services</button>
+            <button onClick={() => document.getElementById('portfolio')?.scrollIntoView({ behavior: 'smooth' })} className="btn-secondary">See Our Work</button>
           </div>
 
           {/* KPIs */}
@@ -44,8 +44,8 @@ export default function HeroBuilders() {
               { k: "1,200+",v: "Assets" },
             ].map((i) => (
               <div key={i.k} className="rounded-2xl border border-border bg-card/80 p-4 shadow-sm">
-                <div className="text-xl font-semibold text-black/85">{i.k}</div>
-                <div className="text-black/55 text-sm">{i.v}</div>
+                <div className="text-xl font-semibold text-foreground/90">{i.k}</div>
+                <div className="text-foreground/60 text-sm">{i.v}</div>
               </div>
             ))}
           </div>

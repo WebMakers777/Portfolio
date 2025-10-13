@@ -3,11 +3,11 @@ export default function LogosBuilders() {
   return (
     <section className="py-10">
       <div className="mx-auto max-w-6xl px-4">
-        <div className="text-center text-black/50 text-sm mb-3">Trusted by teams who move fast</div>
-        <div className="tool-marquee border border-border rounded-xl bg-white/70">
-          <div className="tool-track">
+        <div className="text-center text-foreground/50 text-sm mb-3 ">Trusted by teams who move fast</div>
+        <div className="tool-marquee border border-border rounded-xl bg-card/70">
+          <div className="tool-track text-white">
             {logos.concat(logos).map((src, i) => (
-              <img key={i} src={`/builders/${src}`} alt="logo" className="h-7 opacity-70" />
+              <img key={i} src={`/builders/${src}`} alt="logo" className="h-7 opacity-100" />
             ))}
           </div>
         </div>

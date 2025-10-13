@@ -35,17 +35,17 @@ export default function ServicesBuilders() {
   return (
     <section id="services" className="relative py-16">
       <div className="mx-auto max-w-6xl px-4">
-        <h2 className="text-3xl md:text-4xl font-semibold">Services built for growth</h2>
-        <p className="mt-2 text-black/65 max-w-2xl">
+        <h2 className="text-3xl md:text-4xl font-semibold text-foreground">Services built for growth</h2>
+        <p className="mt-2 text-foreground/70 max-w-2xl">
           Choose a focused sprint or a monthly retainer—either way, we ship outcomes.
         </p>
 
         <div className="mt-10 grid gap-6 sm:grid-cols-2">
           {items.map((s) => (
             <article key={s.title} className="card-hover">
-              <h3 className="text-xl font-semibold text-black/85">{s.title}</h3>
-              <p className="mt-2 text-black/60">{s.desc}</p>
-              <ul className="mt-4 space-y-1 text-sm text-black/60 list-disc list-inside">
+              <h3 className="text-xl font-semibold text-foreground/90">{s.title}</h3>
+              <p className="mt-2 text-foreground/70">{s.desc}</p>
+              <ul className="mt-4 space-y-1 text-sm text-foreground/70 list-disc list-inside">
                 {s.bullets.map((b) => <li key={b}>{b}</li>)}
               </ul>
             </article>

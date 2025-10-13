@@ -137,7 +137,7 @@ const HeroSection = () => {
             transition={{ delay: 0.9, duration: 0.6 }}
           >
             We&apos;re a team of passionate developers and designers who transform your ideas into
-            stunning, high-performance websites that drive results and engage your audience.
+            stunning, high-performance Software that drive results and engage your audience.
           </motion.p>
 
           {/* CTAs (ONLY these have splashes) */}

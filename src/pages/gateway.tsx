@@ -40,16 +40,16 @@ export default function Gateway() {
             {/* Content */}
             <div className="relative aspect-[4/3] md:aspect-[3/2] p-8 flex flex-col items-start justify-end">
               <span className="text-xs px-2 py-1 rounded-full bg-cyan-400/15 text-cyan-200 border border-cyan-400/20 mb-3">
-                Product & Engineering
+                Product Development & Engineering
               </span>
               <h2 className="text-3xl md:text-4xl font-semibold tracking-tight">
-                The Makers
+                The Forge
               </h2>
-              <p className="mt-2 text-white/70 max-w-[42ch]">
-                Your current portfolio & services experience.
+              <p className="mt-4 text-white/70 max-w-[42ch]">
+                Where powerful ideas are forged into reality.
               </p>
               <span className="mt-6 inline-flex items-center gap-2 text-sm font-medium text-white/90 group-hover:translate-x-1 transition">
-                Enter Makers →
+                Enter The Forge →
               </span>
             </div>
             {/* Bottom border glow */}
@@ -67,16 +67,16 @@ export default function Gateway() {
             {/* Content */}
             <div className="relative aspect-[4/3] md:aspect-[3/2] p-8 flex flex-col items-start justify-end">
               <span className="text-xs px-2 py-1 rounded-full bg-fuchsia-500/15 text-fuchsia-200 border border-fuchsia-500/20 mb-3">
-                Digital Marketing & Social
+                Digital Marketing & Social Media
               </span>
-              <h2 className="text-3xl md:text-4xl font-semibold tracking-tight">
-                The Builders
+              <h2 className="text-3xl md:text-3xl lg:text-4xl font-semibold tracking-tight">
+                The Growth Engine
               </h2>
-              <p className="mt-2 text-white/70 max-w-[42ch]">
-                A fresh interface for your new domain.
+              <p className="mt-4 text-white/70 max-w-[44ch]">
+                Accelerating your brand's presence and engagement.
               </p>
               <span className="mt-6 inline-flex items-center gap-2 text-sm font-medium text-white/90 group-hover:translate-x-1 transition">
-                Enter Builders →
+                Experience The Growth →
               </span>
             </div>
             {/* Bottom border glow */}
@@ -87,7 +87,7 @@ export default function Gateway() {
 
       {/* ---------- Footer note ---------- */}
       <footer className="relative z-10 pb-10 text-center text-white/50 text-xs">
-        © {new Date().getFullYear()} DevCraft Studio — The Makers & The Builders
+        © {new Date().getFullYear()} DevCraft Studio — The Forge & The Growth Engine
       </footer>
     </main>
   );
