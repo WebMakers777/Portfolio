@@ -5,7 +5,7 @@ const projects = [
   {
     id: 1,
     title: 'Book My CA',
-    category: 'Web Development',
+    category: 'Software Development',
     description:
       'BookMyCA is a financial services platform that provides end-to-end solutions including tax filing, GST, accounting, company registration, compliance, audits, and advisory. The website is designed to offer a seamless user experience, secure transactions, and easy integration of multiple financial service modules for individuals, startups, and enterprises.',
 
@@ -17,7 +17,7 @@ const projects = [
  {
   id: 2,
   title: 'Hack-Crux Website',
-  category: 'Web Development',
+  category: 'Software Development',
   description: 'Official website for GDG HackCrux Hackathon, featuring event details, registrations, schedules, and team management with a modern UI.',
   image: '/2.png',
   tags: ['React', 'TypeScript', 'Tailwind', 'Vercel'],
@@ -26,7 +26,7 @@ const projects = [
 {
   id: 3,
   title: 'StoreWise',
-  category: 'Web Development',
+  category: 'Software Development',
   description: 'A secure and scalable online storage application that allows users to manage, share, and organize files with cloud integration.',
   image: '/3.png',
   tags: ['Next.js', 'Node.js', 'MongoDB', 'Cloudinary'],
@@ -35,7 +35,7 @@ const projects = [
 {
   id: 4,
   title: 'Imaginest',
-  category: 'Web Development',
+  category: 'Software Development',
   description: 'An AI-powered SaaS platform for all image transformations including background removal, upscaling, colorization, and generative editing.',
   image: '/4.png',
   tags: ['Next.js', 'Cloudinary API', 'Tailwind'],
@@ -55,7 +55,7 @@ const projects = [
   // {
   //   id: 6,
   //   title: 'Learning Platform',
-  //   category: 'Web Development',
+  //   category: 'Software Development',
   //   description: 'Interactive learning platform with video courses and progress tracking.',
   //   image: '/projects/learning.png',
   //   tags: ['Vue.js', 'Laravel', 'MySQL', 'AWS'],
@@ -63,7 +63,7 @@ const projects = [
   // },
 ];
 
-const categories = ['All', 'Web Development', 'UI/UX Design', 'Mobile Development'];
+const categories = ['All', 'Software Development', 'UI/UX Design', 'Mobile Development'];
 
 const PortfolioSection = () => {
   const [activeCategory, setActiveCategory] = useState('All');

@@ -3,9 +3,9 @@ import { Code, Palette, Smartphone, Zap, Globe, Shield } from 'lucide-react';
 const services = [
   {
     icon: Code,
-    title: 'Web Development',
+    title: 'Software Development',
     description:
-      'Custom websites and web applications built with modern technologies for optimal performance and scalability.',
+      'Custom websites and software built with modern technologies for optimal performance and scalability.',
   },
   {
     icon: Palette,
@@ -23,7 +23,7 @@ const services = [
     icon: Zap,
     title: 'Performance Optimization',
     description:
-      'Lightning-fast websites optimized for speed, SEO, and user engagement.',
+      'Lightning-fast software optimized for speed, SEO, and user engagement.',
   },
   {
     icon: Globe,
@@ -49,7 +49,7 @@ const ServicesSection = () => {
             What We <span className="text-gradient">Do</span>
           </h2>
           <p className="text-lg lg:text-xl text-muted-foreground max-w-3xl mx-auto">
-            We offer comprehensive web development services to bring your digital vision to life.
+            We offer comprehensive Software Development services to bring your digital vision to life.
             From concept to launch, we&apos;ve got you covered.
           </p>
         </div>

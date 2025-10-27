@@ -19,7 +19,7 @@ const Footer = () => {
             <h3 className="text-xl font-bold text-gradient">DevCraft Studio</h3>
             <p className="text-muted-foreground leading-relaxed">
               Crafting digital experiences that convert. Your trusted partner 
-              for premium web development and design solutions.
+              for premium Software development and design solutions.
             </p>
             <div className="flex gap-4">
               <a

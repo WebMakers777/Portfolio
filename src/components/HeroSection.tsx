@@ -110,7 +110,7 @@ const HeroSection = () => {
           >
             <Sparkles className="w-4 h-4 text-primary" />
             <span className="text-sm font-medium text-muted-foreground">
-              Premium Web Development Team
+              Premium Software Development Team
             </span>
           </motion.div>
 
