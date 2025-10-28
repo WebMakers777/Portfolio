@@ -538,14 +538,14 @@ function GyroShowpiece() {
             style={{ transform: `translateZ(60px)` }}
           >
             <video
-              src="/builders/gyro.mp4"
-              poster="/assets/demos/poster-02.jpg"
-              muted
-              loop
-              playsInline
-              autoPlay
-              className="h-full w-full object-cover"
-            />
+  src="https://kcoykkkdrahdcdhf.public.blob.vercel-storage.com/gyro_4k.mp4"
+  poster="/assets/demos/poster-02.jpg"
+  muted
+  loop
+  playsInline
+  autoPlay
+  className="h-full w-full object-cover"
+/>
           </div>
           <div
             className="absolute top-4 left-4 flex gap-2 transform-gpu"
