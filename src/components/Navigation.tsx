@@ -41,7 +41,7 @@ const Navigation = () => {
               className="h-14 w-18"
             />
             <h1 className="text-xl lg:text-2xl font-bold text-gradient">
-              The Makers
+              Elixor Tech
             </h1>
           </div>
 

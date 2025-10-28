@@ -12,7 +12,7 @@ export default function Gateway() {
       {/* ---------- Header / Quote ---------- */}
       <header className="relative z-10 mx-auto max-w-6xl px-6 pt-14 text-center">
         <p className="text-xs tracking-widest text-white/60 uppercase mb-2">
-          DevCraft Studio
+          Versi Studios
         </p>
         <h1 className="text-4xl md:text-6xl font-semibold leading-tight">
           Crafting Digital Experiences that
@@ -43,13 +43,13 @@ export default function Gateway() {
                 Product Development & Engineering
               </span>
               <h2 className="text-3xl md:text-4xl font-semibold tracking-tight">
-                The Forge
+                Elixor Tech
               </h2>
               <p className="mt-4 text-white/70 max-w-[42ch]">
                 Where powerful ideas are forged into reality.
               </p>
               <span className="mt-6 inline-flex items-center gap-2 text-sm font-medium text-white/90 group-hover:translate-x-1 transition">
-                Enter The Forge →
+                Enter The Elixor →
               </span>
             </div>
             {/* Bottom border glow */}
@@ -87,7 +87,7 @@ export default function Gateway() {
 
       {/* ---------- Footer note ---------- */}
       <footer className="relative z-10 pb-10 text-center text-white/50 text-xs">
-        © {new Date().getFullYear()} DevCraft Studio — The Forge & The Growth Engine
+        © {new Date().getFullYear()} Versi Studios — Elixor Tech &  Click Crafters
       </footer>
     </main>
   );

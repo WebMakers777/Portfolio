@@ -18,7 +18,7 @@ import AnimatedSection from "@/components/AnimatedSection";
 export default function Builders() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#1a1333] via-[#1f1744] to-[#15102b] relative overflow-hidden">
-      {/* <ScrollProgressBar />  */}
+      <ScrollProgressBar /> 
       <AnimatedBackground />
 
       <div className="relative z-10">

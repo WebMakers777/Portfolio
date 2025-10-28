@@ -27,7 +27,7 @@ const Makers = () => {
       <APIConnectivityMap />
       <DeplymentTimeline />
       <AIFlowAutomation />
-      <AboutSection />
+      {/* <AboutSection /> */}
       <ContactSection />
       <Footer />
     </div>
