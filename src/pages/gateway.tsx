@@ -70,7 +70,7 @@ export default function Gateway() {
                 Digital Marketing & Social Media
               </span>
               <h2 className="text-3xl md:text-3xl lg:text-4xl font-semibold tracking-tight">
-                The Growth Engine
+                Click Crafters
               </h2>
               <p className="mt-4 text-white/70 max-w-[44ch]">
                 Accelerating your brand's presence and engagement.

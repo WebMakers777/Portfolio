@@ -898,3 +898,36 @@ All colors MUST be HSL.
     @apply bg-background text-foreground;
   }
 }
+
+/* styles/globals.css */
+
+/* Enables smooth scrolling for the entire page */
+html {
+  scroll-behavior: smooth;
+}
+
+/* --- Custom Scrollbar Styles (for Webkit browsers like Chrome, Safari, Edge) --- */
+
+/* This targets the entire scrollbar */
+::-webkit-scrollbar {
+  width: 8px; /* Makes the scrollbar thinner */
+}
+
+/* This is the background of the scrollbar (the "track") */
+::-webkit-scrollbar-track {
+  background: #1a1333; /* Match your page's background color */
+}
+
+/* This is the draggable scrolling handle (the "thumb") */
+::-webkit-scrollbar-thumb {
+  background-color: #171099; /* A color that stands out, like your progress bar */
+  border-radius: 10px;      /* Makes the thumb rounded */
+  border: 2px solid #1a1333; /* Adds a little space around the thumb */
+}
+
+/* --- Custom Scrollbar for Firefox --- */
+/* For Firefox, the styling is more limited but effective */
+* {
+  scrollbar-width: thin; /* Can be "auto", "thin", or "none" */
+  scrollbar-color: #171099 #1a1333; /* thumb color and track color */
+}

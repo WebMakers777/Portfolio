@@ -56,7 +56,7 @@ export default function HeroBuilders() {
           {/* main portrait */}
           <div className="relative rounded-2xl overflow-hidden shadow-lg">
             <img
-              src="/builders/hero-reel-portrait.jpg"
+              src="/builders/newban2.png"
               alt="Reel portrait"
               className="w-full h-auto object-cover"
             />

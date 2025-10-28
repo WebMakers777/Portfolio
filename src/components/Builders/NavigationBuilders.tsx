@@ -10,7 +10,7 @@ export default function NavigationBuilders() {
     <header className="sticky top-0 z-50 bg-card/75 backdrop-blur-md border-b border-border shadow-sm">
       <div className="mx-auto max-w-6xl px-4 py-3 flex items-center justify-between">
         <Link to="/builders" className="text-lg md:text-xl font-semibold gradient-text">
-          The Builders
+          Click Crafters
         </Link>
 
         <nav className="hidden md:flex items-center gap-6 text-sm">
