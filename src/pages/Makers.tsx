@@ -6,6 +6,10 @@ import AboutSection from "@/components/AboutSection";
 import ContactSection from "@/components/ContactSection";
 import Footer from "@/components/Footer";
 import RainOverlay from "@/components/RainOverlay";
+import CodeToProductHero from "@/components/makers/CodeToProductHero";
+import APIConnectivityMap from "@/components/makers/APIConnectivityMap";
+import DeplymentTimeline from "@/components/makers/DeploymentTimeline";
+import AIFlowAutomation from "@/components/makers/AIFlowAutomation";
 
 const Makers = () => {
   return (
@@ -19,6 +23,10 @@ const Makers = () => {
       <HeroSection />
       <ServicesSection />
       <PortfolioSection />
+      <CodeToProductHero />
+      <APIConnectivityMap />
+      <DeplymentTimeline />
+      <AIFlowAutomation />
       <AboutSection />
       <ContactSection />
       <Footer />

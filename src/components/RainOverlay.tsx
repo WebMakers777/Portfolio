@@ -4,8 +4,8 @@ import { useEffect, useRef } from "react";
 
 export default function RainOverlay({
   // ===== Base (desktop) controls =====
-  density = 5,                 // number of falling drops (desktop base)
-  speed = 0.3,                    // global fall-speed multiplier
+  density = 5,
+  speed = 0.3,
   color = "#3BA7FF",
   maxLength = 22,
   minLength = 10,
@@ -14,25 +14,36 @@ export default function RainOverlay({
   collidePadding = 2,
 
   // ===== Splash realism controls =====
-  splashDroplets = 5,          // avg droplets per impact (desktop)
-  splashSpreadDeg = 70,         // total spread cone angle
-  splashEnergy = 1,             // splash velocity scaler
-  splashDrag = 0.985,           // horizontal damping per frame
-  splashGravity = 1000,         // downward accel for splash droplets
-  ripple = true,                // draw small, fading ripple rings
-  rippleMaxRadius = 36,         // max ripple radius (desktop)
-  rippleLineWidth = 1.2,        // ripple stroke width
-  rippleFade = 0.9,             // fade factor per frame
+  splashDroplets = 5,
+  splashSpreadDeg = 70,
+  splashEnergy = 1,
+  splashDrag = 0.985,
+  splashGravity = 1000,
+  ripple = true,
+  rippleMaxRadius = 36,
+  rippleLineWidth = 1.2,
+  rippleFade = 0.9,
 
-  // ===== Mobile tuning (applies on < mobileBreakpoint) =====
+  // ===== Mobile tuning =====
   mobileBreakpoint = 768,
-  mobileDensityFactor = 0.25,   // fewer rain drops
-  mobileSizeFactor = 0.65,      // shorter/narrower streaks
-  mobileSpeedFactor = 0.6,      // slower fall
-  mobileWindFactor = 0.6,       // less sway
-  mobileSplashCountFactor = 0.55,   // fewer splash droplets (but not zero)
-  mobileSplashEnergyFactor = 0.75,  // softer splash velocity
-  mobileRippleRadiusFactor = 0.7,   // smaller ripples
+  mobileDensityFactor = 0.25,
+  mobileSizeFactor = 0.65,
+  mobileSpeedFactor = 0.6,
+  mobileWindFactor = 0.6,
+  mobileSplashCountFactor = 0.55,
+  mobileSplashEnergyFactor = 0.75,
+  mobileRippleRadiusFactor = 0.7,
+
+  // ===== NEW: laptop tuning & auto-governor =====
+  laptopMin = 1024,                  // typical laptop min width
+  laptopMax = 1600,                  // typical laptop max width
+  laptopDensityFactor = 0.6,         // reduce intensity on laptops
+  governor = true,                   // enable FPS-based governor
+  governorSample = 24,               // frames per decision window
+  governorTargetFps = 50,            // prefer >= target FPS
+  governorMaxDrop = 1.0,             // allow up to 100% of target density
+  governorMinDrop = 0.35,            // never go below 35% of target density
+  governorEase = 0.08,               // easing for density adjustments
 }: {
   density?: number;
   speed?: number;
@@ -61,11 +72,25 @@ export default function RainOverlay({
   mobileSplashCountFactor?: number;
   mobileSplashEnergyFactor?: number;
   mobileRippleRadiusFactor?: number;
+
+  laptopMin?: number;
+  laptopMax?: number;
+  laptopDensityFactor?: number;
+
+  governor?: boolean;
+  governorSample?: number;
+  governorTargetFps?: number;
+  governorMaxDrop?: number;
+  governorMinDrop?: number;
+  governorEase?: number;
 }) {
   const ref = useRef<HTMLCanvasElement | null>(null);
   const rafRef = useRef<number | null>(null);
   const collidersRef = useRef<DOMRect[]>([]);
+  const colliderRosRef = useRef<ResizeObserver[]>([]);
   const isMobileRef = useRef(false);
+  const isLaptopRef = useRef(false);
+  const reducedMotionRef = useRef(false);
 
   const sizeFactorRef = useRef(1);
   const speedFactorRef = useRef(1);
@@ -73,7 +98,10 @@ export default function RainOverlay({
   const splashCountRef = useRef(splashDroplets);
   const splashEnergyRef = useRef(splashEnergy);
   const rippleRadiusRef = useRef(rippleMaxRadius);
-  const targetDensityRef = useRef(density);
+
+  const baseTargetDensityRef = useRef(density);   // density after device-class adjustments (mobile/laptop/RM)
+  const governedFactorRef = useRef(1);            // 0..1 factor applied by governor
+  const displayDensityRef = useRef(0);            // final rounded count used in sim
 
   useEffect(() => {
     const canvas = ref.current!;
@@ -97,12 +125,16 @@ export default function RainOverlay({
     const splashes: Splash[] = [];
     const ripples: Ripple[] = [];
 
-    const updateMobileTuning = () => {
-      isMobileRef.current = window.innerWidth < mobileBreakpoint;
+    // ---------- Device class + reduced motion
+    const updateDeviceClasses = () => {
+      const w = window.innerWidth;
+      isMobileRef.current = w < mobileBreakpoint;
+      isLaptopRef.current = w >= laptopMin && w <= laptopMax;
+      reducedMotionRef.current = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-      sizeFactorRef.current   = isMobileRef.current ? mobileSizeFactor   : 1;
-      speedFactorRef.current  = isMobileRef.current ? mobileSpeedFactor  : 1;
-      windFactorRef.current   = isMobileRef.current ? mobileWindFactor   : 1;
+      sizeFactorRef.current   = isMobileRef.current ? mobileSizeFactor : 1;
+      speedFactorRef.current  = (isMobileRef.current ? mobileSpeedFactor : 1) * (reducedMotionRef.current ? 0.7 : 1);
+      windFactorRef.current   = (isMobileRef.current ? mobileWindFactor : 1);
 
       splashCountRef.current  = Math.max(
         2,
@@ -111,10 +143,16 @@ export default function RainOverlay({
       splashEnergyRef.current = splashEnergy * (isMobileRef.current ? mobileSplashEnergyFactor : 1);
       rippleRadiusRef.current = rippleMaxRadius * (isMobileRef.current ? mobileRippleRadiusFactor : 1);
 
-      const factor = isMobileRef.current ? mobileDensityFactor : 1;
-      targetDensityRef.current = Math.max(1, Math.round(density * factor));
+      // Base density with class modifiers
+      let base = density;
+      if (isMobileRef.current) base *= mobileDensityFactor;
+      else if (isLaptopRef.current) base *= laptopDensityFactor;
+      if (reducedMotionRef.current) base *= 0.6;
+
+      baseTargetDensityRef.current = Math.max(1, Math.round(base));
     };
 
+    // ---------- Canvas sizing
     const setSize = () => {
       dpr = Math.min(window.devicePixelRatio || 1, 2);
       const w = Math.floor(window.innerWidth * dpr);
@@ -127,19 +165,38 @@ export default function RainOverlay({
       ctx.scale(dpr, dpr);
     };
 
+    // ---------- Colliders
     const computeColliders = () => {
-      const rects: DOMRect[] = [];
-      collideSelectors.forEach((sel) => {
+      collidersRef.current = [];
+      colliderRosRef.current.forEach((ro) => ro.disconnect());
+      colliderRosRef.current = [];
+
+      const els: HTMLElement[] = [];
+      collideSelectors.forEach((sel) =>
         document.querySelectorAll<HTMLElement>(sel).forEach((el) => {
-          const r = el.getBoundingClientRect();
-          if (r.width > 0 && r.height > 0) rects.push(r);
-        });
+          if (el.offsetWidth && el.offsetHeight) els.push(el);
+        })
+      );
+
+      const updateRects = () => {
+        const rects: DOMRect[] = [];
+        els.forEach((el) => rects.push(el.getBoundingClientRect()));
+        collidersRef.current = rects;
+      };
+
+      updateRects();
+      els.forEach((el) => {
+        const ro = new ResizeObserver(updateRects);
+        ro.observe(el);
+        colliderRosRef.current.push(ro);
       });
-      collidersRef.current = rects;
     };
 
+    // ---------- Density reconcile
     const reconcileDensity = () => {
-      const target = targetDensityRef.current;
+      const target = Math.round(baseTargetDensityRef.current * governedFactorRef.current);
+      displayDensityRef.current = target;
+
       if (drops.length < target) {
         const need = target - drops.length;
         for (let i = 0; i < need; i++) spawnDrop(Math.random() * canvas.clientHeight);
@@ -148,18 +205,7 @@ export default function RainOverlay({
       }
     };
 
-    const onResize = () => {
-      updateMobileTuning();
-      setSize();
-      computeColliders();
-      reconcileDensity();
-    };
-
-    const onScroll = () => computeColliders();
-    window.addEventListener("resize", onResize);
-    window.addEventListener("scroll", onScroll, { passive: true });
-
-    // ----- Spawners -----
+    // ---------- Spawners
     const spawnDrop = (yStart?: number) => {
       const z = Math.random();
       const vyBase = (400 + Math.random() * 380) * (0.65 + z * 0.6);
@@ -183,20 +229,17 @@ export default function RainOverlay({
     };
 
     const spawnSplash = (x: number, y: number, normalAngle = -Math.PI / 2) => {
-      // fan-shaped emission around the surface normal
       const count = splashCountRef.current;
       const spread = (splashSpreadDeg * Math.PI) / 180;
-      const half = spread / 2;
       const energy = splashEnergyRef.current;
 
       for (let i = 0; i < count; i++) {
         const t = i / Math.max(1, count - 1);
-        // cosine interpolation for denser center
-        const off = (t - 0.5);
+        const off = t - 0.5;
         const angle = normalAngle + off * spread + (Math.random() - 0.5) * (spread * 0.15);
-        const speed = (180 + Math.random() * 220) * energy; // px/s
-        const vx = Math.cos(angle) * speed * (0.7 + Math.random() * 0.6);
-        const vy = Math.sin(angle) * speed * (0.7 + Math.random() * 0.6);
+        const speedPx = (180 + Math.random() * 220) * energy;
+        const vx = Math.cos(angle) * speedPx * (0.7 + Math.random() * 0.6);
+        const vy = Math.sin(angle) * speedPx * (0.7 + Math.random() * 0.6);
 
         splashes.push({
           x, y, vx, vy,
@@ -207,39 +250,59 @@ export default function RainOverlay({
       }
 
       if (ripple) {
-        ripples.push({
-          x, y,
-          r: 1,
-          life: 1,
-          alive: true,
-        });
-        // cap ripples to avoid memory growth
+        ripples.push({ x, y, r: 1, life: 1, alive: true });
         if (ripples.length > 200) ripples.splice(0, ripples.length - 200);
       }
-
-      // cap splashes too
       if (splashes.length > 1200) splashes.splice(0, splashes.length - 1200);
     };
 
-    // ----- Init -----
-    updateMobileTuning();
+    // ---------- Init
+    updateDeviceClasses();
     setSize();
     computeColliders();
-    for (let i = 0; i < targetDensityRef.current; i++) {
+    for (let i = 0; i < Math.round(baseTargetDensityRef.current); i++) {
       spawnDrop(Math.random() * canvas.clientHeight);
     }
 
     canvas.style.color = color;
     const stroke = () => getComputedStyle(canvas).color;
 
-    // ----- Loop -----
+    // ---------- Governor sampling
+    let sampleCount = 0;
+    let timeAcc = 0;
     let last = performance.now();
+
+    // ---------- Loop
     const loop = (now: number) => {
       const dt = Math.min((now - last) / 1000, 0.033);
       last = now;
-
       const w = canvas.clientWidth;
       const h = canvas.clientHeight;
+
+      // governor sample
+      if (governor) {
+        timeAcc += dt;
+        sampleCount++;
+        if (sampleCount >= governorSample) {
+          const avgFps = sampleCount / timeAcc;
+          let targetFactor = governedFactorRef.current;
+
+          if (avgFps < governorTargetFps) {
+            // lower density a bit
+            targetFactor = Math.max(governorMinDrop, governedFactorRef.current * 0.9);
+          } else {
+            // ease up toward max
+            targetFactor = Math.min(governorMaxDrop, governedFactorRef.current * 1.03);
+          }
+
+          governedFactorRef.current =
+            governedFactorRef.current + (targetFactor - governedFactorRef.current) * governorEase;
+
+          sampleCount = 0;
+          timeAcc = 0;
+          reconcileDensity();
+        }
+      }
 
       ctx.clearRect(0, 0, w, h);
       ctx.lineCap = "round";
@@ -252,11 +315,14 @@ export default function RainOverlay({
       // ===== Rain drops =====
       for (let i = drops.length - 1; i >= 0; i--) {
         const d = drops[i];
-
         d.prevY = d.y;
+
+        // subtle jitter for more natural look
+        const jitter = (Math.sin(t * 27 + d.windPhase * 1.7) + Math.cos(t * 19 + d.windPhase)) * 0.6;
         const wind =
           windGlobal * (0.3 + 0.7 * d.z) +
-          Math.sin(t * 2 + d.windPhase) * 8 * d.z * windFactorRef.current;
+          Math.sin(t * 2 + d.windPhase) * 8 * d.z * windFactorRef.current +
+          jitter;
 
         d.x += (d.vx + wind) * dt;
         d.y += d.vy * dt;
@@ -269,7 +335,7 @@ export default function RainOverlay({
         for (const r of collidersRef.current) {
           const top = r.top - collidePadding;
           if (d.prevY < top && d.y >= top && d.x >= r.left && d.x <= r.right) {
-            spawnSplash(d.x, top, -Math.PI / 2); // normal pointing up
+            spawnSplash(d.x, top, -Math.PI / 2);
             drops.splice(i, 1);
             spawnDrop();
             hit = true;
@@ -286,7 +352,7 @@ export default function RainOverlay({
           continue;
         }
 
-        // draw streak
+        // streak
         ctx.globalAlpha = d.a;
         ctx.lineWidth = d.wid;
         ctx.beginPath();
@@ -313,12 +379,11 @@ export default function RainOverlay({
           splashes.splice(i, 1);
           continue;
         }
-        s.vy += splashGravity * dt;   // gravity
-        s.vx *= splashDrag;           // air drag
+        s.vy += splashGravity * dt;
+        s.vx *= splashDrag;
         s.x += s.vx * dt;
         s.y += s.vy * dt;
 
-        // fade faster near end
         const lifeAlpha = Math.max(0, Math.min(1, s.life * 4));
         ctx.globalAlpha = s.a * lifeAlpha;
         ctx.lineWidth = s.wid;
@@ -349,31 +414,46 @@ export default function RainOverlay({
         }
       }
 
-      // keep density in sync after resizes
-      if (drops.length !== targetDensityRef.current) {
+      // keep density synced (handles manual resizes)
+      if (drops.length !== Math.round(baseTargetDensityRef.current * governedFactorRef.current)) {
         reconcileDensity();
       }
 
       rafRef.current = requestAnimationFrame(loop);
     };
 
-    rafRef.current = requestAnimationFrame(loop);
+    // ---------- Events
+    const onResize = () => {
+      updateDeviceClasses();
+      setSize();
+      computeColliders();
+      reconcileDensity();
+    };
+
+    window.addEventListener("resize", onResize, { passive: true });
+
+    // start
+    let start = performance.now();
+    rafRef.current = requestAnimationFrame((t) => {
+      start = t;
+      loop(t);
+    });
 
     const onVis = () => {
       if (document.hidden) {
         if (rafRef.current) cancelAnimationFrame(rafRef.current);
         rafRef.current = null;
       } else if (!rafRef.current) {
-        last = performance.now();
-        rafRef.current = requestAnimationFrame(loop);
+        const now = performance.now();
+        rafRef.current = requestAnimationFrame((t) => loop(t ?? now));
       }
     };
     document.addEventListener("visibilitychange", onVis);
 
     return () => {
       window.removeEventListener("resize", onResize);
-      window.removeEventListener("scroll", onScroll);
       document.removeEventListener("visibilitychange", onVis);
+      colliderRosRef.current.forEach((ro) => ro.disconnect());
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
     };
   }, [
@@ -403,13 +483,25 @@ export default function RainOverlay({
     mobileSplashCountFactor,
     mobileSplashEnergyFactor,
     mobileRippleRadiusFactor,
+
+    laptopMin,
+    laptopMax,
+    laptopDensityFactor,
+
+    governor,
+    governorSample,
+    governorTargetFps,
+    governorMaxDrop,
+    governorMinDrop,
+    governorEase,
   ]);
 
   return (
     <canvas
       ref={ref}
       className="fixed inset-0 pointer-events-none"
-      style={{ zIndex }}
+      style={{ zIndex, color }}
+      aria-hidden="true"
     />
   );
 }
