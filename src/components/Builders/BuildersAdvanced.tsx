@@ -538,7 +538,7 @@ function GyroShowpiece() {
             style={{ transform: `translateZ(60px)` }}
           >
             <video
-              src="/builders/gyro_4k.mp4"
+              src="/builders/gyro.mp4"
               poster="/assets/demos/poster-02.jpg"
               muted
               loop
