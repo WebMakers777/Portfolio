@@ -173,17 +173,17 @@ function ShowreelGrid() {
       <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         <HoverVideo
           src="/assets/demos/reel-01.mp4"
-          poster="/assets/demos/poster-01.jpg"
+          poster="/builders/tech.png"
           title="Product Reel • Tech"
         />
         <HoverVideo
           src="/assets/demos/reel-02.mp4"
-          poster="/assets/demos/poster-02.jpg"
+          poster="/builders/life.png"
           title="UGC Ad • Lifestyle"
         />
         <HoverVideo
           src="/assets/demos/reel-03.mp4"
-          poster="/assets/demos/poster-03.jpg"
+          poster="/builders/logo_showreel.png"
           title="Motion GFX • Logo Reveal"
         />
       </div>
@@ -538,7 +538,7 @@ function GyroShowpiece() {
             style={{ transform: `translateZ(60px)` }}
           >
             <video
-              src="/assets/demos/reel-02.mp4"
+              src="https://kcoykkkdrahdcdhf.public.blob.vercel-storage.com/gyro_4k.mp4"
               poster="/assets/demos/poster-02.jpg"
               muted
               loop
