@@ -18,7 +18,7 @@ import AnimatedSection from "@/components/AnimatedSection";
 export default function Builders() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#1a1333] via-[#1f1744] to-[#15102b] relative overflow-hidden">
-      <ScrollProgressBar /> {/* 2. Add the component here */}
+      {/* <ScrollProgressBar />  */}
       <AnimatedBackground />
 
       <div className="relative z-10">
@@ -46,9 +46,9 @@ export default function Builders() {
             <AboutBuilders />
           </AnimatedSection>
 
-          <AnimatedSection direction="up">
+          {/* <AnimatedSection direction="up"> */}
             <BuildersAdvanced />
-          </AnimatedSection>
+          {/* </AnimatedSection> */}
 
           <AnimatedSection direction="fade">
             <ContactBuilders />
