@@ -172,17 +172,17 @@ function ShowreelGrid() {
       />
       <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         <HoverVideo
-          src="/assets/demos/reel-01.mp4"
+          src="/builders/gyro_4k.mp4"
           poster="/builders/tech.png"
           title="Product Reel • Tech"
         />
         <HoverVideo
-          src="/assets/demos/reel-02.mp4"
+          src="/builders/gyro_video.mp4"
           poster="/builders/life.png"
           title="UGC Ad • Lifestyle"
         />
         <HoverVideo
-          src="/assets/demos/reel-03.mp4"
+          src="/builders/gyro_4k.mp4"
           poster="/builders/logo_showreel.png"
           title="Motion GFX • Logo Reveal"
         />

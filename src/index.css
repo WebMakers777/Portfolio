@@ -18,6 +18,15 @@ body::-webkit-scrollbar {
   display: none; /* Chrome, Safari, and Edge (Chromium) */
 }
 
+/* Hide scrollbars on elements with scrollbar-hide class */
+.scrollbar-hide {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, and Edge (Chromium) */
+}
+
 /* -------------------------
    Shared visual utilities
 --------------------------*/
@@ -842,12 +851,20 @@ All colors MUST be HSL.
       hsl(var(--accent) / 0.05)
     );
     backdrop-filter: blur(4px);
+    overflow: hidden;
   }
 
   .frame-content {
     width: 100%;
     height: 100%;
     border-radius: 11px;
+    display: flex;
+    position: relative;
+  }
+
+  .frame-content img {
+    width: 100%;
+    height: 100%;
   }
 
   .gradient-shimmer {

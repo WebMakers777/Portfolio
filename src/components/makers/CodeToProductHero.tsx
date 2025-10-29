@@ -141,7 +141,7 @@ export default function CodeToProductHero({ className = "" }) {
                 ui: { opacity: 0, scale: 0.98 },
               }}
               animate={controls}
-              className="font-mono text-xs sm:text-sm md:text-base lg:text-base xl:text-lg leading-4 sm:leading-5 md:leading-6 lg:leading-7 bg-black/40 rounded-lg md:rounded-2xl p-2.5 sm:p-3 md:p-4 lg:p-5 xl:p-6 border border-white/10 min-h-[200px] sm:min-h-[240px] md:min-h-[320px] lg:min-h-[400px] xl:min-h-[480px] overflow-y-auto"
+              className="font-mono text-[10px] sm:text-xs md:text-sm lg:text-base xl:text-lg leading-3 sm:leading-4 md:leading-5 lg:leading-6 xl:leading-7 bg-black/40 rounded-lg md:rounded-2xl p-2 sm:p-2.5 md:p-3 lg:p-5 xl:p-6 border border-white/10 min-h-[200px] sm:min-h-[240px] md:min-h-[320px] lg:min-h-[400px] xl:min-h-[480px] overflow-y-auto scrollbar-hide"
             >
               {codeToShow.map((l, i) => (
                 <motion.pre

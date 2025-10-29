@@ -11,14 +11,16 @@ const STEPS = [
 ];
 
 export default function DeploymentTimeline({ className = "" }) {
-  const [cardPositions, setCardPositions] = React.useState<Array<{ x: number; y: number }>>([]);
+  const [cardPositions, setCardPositions] = React.useState<
+    Array<{ x: number; y: number }>
+  >([]);
   const [isDesktop, setIsDesktop] = React.useState(false);
   const containerRef = React.useRef<HTMLDivElement>(null);
 
   React.useEffect(() => {
     const calculatePositions = () => {
       if (!containerRef.current) return;
-      const cards = containerRef.current.querySelectorAll('[data-card]');
+      const cards = containerRef.current.querySelectorAll("[data-card]");
       const positions = Array.from(cards).map((card) => {
         const rect = (card as HTMLElement).getBoundingClientRect();
         const containerRect = containerRef.current!.getBoundingClientRect();
@@ -30,7 +32,8 @@ export default function DeploymentTimeline({ className = "" }) {
       setCardPositions(positions);
 
       // Check if desktop view (6 columns in 1 row)
-      const isDesktopView = positions.length === 6 && 
+      const isDesktopView =
+        positions.length === 6 &&
         Math.abs(positions[0].y - positions[5].y) < 20;
       setIsDesktop(isDesktopView);
     };
@@ -55,7 +58,7 @@ export default function DeploymentTimeline({ className = "" }) {
 
     // Mobile/Tablet view: Snake pattern: 1->2->3, down, 6->5->4
     const sequence = [0, 1, 2, 5, 4, 3]; // indices in order
-    const points = sequence.map(i => cardPositions[i]);
+    const points = sequence.map((i) => cardPositions[i]);
 
     let path = `M ${points[0].x} ${points[0].y}`;
 
@@ -82,18 +85,24 @@ export default function DeploymentTimeline({ className = "" }) {
   };
 
   return (
-    <section className={`relative w-full py-24 md:py-32 lg:py-48 px-6 md:px-10 lg:px-16 ${className}`}>
+    <section
+      className={`relative w-full py-24 md:py-32 lg:py-48 px-6 md:px-10 lg:px-16 ${className}`}
+    >
       <div className="max-w-7xl mx-auto">
-        <h2 className="text-3xl md:text-5xl lg:text-6xl font-bold mb-6 lg:mb-8">From idea to production</h2>
-        <p className="text-neutral-300 mb-8 lg:mb-12 max-w-2xl text-base md:text-lg">A transparent, milestone-driven process that ships reliably.</p>
+        <h2 className="text-3xl md:text-5xl lg:text-6xl font-bold mb-6 lg:mb-8">
+          From idea to production
+        </h2>
+        <p className="text-neutral-300 mb-8 lg:mb-12 max-w-2xl text-base md:text-lg">
+          A transparent, milestone-driven process that ships reliably.
+        </p>
 
         <div className="relative" ref={containerRef}>
           {/* SVG connector line for mobile/tablet */}
           <svg
             className="absolute top-0 left-0 w-full pointer-events-none lg:hidden"
-            style={{ 
+            style={{
               height: "400px",
-              overflow: "visible"
+              overflow: "visible",
             }}
             viewBox={`0 0 ${containerRef.current?.offsetWidth || 1000} 400`}
           >
@@ -110,7 +119,13 @@ export default function DeploymentTimeline({ className = "" }) {
               strokeLinejoin="round"
             />
             <defs>
-              <linearGradient id="lineGradient" x1="0%" x2="100%" y1="0%" y2="0%">
+              <linearGradient
+                id="lineGradient"
+                x1="0%"
+                x2="100%"
+                y1="0%"
+                y2="0%"
+              >
                 <stop offset="0%" stopColor="#10b981" />
                 <stop offset="100%" stopColor="#0ea5e9" />
               </linearGradient>
@@ -140,10 +155,16 @@ export default function DeploymentTimeline({ className = "" }) {
               >
                 <div className="flex items-center gap-1.5 md:gap-2 mb-2 md:mb-3 lg:mb-4">
                   <div className="w-1.5 h-1.5 md:w-2 md:h-2 rounded-full bg-emerald-400 animate-pulse" />
-                  <div className="uppercase tracking-wide text-[10px] md:text-xs lg:text-sm text-neutral-400">Step {i + 1}</div>
+                  <div className="uppercase tracking-wide text-[10px] md:text-xs lg:text-sm text-neutral-400">
+                    Step {i + 1}
+                  </div>
                 </div>
-                <div className="text-sm md:text-base lg:text-2xl font-semibold leading-tight">{s.t}</div>
-                <div className="text-[10px] md:text-xs lg:text-base text-neutral-300 leading-tight">{s.d}</div>
+                <div className="text-sm md:text-base lg:text-2xl font-semibold leading-tight">
+                  {s.t}
+                </div>
+                <div className="text-[10px] md:text-xs lg:text-base text-neutral-300 leading-tight">
+                  {s.d}
+                </div>
               </motion.div>
             ))}
           </div>
