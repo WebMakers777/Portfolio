@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { motion } from "framer-motion";
 
 export default function HeroBuilders() {
   // optional mouse parallax on the BTS image
@@ -27,24 +28,48 @@ export default function HeroBuilders() {
           </h1>
 
           <p className="mt-4 text-lg text-foreground/80">
-            Performance-driven digital marketing and studio-quality social content:
-            reels, shorts, carousels, UGC, influencer collabs, and paid ads that convert.
+            Performance-driven digital marketing and studio-quality social
+            content: reels, shorts, carousels, UGC, influencer collabs, and paid
+            ads that convert.
           </p>
 
           <div className="mt-8 flex flex-wrap gap-3">
-            <button onClick={() => document.getElementById('services')?.scrollIntoView({ behavior: 'smooth' })} className="btn-hero">Explore Services</button>
-            <button onClick={() => document.getElementById('portfolio')?.scrollIntoView({ behavior: 'smooth' })} className="btn-secondary">See Our Work</button>
+            <button
+              onClick={() =>
+                document
+                  .getElementById("services")
+                  ?.scrollIntoView({ behavior: "smooth" })
+              }
+              className="btn-hero"
+            >
+              Explore Services
+            </button>
+            <button
+              onClick={() =>
+                document
+                  .getElementById("portfolio")
+                  ?.scrollIntoView({ behavior: "smooth" })
+              }
+              className="btn-secondary"
+            >
+              See Our Work
+            </button>
           </div>
 
           {/* KPIs */}
           <div className="mt-10 grid grid-cols-3 gap-3 max-w-xl">
             {[
               { k: "200M+", v: "Views" },
-              { k: "4.8x",  v: "Avg ROAS" },
-              { k: "1,200+",v: "Assets" },
+              { k: "4.8x", v: "Avg ROAS" },
+              { k: "1,200+", v: "Assets" },
             ].map((i) => (
-              <div key={i.k} className="rounded-2xl border border-border bg-card/80 p-4 shadow-sm">
-                <div className="text-xl font-semibold text-foreground/90">{i.k}</div>
+              <div
+                key={i.k}
+                className="rounded-2xl border border-border bg-card/80 p-4 shadow-sm"
+              >
+                <div className="text-xl font-semibold text-foreground/90">
+                  {i.k}
+                </div>
                 <div className="text-foreground/60 text-sm">{i.v}</div>
               </div>
             ))}
@@ -66,20 +91,35 @@ export default function HeroBuilders() {
           </div>
 
           {/* parallax BTS shot */}
-          <img
+          <motion.img
             src="/builders/hero-bts-studio.jpg"
             alt="Studio BTS"
             className="parallax-hero absolute -right-8 -bottom-10 w-2/3 rounded-2xl shadow-lg rotate-2"
             data-speed="6"
+            animate={{ y: [0, -15, 0] }}
+            transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
           />
 
           {/* small UGC */}
-          <div className="absolute -left-6 bottom-14 w-2/5 rounded-2xl overflow-hidden shadow-lg -rotate-2">
-            <img src="/builders/hero-ugc-candid.jpg" alt="UGC candid" className="w-full h-auto object-cover" />
+          <motion.div
+            className="absolute -left-6 bottom-14 w-2/5 rounded-2xl overflow-hidden shadow-lg -rotate-2"
+            animate={{ y: [0, 12, 0] }}
+            transition={{
+              duration: 3.5,
+              repeat: Infinity,
+              ease: "easeInOut",
+              delay: 0.5,
+            }}
+          >
+            <img
+              src="/builders/hero-ugc-candid.jpg"
+              alt="UGC candid"
+              className="w-full h-auto object-cover"
+            />
             <div className="absolute bottom-2 left-2 text-[10px] px-2 py-1 rounded bg-black/60 text-white">
               Swipe to learn more
             </div>
-          </div>
+          </motion.div>
         </div>
       </div>
     </section>
