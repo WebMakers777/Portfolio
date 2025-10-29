@@ -21,19 +21,19 @@ export default function Gateway() {
           </span>
         </h1>
         <p className="mt-4 text-white/70 max-w-3xl mx-auto">
-          “Makers turn ideas into products. Builders turn stories into demand.”
-          Choose your path below.
+          “ElixorTech turns ideas into products. ClickCrafters turn stories into
+          demand.” Choose your path below.
         </p>
       </header>
 
       {/* ---------- Cards ---------- */}
       <section className="relative z-10 mx-auto max-w-6xl px-6 pb-20 pt-10">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {/* Makers */}
+          {/* ElixorTech */}
           <Link
-            to="/makers"
+            to="/elixortech"
             className="group relative overflow-hidden rounded-2xl border border-white/10 bg-white/[0.04] hover:bg-white/[0.06] transition will-change-transform animate-fade-up delay-100"
-            aria-label="Enter The Makers site"
+            aria-label="Enter ElixorTech site"
           >
             {/* Shine */}
             <div className="pointer-events-none absolute -top-24 -left-24 h-72 w-72 rounded-full bg-cyan-400/20 blur-3xl group-hover:opacity-100 opacity-80 transition" />
@@ -43,24 +43,24 @@ export default function Gateway() {
                 Product Development & Engineering
               </span>
               <h2 className="text-3xl md:text-4xl font-semibold tracking-tight">
-                Elixor Tech
+                ElixorTech
               </h2>
               <p className="mt-4 text-white/70 max-w-[42ch]">
                 Where powerful ideas are forged into reality.
               </p>
               <span className="mt-6 inline-flex items-center gap-2 text-sm font-medium text-white/90 group-hover:translate-x-1 transition">
-                Enter The Elixor →
+                Enter ElixorTech →
               </span>
             </div>
             {/* Bottom border glow */}
             <div className="absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-cyan-400/40 to-transparent" />
           </Link>
 
-          {/* Builders */}
+          {/* ClickCrafters */}
           <Link
-            to="/builders"
+            to="/clickcrafters"
             className="group relative overflow-hidden rounded-2xl border border-white/10 bg-white/[0.04] hover:bg-white/[0.06] transition will-change-transform animate-fade-up delay-200"
-            aria-label="Enter The Builders site"
+            aria-label="Enter ClickCrafters site"
           >
             {/* Shine */}
             <div className="pointer-events-none absolute -top-24 -right-24 h-72 w-72 rounded-full bg-fuchsia-500/25 blur-3xl group-hover:opacity-100 opacity-80 transition" />
@@ -70,7 +70,7 @@ export default function Gateway() {
                 Digital Marketing & Social Media
               </span>
               <h2 className="text-3xl md:text-3xl lg:text-4xl font-semibold tracking-tight">
-                Click Crafters
+                ClickCrafters
               </h2>
               <p className="mt-4 text-white/70 max-w-[44ch]">
                 Accelerating your brand's presence and engagement.
@@ -87,7 +87,7 @@ export default function Gateway() {
 
       {/* ---------- Footer note ---------- */}
       <footer className="relative z-10 pb-10 text-center text-white/50 text-xs">
-        © {new Date().getFullYear()} Versi Studios — Elixor Tech &  Click Crafters
+        © {new Date().getFullYear()} Versi Studios — ElixorTech & ClickCrafters
       </footer>
     </main>
   );

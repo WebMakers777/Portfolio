@@ -6,12 +6,33 @@ import { Bullet } from "./Bullet";
 // simple inline icons (no extra deps)
 const Icon = {
   lock: () => (
-    <path d="M8 9V7a4 4 0 1 1 8 0v2m-9 0h10v8H7V9Z" stroke="currentColor" strokeWidth="1.5" fill="none" />
+    <path
+      d="M8 9V7a4 4 0 1 1 8 0v2m-9 0h10v8H7V9Z"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      fill="none"
+    />
   ),
   card: () => (
     <>
-      <rect x="6" y="8" width="12" height="8" rx="1.5" stroke="currentColor" strokeWidth="1.5" fill="none" />
-      <line x1="6" y1="11" x2="18" y2="11" stroke="currentColor" strokeWidth="1.5" />
+      <rect
+        x="6"
+        y="8"
+        width="12"
+        height="8"
+        rx="1.5"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        fill="none"
+      />
+      <line
+        x1="6"
+        y1="11"
+        x2="18"
+        y2="11"
+        stroke="currentColor"
+        strokeWidth="1.5"
+      />
     </>
   ),
   brain: () => (
@@ -26,9 +47,27 @@ const Icon = {
   ),
   db: () => (
     <>
-      <ellipse cx="12" cy="7" rx="5" ry="2.5" stroke="currentColor" strokeWidth="1.5" fill="none" />
-      <path d="M7 7v6c0 1.4 2.2 2.5 5 2.5s5-1.1 5-2.5V7" stroke="currentColor" strokeWidth="1.5" fill="none" />
-      <path d="M7 10c0 1.4 2.2 2.5 5 2.5s5-1.1 5-2.5" stroke="currentColor" strokeWidth="1.5" fill="none" />
+      <ellipse
+        cx="12"
+        cy="7"
+        rx="5"
+        ry="2.5"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        fill="none"
+      />
+      <path
+        d="M7 7v6c0 1.4 2.2 2.5 5 2.5s5-1.1 5-2.5V7"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        fill="none"
+      />
+      <path
+        d="M7 10c0 1.4 2.2 2.5 5 2.5s5-1.1 5-2.5"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        fill="none"
+      />
     </>
   ),
 };
@@ -50,11 +89,16 @@ export default function APIConnectivityMap({ className = "" }) {
   ] as any; // we won’t use this tuple—using map below
 
   return (
-    <section className={`relative w-full py-24 md:py-32 px-6 md:px-10 ${className}`}>
+    <section
+      className={`relative w-full py-24 md:py-32 px-6 md:px-10 ${className}`}
+    >
       <div className="max-w-6xl mx-auto">
-        <h2 className="text-3xl md:text-5xl font-bold mb-6">API connectivity that scales globally</h2>
+        <h2 className="text-3xl md:text-5xl font-bold mb-6">
+          API connectivity that scales globally
+        </h2>
         <p className="text-neutral-300 mb-6 max-w-2xl">
-          We wire up REST, GraphQL, webhooks, and streaming pipelines—securely and observably.
+          We wire up REST, GraphQL, webhooks, and streaming pipelines—securely
+          and observably.
         </p>
 
         <div ref={ref} className="relative">
@@ -64,7 +108,10 @@ export default function APIConnectivityMap({ className = "" }) {
           >
             <div className="grid md:grid-cols-[1.2fr_1fr] gap-6 items-center">
               {/* SVG network */}
-              <svg viewBox="0 0 100 100" className="w-full h-[360px] md:h-[420px]">
+              <svg
+                viewBox="0 0 100 100"
+                className="w-full h-[360px] md:h-[420px]"
+              >
                 {/* defs */}
                 <defs>
                   <radialGradient id="glowCore" cx="50%" cy="50%">
@@ -91,20 +138,28 @@ export default function APIConnectivityMap({ className = "" }) {
                   strokeDasharray="2 6"
                   animate={{ rotate: 360 }}
                   transform={`rotate(0 ${core.x} ${core.y})`}
-                  transition={{ repeat: Infinity, duration: 14, ease: "linear" }}
+                  transition={{
+                    repeat: Infinity,
+                    duration: 14,
+                    ease: "linear",
+                  }}
                   opacity={0.35}
                 />
 
                 {/* links */}
                 {satellites.map((s, i) => {
-                  const d = `M ${core.x} ${core.y} Q ${(core.x + s.x) / 2} ${(core.y + s.y) / 2 - 10} ${s.x} ${s.y}`;
+                  const d = `M ${core.x} ${core.y} Q ${(core.x + s.x) / 2} ${
+                    (core.y + s.y) / 2 - 10
+                  } ${s.x} ${s.y}`;
                   return (
                     <g key={s.id}>
                       <motion.path
                         d={d}
                         fill="none"
                         stroke="url(#dash)"
-                        strokeWidth={hover === s.id || hover === "core" ? 1.2 : 0.8}
+                        strokeWidth={
+                          hover === s.id || hover === "core" ? 1.2 : 0.8
+                        }
                         strokeDasharray="4 4"
                         initial={{ pathLength: 0, opacity: 0.5 }}
                         animate={{ pathLength: 1, opacity: 1 }}
@@ -115,10 +170,13 @@ export default function APIConnectivityMap({ className = "" }) {
                       <motion.circle
                         r="1.1"
                         fill="white"
-                        initial={{ offsetDistance: "0%" }}
-                        animate={{ offsetDistance: "100%" }}
-                        transition={{ duration: 2.2, repeat: Infinity, delay: i * 0.2 }}
-                        style={{ offsetPath: `path('${d}')` }}
+                        initial={{ x: core.x, y: core.y }}
+                        animate={{ x: s.x, y: s.y }}
+                        transition={{
+                          duration: 2.2,
+                          repeat: Infinity,
+                          delay: i * 0.2,
+                        }}
                       />
                     </g>
                   );
@@ -167,7 +225,10 @@ export default function APIConnectivityMap({ className = "" }) {
                       transition={{ delay: 0.2 + i * 0.06 }}
                       filter="url(#soft)"
                     />
-                    <g transform={`translate(${s.x - 6}, ${s.y - 6})`} opacity={0.9}>
+                    <g
+                      transform={`translate(${s.x - 6}, ${s.y - 6})`}
+                      opacity={0.9}
+                    >
                       <svg viewBox="0 0 24 24" width="12" height="12">
                         <g stroke="currentColor" color="white">
                           {Icon[s.icon]()}
@@ -188,10 +249,22 @@ export default function APIConnectivityMap({ className = "" }) {
 
               {/* bullets */}
               <div className="space-y-3">
-                <Bullet title="Secure by design" desc="OAuth, JWT, role-based access, audit trails" />
-                <Bullet title="Observability" desc="Tracing, metrics, structured logs, alerts" />
-                <Bullet title="Performance" desc="Queueing, caching, streams, backpressure" />
-                <Bullet title="Reliability" desc="Retries, idempotency keys, circuit breakers" />
+                <Bullet
+                  title="Secure by design"
+                  desc="OAuth, JWT, role-based access, audit trails"
+                />
+                <Bullet
+                  title="Observability"
+                  desc="Tracing, metrics, structured logs, alerts"
+                />
+                <Bullet
+                  title="Performance"
+                  desc="Queueing, caching, streams, backpressure"
+                />
+                <Bullet
+                  title="Reliability"
+                  desc="Retries, idempotency keys, circuit breakers"
+                />
               </div>
             </div>
           </motion.div>

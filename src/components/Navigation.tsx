@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Menu, X } from "lucide-react";
-import logo from "../assets/elixor.png"
+import { Link } from "react-router-dom";
+import logo from "../assets/2-removebg-preview.png";
 
 const Navigation = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -35,14 +36,15 @@ const Navigation = () => {
         <div className="flex items-center justify-between h-16 lg:h-20">
           {/* Logo */}
           <div className="flex items-center space-x-2">
-            <img
-              src={logo}
-              alt="The Makers Logo"
-              className="h-14 w-18"
-            />
-            <h1 className="text-xl lg:text-2xl font-bold text-gradient">
-              Elixor Tech
-            </h1>
+            <Link
+              to="/"
+              className="flex items-center space-x-2 hover:opacity-80 transition"
+            >
+              <img src={logo} alt="ElixorTech Logo" className="h-14 w-18" />
+              <h1 className="text-xl lg:text-2xl font-bold text-gradient">
+                ElixorTech
+              </h1>
+            </Link>
           </div>
 
           {/* Desktop Navigation */}
@@ -78,6 +80,12 @@ const Navigation = () => {
               >
                 Contact
               </button>
+              <Link
+                to="/clickcrafters"
+                className="relative inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-gradient-to-r from-cyan-400/20 to-blue-400/20 border border-cyan-400/50 text-cyan-300 hover:text-cyan-200 hover:border-cyan-300 hover:shadow-[0_0_20px_rgba(34,211,238,0.5)] transition-all duration-300 text-sm font-medium"
+              >
+                ClickCrafters
+              </Link>
             </div>
           </div>
 
@@ -130,6 +138,12 @@ const Navigation = () => {
               >
                 Contact
               </button>
+              <Link
+                to="/clickcrafters"
+                className="block px-3 py-2 text-base font-medium rounded-lg bg-gradient-to-r from-cyan-400/20 to-blue-400/20 border border-cyan-400/50 text-cyan-300 hover:text-cyan-200 hover:border-cyan-300 hover:shadow-[0_0_20px_rgba(34,211,238,0.5)] transition-all duration-300 mt-2"
+              >
+                ClickCrafters
+              </Link>
             </div>
           </div>
         )}

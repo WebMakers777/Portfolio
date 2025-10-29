@@ -618,8 +618,8 @@ export function NewFooterBuilders() {
     <footer className="relative mt-16 border-t border-border bg-gradient-to-t from-card/50 to-transparent">
       <Section className="flex flex-col items-center py-10 px-auto mx-auto justify-center ">
         <div className="text-sm text-foreground/70 items-center ">
-          © {new Date().getFullYear()} The Builders • Digital Marketing & Social
-          Content
+          © {new Date().getFullYear()} ClickCrafters • Digital Marketing &
+          Social Content
         </div>
       </Section>
     </footer>

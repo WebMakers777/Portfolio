@@ -1,4 +1,5 @@
-import { Github, Linkedin, Twitter, Mail, Phone, MapPin } from 'lucide-react';
+import { Github, Linkedin, Twitter, Mail, Phone, MapPin } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -6,7 +7,7 @@ const Footer = () => {
   const scrollToSection = (sectionId: string) => {
     const element = document.getElementById(sectionId);
     if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
+      element.scrollIntoView({ behavior: "smooth" });
     }
   };
 
@@ -18,7 +19,7 @@ const Footer = () => {
           <div className="space-y-4">
             <h3 className="text-xl font-bold text-gradient">Versi Studios</h3>
             <p className="text-muted-foreground leading-relaxed">
-              Crafting digital experiences that convert. Your trusted partner 
+              Crafting digital experiences that convert. Your trusted partner
               for premium Software development and design solutions.
             </p>
             <div className="flex gap-4">
@@ -48,40 +49,40 @@ const Footer = () => {
             <h4 className="font-semibold mb-4">Navigation</h4>
             <ul className="space-y-2">
               <li>
-                <button 
-                  onClick={() => scrollToSection('home')}
+                <button
+                  onClick={() => scrollToSection("home")}
                   className="text-muted-foreground hover:text-foreground transition-colors duration-200"
                 >
                   Home
                 </button>
               </li>
               <li>
-                <button 
-                  onClick={() => scrollToSection('services')}
+                <button
+                  onClick={() => scrollToSection("services")}
                   className="text-muted-foreground hover:text-foreground transition-colors duration-200"
                 >
                   Services
                 </button>
               </li>
               <li>
-                <button 
-                  onClick={() => scrollToSection('work')}
+                <button
+                  onClick={() => scrollToSection("work")}
                   className="text-muted-foreground hover:text-foreground transition-colors duration-200"
                 >
                   Our Work
                 </button>
               </li>
               <li>
-                <button 
-                  onClick={() => scrollToSection('about')}
+                <button
+                  onClick={() => scrollToSection("about")}
                   className="text-muted-foreground hover:text-foreground transition-colors duration-200"
                 >
                   About Us
                 </button>
               </li>
               <li>
-                <button 
-                  onClick={() => scrollToSection('contact')}
+                <button
+                  onClick={() => scrollToSection("contact")}
                   className="text-muted-foreground hover:text-foreground transition-colors duration-200"
                 >
                   Contact
@@ -102,11 +103,38 @@ const Footer = () => {
                 <Phone className="w-4 h-4 text-primary" />
                 <span className="text-sm">+91 93581 01310</span>
               </div>
-              {/* <div className="flex items-center gap-3 text-muted-foreground">
-                <MapPin className="w-4 h-4 text-primary" />
-                <span className="text-sm">Digital City, DC 12345</span>
-              </div> */}
             </div>
+          </div>
+
+          {/* Portals */}
+          <div>
+            <h4 className="font-semibold mb-4">Our Portals</h4>
+            <ul className="space-y-2">
+              <li>
+                <Link
+                  to="/elixortech"
+                  className="text-muted-foreground hover:text-foreground transition-colors duration-200"
+                >
+                  ElixorTech
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/clickcrafters"
+                  className="text-muted-foreground hover:text-foreground transition-colors duration-200"
+                >
+                  ClickCrafters
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/"
+                  className="text-muted-foreground hover:text-foreground transition-colors duration-200"
+                >
+                  ← Back to Home
+                </Link>
+              </li>
+            </ul>
           </div>
         </div>
 
@@ -116,13 +144,22 @@ const Footer = () => {
             © {currentYear} Versi Studios. All rights reserved.
           </p>
           <div className="flex gap-6 text-sm">
-            <a href="#" className="text-muted-foreground hover:text-foreground transition-colors duration-200">
+            <a
+              href="#"
+              className="text-muted-foreground hover:text-foreground transition-colors duration-200"
+            >
               Privacy Policy
             </a>
-            <a href="#" className="text-muted-foreground hover:text-foreground transition-colors duration-200">
+            <a
+              href="#"
+              className="text-muted-foreground hover:text-foreground transition-colors duration-200"
+            >
               Terms of Service
             </a>
-            <a href="#" className="text-muted-foreground hover:text-foreground transition-colors duration-200">
+            <a
+              href="#"
+              className="text-muted-foreground hover:text-foreground transition-colors duration-200"
+            >
               Cookie Policy
             </a>
           </div>

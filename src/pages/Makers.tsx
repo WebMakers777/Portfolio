@@ -11,10 +11,10 @@ import APIConnectivityMap from "@/components/makers/APIConnectivityMap";
 import DeplymentTimeline from "@/components/makers/DeploymentTimeline";
 import AIFlowAutomation from "@/components/makers/AIFlowAutomation";
 
-const Makers = () => {
+const ElixorTech = () => {
   return (
-    <div className="theme-makers relative min-h-screen bg-background text-foreground overflow-hidden">
-      {/* Rain only on Makers */}
+    <div className="theme-elixortech relative min-h-screen bg-background text-foreground overflow-hidden">
+      {/* Rain only on ElixorTech */}
       <div className="pointer-events-none fixed inset-0 z-[4]">
         <RainOverlay density={80} speed={1.0} color="#2472b7" zIndex={4} />
       </div>
@@ -34,4 +34,4 @@ const Makers = () => {
   );
 };
 
-export default Makers;
+export default ElixorTech;

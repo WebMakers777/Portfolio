@@ -12,9 +12,9 @@ export default function CodeToProductHero({ className = "" }) {
       "export default function App(){",
       "  return (",
       "    <Dashboard>",
-      "      <KPI title=\"MRR\" value=\"₹18.2L\" />",
-      "      <Chart type=\"area\" data={revenue} />",
-      "      <Users active={1248} growth=\"+12%\" />",
+      '      <KPI title="MRR" value="₹18.2L" />',
+      '      <Chart type="area" data={revenue} />',
+      '      <Users active={1248} growth="+12%" />',
       "    </Dashboard>",
       "  )",
       "}",
@@ -75,15 +75,17 @@ export default function CodeToProductHero({ className = "" }) {
     phase === "typing" ? rawLines.slice(0, typedCount) : rawLines;
 
   return (
-    <section className={`relative w-full py-24 md:py-32 px-6 md:px-10 ${className}`}>
-      <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-8 items-center">
+    <section
+      className={`relative w-full py-12 sm:py-16 md:py-24 lg:py-32 px-3 sm:px-6 md:px-10 ${className}`}
+    >
+      <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 md:gap-8 lg:gap-12 items-stretch md:items-center">
         {/* Left copy */}
-        <div className="space-y-6">
+        <div className="space-y-4 md:space-y-6">
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
-            className="text-4xl md:text-6xl font-extrabold tracking-tight"
+            className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-extrabold tracking-tight leading-tight"
           >
             We turn <span className="text-emerald-400">code</span> into{" "}
             <span className="text-sky-400">products</span>
@@ -92,31 +94,31 @@ export default function CodeToProductHero({ className = "" }) {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1, duration: 0.6 }}
-            className="text-lg md:text-xl text-neutral-300"
+            className="text-sm sm:text-base md:text-base lg:text-lg xl:text-xl text-neutral-300 leading-relaxed"
           >
-            Custom web & mobile software engineered for scale: React, Next.js, Node,
-            Flutter, AWS.
+            Custom web & mobile software engineered for scale: React, Next.js,
+            Node, Flutter, AWS.
           </motion.p>
 
-          <div className="flex gap-3">
+          <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 pt-2">
             {phase !== "ui" ? (
               <button
                 onClick={run}
-                className="px-5 py-3 rounded-2xl bg-emerald-500 text-black font-semibold shadow-emerald-500/30 shadow-lg hover:translate-y-[-1px] transition"
+                className="px-4 sm:px-5 lg:px-6 py-2.5 sm:py-3 lg:py-3 rounded-2xl bg-emerald-500 text-black font-semibold shadow-emerald-500/30 shadow-lg hover:translate-y-[-1px] transition text-sm sm:text-base lg:text-base"
               >
                 ▶ Run
               </button>
             ) : (
               <button
                 onClick={reset}
-                className="px-5 py-3 rounded-2xl bg-white/10 backdrop-blur border border-white/10 hover:bg-white/15 transition"
+                className="px-4 sm:px-5 lg:px-6 py-2.5 sm:py-3 lg:py-3 rounded-2xl bg-white/10 backdrop-blur border border-white/10 hover:bg-white/15 transition text-sm sm:text-base lg:text-base"
               >
                 Reset
               </button>
             )}
             <a
               href="#work"
-              className="px-5 py-3 rounded-2xl bg-white/10 backdrop-blur border border-white/10 hover:bg-white/15 transition"
+              className="px-4 sm:px-5 lg:px-6 py-2.5 sm:py-3 lg:py-3 rounded-2xl bg-white/10 backdrop-blur border border-white/10 hover:bg-white/15 transition text-sm sm:text-base lg:text-base"
             >
               View work
             </a>
@@ -124,16 +126,22 @@ export default function CodeToProductHero({ className = "" }) {
         </div>
 
         {/* Right: code → build → UI */}
-        <div ref={ref} className="relative">
+        <div
+          ref={ref}
+          className="relative w-full min-h-[200px] sm:min-h-[240px] md:min-h-[320px] lg:min-h-[400px] xl:min-h-[480px]"
+        >
           <motion.div
             style={{ transform }}
-            className="relative rounded-3xl p-5 bg-gradient-to-br from-neutral-900 to-neutral-800 border border-white/10 shadow-2xl"
+            className="relative rounded-lg sm:rounded-2xl md:rounded-3xl p-2 sm:p-3 md:p-4 lg:p-6 bg-gradient-to-br from-neutral-900 to-neutral-800 border border-white/10 shadow-2xl w-full h-full"
           >
             {/* CODE PANEL */}
             <motion.div
-              variants={{ code: { opacity: 1, scale: 1 }, ui: { opacity: 0, scale: 0.98 } }}
+              variants={{
+                code: { opacity: 1, scale: 1 },
+                ui: { opacity: 0, scale: 0.98 },
+              }}
               animate={controls}
-              className="font-mono text-sm md:text-base leading-6 bg-black/40 rounded-2xl p-5 border border-white/10 min-h-[260px]"
+              className="font-mono text-xs sm:text-sm md:text-base lg:text-base xl:text-lg leading-4 sm:leading-5 md:leading-6 lg:leading-7 bg-black/40 rounded-lg md:rounded-2xl p-2.5 sm:p-3 md:p-4 lg:p-5 xl:p-6 border border-white/10 min-h-[200px] sm:min-h-[240px] md:min-h-[320px] lg:min-h-[400px] xl:min-h-[480px] overflow-y-auto"
             >
               {codeToShow.map((l, i) => (
                 <motion.pre
@@ -157,13 +165,13 @@ export default function CodeToProductHero({ className = "" }) {
                 <motion.div
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
-                  className="absolute inset-0 flex items-center justify-center bg-black/60 rounded-2xl"
+                  className="absolute inset-0 flex items-center justify-center bg-black/60 rounded-lg md:rounded-2xl"
                 >
-                  <div className="w-[85%] max-w-md">
-                    <div className="text-center text-neutral-200 mb-3 font-medium font-mono">
+                  <div className="w-[90%] max-w-sm px-3 sm:px-4">
+                    <div className="text-center text-neutral-200 mb-2 sm:mb-3 font-medium font-mono text-xs sm:text-sm">
                       npm run build
                     </div>
-                    <div className="w-full h-2 rounded-full bg-white/10 overflow-hidden">
+                    <div className="w-full h-1.5 sm:h-2 rounded-full bg-white/10 overflow-hidden">
                       <motion.div
                         initial={{ width: "0%" }}
                         animate={{ width: "100%" }}
@@ -171,7 +179,7 @@ export default function CodeToProductHero({ className = "" }) {
                         className="h-full bg-gradient-to-r from-emerald-400 to-sky-400"
                       />
                     </div>
-                    <div className="text-center text-xs text-neutral-400 mt-2 font-mono">
+                    <div className="text-center text-[10px] sm:text-xs text-neutral-400 mt-1.5 sm:mt-2 font-mono">
                       bundling • optimizing • deploying…
                     </div>
                   </div>
@@ -181,24 +189,27 @@ export default function CodeToProductHero({ className = "" }) {
 
             {/* UI PANEL */}
             <motion.div
-              variants={{ code: { opacity: 0, scale: 1.02 }, ui: { opacity: 1, scale: 1 } }}
+              variants={{
+                code: { opacity: 0, scale: 1.02 },
+                ui: { opacity: 1, scale: 1 },
+              }}
               animate={controls}
-              className="absolute inset-0 p-5"
+              className="absolute inset-0 p-3 sm:p-4 md:p-5 lg:p-6"
             >
-              <div className="w-full h-full bg-neutral-900/60 rounded-2xl border border-white/10 p-4 grid grid-rows-[auto_1fr] gap-3">
-                <div className="flex items-center justify-between">
-                  <div className="text-sm text-neutral-400">Dashboard</div>
-                  <div className="flex gap-2">
-                    <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-                    <span className="w-2 h-2 rounded-full bg-sky-400 animate-pulse [animation-delay:200ms]" />
-                    <span className="w-2 h-2 rounded-full bg-violet-400 animate-pulse [animation-delay:400ms]" />
+              <div className="w-full h-full bg-neutral-900/60 rounded-xl md:rounded-2xl border border-white/10 p-2 sm:p-3 md:p-4 lg:p-5 xl:p-6 grid grid-rows-[auto_1fr] gap-2 md:gap-3 lg:gap-4">
+                <div className="flex items-center justify-between text-xs sm:text-sm lg:text-base">
+                  <div className="text-neutral-400">Dashboard</div>
+                  <div className="flex gap-1.5 md:gap-2 lg:gap-3">
+                    <span className="w-1.5 md:w-2 lg:w-2.5 h-1.5 md:h-2 lg:h-2.5 rounded-full bg-emerald-400 animate-pulse" />
+                    <span className="w-1.5 md:w-2 lg:w-2.5 h-1.5 md:h-2 lg:h-2.5 rounded-full bg-sky-400 animate-pulse [animation-delay:200ms]" />
+                    <span className="w-1.5 md:w-2 lg:w-2.5 h-1.5 md:h-2 lg:h-2.5 rounded-full bg-violet-400 animate-pulse [animation-delay:400ms]" />
                   </div>
                 </div>
-                <div className="grid grid-cols-3 gap-3">
+                <div className="grid grid-cols-3 gap-1.5 md:gap-3 lg:gap-4">
                   <StatTile title="MRR" value="₹18.2L" subtitle="+12% MoM" />
                   <StatTile title="Active Users" value="1,248" subtitle="+6%" />
                   <StatTile title="Latency" value="78ms" subtitle="-32%" />
-                  <div className="col-span-3 h-36 rounded-xl bg-gradient-to-tr from-sky-500/20 to-emerald-500/20 border border-white/10 overflow-hidden">
+                  <div className="col-span-3 h-24 sm:h-32 md:h-36 lg:h-48 xl:h-56 rounded-lg md:rounded-xl bg-gradient-to-tr from-sky-500/20 to-emerald-500/20 border border-white/10 overflow-hidden">
                     <AnimatedAreaChart />
                   </div>
                 </div>
@@ -209,7 +220,7 @@ export default function CodeToProductHero({ className = "" }) {
                 <motion.div
                   initial={{ y: -20, opacity: 0 }}
                   animate={{ y: 0, opacity: 1 }}
-                  className="absolute top-4 right-6 px-3 py-2 rounded-xl bg-emerald-500 text-black font-medium shadow-lg"
+                  className="absolute top-2 sm:top-3 md:top-4 lg:top-8 right-3 sm:right-4 md:right-6 lg:right-8 px-2 sm:px-3 lg:px-4 py-1.5 sm:py-2 lg:py-2.5 rounded-lg md:rounded-xl bg-emerald-500 text-black font-medium text-xs sm:text-sm lg:text-base shadow-lg"
                 >
                   ✅ Deployed!
                 </motion.div>
@@ -223,7 +234,9 @@ export default function CodeToProductHero({ className = "" }) {
 }
 
 function AnimatedAreaChart() {
-  const bars = new Array(26).fill(0).map((_, i) => Math.sin(i / 3) * 22 + 28 + (i % 3) * 6);
+  const bars = new Array(26)
+    .fill(0)
+    .map((_, i) => Math.sin(i / 3) * 22 + 28 + (i % 3) * 6);
   return (
     <div className="flex items-end h-full px-4 gap-1">
       {bars.map((h, i) => (

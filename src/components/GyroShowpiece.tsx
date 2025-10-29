@@ -104,27 +104,50 @@ export default function GyroShowpiece() {
   const wrapperRef = useRef(null);
   const [mouseTilt, setMouseTilt] = useState({ rx: 0, ry: 0 });
   const [useMouse, setUseMouse] = useState(false);
+  const throttleRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
     const el = wrapperRef.current;
     if (!el) return;
-    const onMove = (e) => {
-      const rect = el.getBoundingClientRect();
-      const x = (e.clientX - rect.left) / rect.width;
-      const y = (e.clientY - rect.top) / rect.height;
-      const ry = (x - 0.5) * 24;
-      const rx = -(y - 0.5) * 20;
-      setMouseTilt({ rx, ry });
+    
+    const onMove = (e: MouseEvent) => {
+      // Throttle updates to 16ms (~60fps) for smooth performance
+      if (throttleRef.current) return;
+      
+      throttleRef.current = setTimeout(() => {
+        throttleRef.current = null;
+      }, 16);
+      
+      requestAnimationFrame(() => {
+        const rect = el.getBoundingClientRect();
+        const x = (e.clientX - rect.left) / rect.width;
+        const y = (e.clientY - rect.top) / rect.height;
+        const ry = (x - 0.5) * 24;
+        const rx = -(y - 0.5) * 20;
+        setMouseTilt({ rx, ry });
+      });
     };
+    
     const onEnter = () => setUseMouse(true);
-    const onLeave = () => setUseMouse(false);
+    const onLeave = () => {
+      setUseMouse(false);
+      if (throttleRef.current) {
+        clearTimeout(throttleRef.current);
+        throttleRef.current = null;
+      }
+    };
+    
     el.addEventListener("mousemove", onMove);
     el.addEventListener("mouseenter", onEnter);
     el.addEventListener("mouseleave", onLeave);
+    
     return () => {
       el.removeEventListener("mousemove", onMove);
       el.removeEventListener("mouseenter", onEnter);
       el.removeEventListener("mouseleave", onLeave);
+      if (throttleRef.current) {
+        clearTimeout(throttleRef.current);
+      }
     };
   }, []);
 
@@ -157,11 +180,12 @@ export default function GyroShowpiece() {
           {/* ... The rest of the JSX for the parallax stage ... */}
             <video
               src="https://kcoykkkdrahdcdhf.public.blob.vercel-storage.com/gyro_4k.mp4"
-              poster="/assets/demos/poster-02.jpg"
+              poster="/placeholder.svg"
               muted
               loop
               playsInline
               autoPlay
+              preload="metadata"
               className="h-full w-full object-cover"
             />
           {/* ... other layers ... */}

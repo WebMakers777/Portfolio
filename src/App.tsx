@@ -17,7 +17,6 @@ const queryClient = new QueryClient();
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
-
       <Toaster />
       <Sonner />
 
@@ -26,11 +25,11 @@ const App = () => (
           {/* New landing with two blocks */}
           <Route path="/" element={<Gateway />} />
 
-          {/* Makers = your existing interface (was "/") */}
-          <Route path="/makers" element={<Index />} />
+          {/* ElixorTech = your existing interface (was "/") */}
+          <Route path="/elixortech" element={<Index />} />
 
-          {/* Builders = new interface */}
-          <Route path="/builders" element={<Builders />} />
+          {/* ClickCrafters = new interface */}
+          <Route path="/clickcrafters" element={<Builders />} />
 
           {/* Catch-all */}
           <Route path="*" element={<NotFound />} />
