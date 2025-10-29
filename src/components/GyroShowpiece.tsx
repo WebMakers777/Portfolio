@@ -6,11 +6,11 @@ import React, { useEffect, useRef, useState } from "react";
 // Note: You need to make your Section and Title components available here.
 // The easiest way is to export them from BuildersAdvanced.js and import them here.
 // Or move them to a shared utility file.
-// import { Section, Title } from "./Builders/BuildersAdvanced"; 
+// import { Section, Title } from "./Builders/BuildersAdvanced";
 
 /***************************
- * Gyro Tilt Hook
- ***************************/
+ * Gyro Tilt Hook
+ ***************************/
 const Section = ({
   id,
   children,
@@ -95,7 +95,6 @@ function useGyroTilt() {
   return tilt;
 }
 
-
 /***************************
  * Gyro Parallax Showpiece Component
  ***************************/
@@ -109,15 +108,15 @@ export default function GyroShowpiece() {
   useEffect(() => {
     const el = wrapperRef.current;
     if (!el) return;
-    
+
     const onMove = (e: MouseEvent) => {
       // Throttle updates to 16ms (~60fps) for smooth performance
       if (throttleRef.current) return;
-      
+
       throttleRef.current = setTimeout(() => {
         throttleRef.current = null;
       }, 16);
-      
+
       requestAnimationFrame(() => {
         const rect = el.getBoundingClientRect();
         const x = (e.clientX - rect.left) / rect.width;
@@ -127,7 +126,7 @@ export default function GyroShowpiece() {
         setMouseTilt({ rx, ry });
       });
     };
-    
+
     const onEnter = () => setUseMouse(true);
     const onLeave = () => {
       setUseMouse(false);
@@ -136,11 +135,11 @@ export default function GyroShowpiece() {
         throttleRef.current = null;
       }
     };
-    
+
     el.addEventListener("mousemove", onMove);
     el.addEventListener("mouseenter", onEnter);
     el.addEventListener("mouseleave", onLeave);
-    
+
     return () => {
       el.removeEventListener("mousemove", onMove);
       el.removeEventListener("mouseenter", onEnter);
@@ -174,20 +173,22 @@ export default function GyroShowpiece() {
           className="relative w-full max-w-3xl aspect-[16/9] rounded-2xl overflow-hidden transform-gpu will-change-transform"
           style={{
             transform: `rotateX(${aRx}deg) rotateY(${aRy}deg)`,
-            transition: useMouse ? "transform 80ms linear" : "transform 180ms ease-out",
+            transition: useMouse
+              ? "transform 80ms linear"
+              : "transform 180ms ease-out",
           }}
         >
           {/* ... The rest of the JSX for the parallax stage ... */}
-            <video
-              src="https://kcoykkkdrahdcdhf.public.blob.vercel-storage.com/gyro_4k.mp4"
-              poster="/placeholder.svg"
-              muted
-              loop
-              playsInline
-              autoPlay
-              preload="metadata"
-              className="h-full w-full object-cover"
-            />
+          <video
+            src="https://kcoykkkdrahdcdhf.public.blob.vercel-storage.com/gyro_4k.mp4"
+            poster="/placeholder.svg"
+            muted
+            loop
+            playsInline
+            autoPlay
+            preload="metadata"
+            className="h-full w-full object-cover"
+          />
           {/* ... other layers ... */}
         </div>
         <p className="mt-4 text-xs text-foreground/60">
