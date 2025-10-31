@@ -43,7 +43,7 @@ export default function Gateway() {
           className="text-xs tracking-widest text-white/60 uppercase mb-2"
           variants={itemVariants}
         >
-          Versi Studios
+          vincie Studios
         </motion.p>
         <motion.h1
           className="text-4xl md:text-5xl lg:text-6xl font-semibold leading-tight"
@@ -113,7 +113,7 @@ export default function Gateway() {
         >
           Why Choose{" "}
           <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 to-fuchsia-300">
-            Versi Studios?
+            vincie Studios?
           </span>
         </motion.h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -268,7 +268,7 @@ export default function Gateway() {
         animate={{ opacity: 1 }}
         transition={{ delay: 1 }}
       >
-        © {new Date().getFullYear()} Versi Studios — ElixorTech & ClickCrafters
+        © {new Date().getFullYear()} vincie Studios — ElixorTech & ClickCrafters
       </motion.footer>
     </main>
   );
