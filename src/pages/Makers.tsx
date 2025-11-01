@@ -10,8 +10,10 @@ import CodeToProductHero from "@/components/makers/CodeToProductHero";
 import APIConnectivityMap from "@/components/makers/APIConnectivityMap";
 import DeplymentTimeline from "@/components/makers/DeploymentTimeline";
 import AIFlowAutomation from "@/components/makers/AIFlowAutomation";
+import { useEffect } from "react";
 
 const ElixorTech = () => {
+
   return (
     <div className="theme-elixortech relative min-h-screen bg-background text-foreground overflow-hidden">
       {/* Rain only on ElixorTech */}

@@ -17,7 +17,7 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {/* Brand Section */}
           <div className="space-y-4">
-            <h3 className="text-xl font-bold text-gradient">Versi Studios</h3>
+            <h3 className="text-xl font-bold text-gradient">vincie Studios</h3>
             <p className="text-muted-foreground leading-relaxed">
               Crafting digital experiences that convert. Your trusted partner
               for premium Software development and design solutions.
@@ -141,7 +141,7 @@ const Footer = () => {
         {/* Bottom Section */}
         <div className="border-t border-border mt-12 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-muted-foreground text-sm">
-            © {currentYear} Versi Studios. All rights reserved.
+            © {currentYear} vincie Studios. All rights reserved.
           </p>
           <div className="flex gap-6 text-sm">
             <a

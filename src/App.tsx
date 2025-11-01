@@ -11,6 +11,7 @@ import NotFound from "./pages/NotFound";
 // 🆕 add these imports
 import Gateway from "./pages/gateway";
 import Builders from "./pages/builders";
+import ScrollToTop from "./components/ScrollToTop";
 
 const queryClient = new QueryClient();
 
@@ -19,8 +20,8 @@ const App = () => (
     <TooltipProvider>
       <Toaster />
       <Sonner />
-
       <BrowserRouter>
+      <ScrollToTop />
         <Routes>
           {/* New landing with two blocks */}
           <Route path="/" element={<Gateway />} />

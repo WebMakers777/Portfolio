@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Menu, X } from "lucide-react";
 import { Link } from "react-router-dom";
-import logo from "../assets/2-removebg-preview.png";
+import logo from "../assets/elixor.png";
 
 const Navigation = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -37,7 +37,7 @@ const Navigation = () => {
           {/* Logo */}
           <div className="flex items-center space-x-2">
             <Link
-              to="/"
+              to="/elixortech"
               className="flex items-center space-x-2 hover:opacity-80 transition"
             >
               <img src={logo} alt="ElixorTech Logo" className="h-14 w-18" />

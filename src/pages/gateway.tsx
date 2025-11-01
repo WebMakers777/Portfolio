@@ -1,6 +1,16 @@
-// src/pages/Gateway.tsx
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
+import { useState } from "react";
+import {
+  Mail,
+  Phone,
+  MapPin,
+  Send,
+  Github,
+  Linkedin,
+  Twitter,
+} from "lucide-react";
+import { useToast } from "@/hooks/use-toast"; // Assuming this path is correct for your project
 
 export default function Gateway() {
   const containerVariants = {
@@ -43,7 +53,7 @@ export default function Gateway() {
           className="text-xs tracking-widest text-white/60 uppercase mb-2"
           variants={itemVariants}
         >
-          vincie Studios
+          Vincie Studios
         </motion.p>
         <motion.h1
           className="text-4xl md:text-5xl lg:text-6xl font-semibold leading-tight"
@@ -113,7 +123,7 @@ export default function Gateway() {
         >
           Why Choose{" "}
           <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 to-fuchsia-300">
-            vincie Studios?
+            Vincie Studios?
           </span>
         </motion.h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -262,14 +272,261 @@ export default function Gateway() {
           </motion.div>
         </div>
       </motion.section>
+
+      {/* ---------- NEW: Contact Section ---------- */}
+      <ContactSection />
+
+      {/* ---------- Footer ---------- */}
       <motion.footer
         className="relative z-10 pb-10 text-center text-white/50 text-xs"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 1 }}
       >
-        © {new Date().getFullYear()} vincie Studios — ElixorTech & ClickCrafters
+        © {new Date().getFullYear()} Vincie Studios — ElixorTech & ClickCrafters
       </motion.footer>
     </main>
   );
 }
+
+// ==================================================================
+// ================== NEW CONTACT COMPONENT =========================
+// ==================================================================
+
+const ContactSection = () => {
+  const { toast } = useToast();
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    message: "",
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.2,
+        delayChildren: 0.1,
+      },
+    },
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.8,
+      },
+    },
+  };
+
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+
+    // Simulate form submission
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+
+    toast({
+      title: "Message sent successfully!",
+      description: "We'll get back to you within 24 hours.",
+    });
+
+    setFormData({ name: "", email: "", message: "" });
+    setIsSubmitting(false);
+  };
+
+  return (
+    <motion.section
+      id="contact"
+      className="relative z-10 mx-auto max-w-6xl px-6 py-20 lg:py-32"
+      variants={containerVariants}
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, margin: "-100px" }}
+    >
+      {/* Section Header */}
+      <motion.div className="text-center mb-16" variants={itemVariants}>
+        <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-6">
+          Get In{" "}
+          <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 to-fuchsia-300">
+            Touch
+          </span>
+        </h2>
+        <p className="text-lg lg:text-xl text-white/70 max-w-3xl mx-auto">
+          Ready to start your project? We'd love to hear from you. Send us a
+          message and we'll respond as soon as possible.
+        </p>
+      </motion.div>
+
+      <motion.div
+        className="grid grid-cols-1 lg:grid-cols-2 gap-12"
+        variants={containerVariants}
+      >
+        {/* Contact Info */}
+        <motion.div className="space-y-8" variants={itemVariants}>
+          <div>
+            <h3 className="text-2xl font-bold mb-6">Let's Start a Conversation</h3>
+            <p className="text-white/70 mb-8 leading-relaxed">
+              Whether you have a project in mind, need a consultation, or just
+              want to say hello, we're here to help. Our team is ready to bring
+              your digital vision to life.
+            </p>
+          </div>
+
+          {/* Contact Details */}
+          <div className="space-y-4">
+            <div className="flex items-center gap-4">
+              <div className="w-10 h-10 bg-cyan-400/15 rounded-lg flex items-center justify-center border border-cyan-400/20">
+                <Mail className="w-5 h-5 text-cyan-300" />
+              </div>
+              <div>
+                <p className="font-medium">Email Us</p>
+                <p className="text-white/70">vinciestudios@gmail.com</p>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-4">
+              <div className="w-10 h-10 bg-cyan-400/15 rounded-lg flex items-center justify-center border border-cyan-400/20">
+                <Phone className="w-5 h-5 text-cyan-300" />
+              </div>
+              <div>
+                <p className="font-medium">Call Us</p>
+                <p className="text-white/70">+91 93581 01310, +91 62049 58883</p>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-4">
+              <div className="w-10 h-10 bg-cyan-400/15 rounded-lg flex items-center justify-center border border-cyan-400/20">
+                <MapPin className="w-5 h-5 text-cyan-300" />
+              </div>
+              <div>
+                <p className="font-medium">Visit Us</p>
+                <p className="text-white/70">Jaipur, Rajasthan, 302031</p>
+              </div>
+            </div>
+          </div>
+
+          {/* Social Links */}
+          <div>
+            <p className="font-medium mb-4">Follow Us</p>
+            <div className="flex gap-4">
+              <a
+                href="#"
+                className="w-10 h-10 bg-white/[0.02] border border-white/10 rounded-lg flex items-center justify-center hover:bg-white/[0.05] hover:text-cyan-300 transition-colors duration-300"
+              >
+                <Github className="w-5 h-5" />
+              </a>
+              <a
+                href="#"
+                className="w-10 h-10 bg-white/[0.02] border border-white/10 rounded-lg flex items-center justify-center hover:bg-white/[0.05] hover:text-cyan-300 transition-colors duration-300"
+              >
+                <Linkedin className="w-5 h-5" />
+              </a>
+              <a
+                href="#"
+                className="w-10 h-10 bg-white/[0.02] border border-white/10 rounded-lg flex items-center justify-center hover:bg-white/[0.05] hover:text-cyan-300 transition-colors duration-300"
+              >
+                <Twitter className="w-5 h-5" />
+              </a>
+            </div>
+          </div>
+        </motion.div>
+
+        {/* Contact Form */}
+        <motion.div
+          className="rounded-2xl border border-white/10 bg-white/[0.04] p-8"
+          variants={itemVariants}
+        >
+          <form onSubmit={handleSubmit} className="space-y-6">
+            <div>
+              <label
+                htmlFor="name"
+                className="block text-sm font-medium mb-2 text-white/80"
+              >
+                Your Name
+              </label>
+              <input
+                type="text"
+                id="name"
+                name="name"
+                value={formData.name}
+                onChange={handleInputChange}
+                required
+                className="w-full px-4 py-3 bg-white/[0.05] border border-white/10 rounded-lg text-white placeholder:text-white/40 focus:outline-none focus:ring-2 focus:ring-cyan-300 focus:border-transparent transition-all duration-200"
+                placeholder="Enter your full name"
+              />
+            </div>
+
+            <div>
+              <label
+                htmlFor="email"
+                className="block text-sm font-medium mb-2 text-white/80"
+              >
+                Email Address
+              </label>
+              <input
+                type="email"
+                id="email"
+                name="email"
+                value={formData.email}
+                onChange={handleInputChange}
+                required
+                className="w-full px-4 py-3 bg-white/[0.05] border border-white/10 rounded-lg text-white placeholder:text-white/40 focus:outline-none focus:ring-2 focus:ring-cyan-300 focus:border-transparent transition-all duration-200"
+                placeholder="Enter your email address"
+              />
+            </div>
+
+            <div>
+              <label
+                htmlFor="message"
+                className="block text-sm font-medium mb-2 text-white/80"
+              >
+                Project Details
+              </label>
+              <textarea
+                id="message"
+                name="message"
+                value={formData.message}
+                onChange={handleInputChange}
+                required
+                rows={5}
+                className="w-full px-4 py-3 bg-white/[0.05] border border-white/10 rounded-lg text-white placeholder:text-white/40 focus:outline-none focus:ring-2 focus:ring-cyan-300 focus:border-transparent transition-all duration-200 resize-none"
+                placeholder="Tell us about your project, timeline, and budget..."
+              />
+            </div>
+
+            <button
+              type="submit"
+              disabled={isSubmitting}
+              className="w-full inline-flex items-center justify-center gap-2 rounded-lg bg-gradient-to-r from-cyan-400 via-fuchsia-500 to-purple-600 py-3 px-6 text-white font-semibold transition hover:opacity-90 disabled:opacity-50 group"
+            >
+              {isSubmitting ? (
+                "Sending..."
+              ) : (
+                <>
+                  Send Message
+                  <Send className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                </>
+              )}
+            </button>
+          </form>
+        </motion.div>
+      </motion.div>
+    </motion.section>
+  );
+};
