@@ -406,7 +406,7 @@ const ContactSection = () => {
               </div>
               <div>
                 <p className="font-medium">Call Us</p>
-                <p className="text-white/70">+91 93581 01310, +91 62049 58883</p>
+                <p className="text-white/70">+91 73750 38069</p>
               </div>
             </div>
 
