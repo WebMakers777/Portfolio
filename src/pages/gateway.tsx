@@ -9,8 +9,11 @@ import {
   Github,
   Linkedin,
   Twitter,
+  MessageSquare,
+  Instagram,
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast"; // Assuming this path is correct for your project
+import WhatsAppFloat from "@/components/WhatsappFloat";
 
 export default function Gateway() {
   const containerVariants = {
@@ -49,6 +52,16 @@ export default function Gateway() {
         initial="hidden"
         animate="visible"
       >
+        <motion.img
+          src="/vinciestudio.png"
+          alt="Vincie Studios Logo"
+          className="h-16 w-auto mx-auto mb-4" // Adjust h-12 (48px) to your liking
+          variants={itemVariants}
+        />
+        {/* ---
+        Note: You have both a logo and the text "Vincie Studios" right below it.
+        You might want to remove this <motion.p> tag to avoid redundancy.
+        --- */}
         <motion.p
           className="text-xs tracking-widest text-white/60 uppercase mb-2"
           variants={itemVariants}
@@ -161,6 +174,97 @@ export default function Gateway() {
               Every project backed by strategy, analytics, and proven success
               metrics.
             </p>
+          </motion.div>
+        </div>
+      </motion.section>
+
+      {/* ---------- NEW: What We Do Section ---------- */}
+      <motion.section
+        className="relative z-10 mx-auto max-w-6xl px-6 py-16"
+        variants={containerVariants}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: "-100px" }}
+      >
+        <motion.h2
+          className="text-3xl md:text-4xl font-semibold text-center"
+          variants={itemVariants}
+        >
+          What We Do
+        </motion.h2>
+        <motion.p
+          className="mt-4 text-white/70 max-w-2xl mx-auto text-center text-base md:text-lg leading-relaxed"
+          variants={itemVariants}
+        >
+          We offer a unified approach to building world-class digital products
+          and growing the brands that power them.
+        </motion.p>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-12">
+          {/* Card 1: Product & Engineering */}
+          <motion.div
+            className="p-6 md:p-8 rounded-xl border border-white/10 bg-white/[0.02]"
+            variants={itemVariants}
+          >
+            <div className="text-3xl mb-4">💻</div>
+            <h3 className="font-semibold mb-3 text-xl text-cyan-300">
+              Product & Engineering
+            </h3>
+            <p className="text-white/70 text-sm mb-5">
+              We build high-performance, scalable web and mobile applications.
+              From custom software and UI/UX design to AI-powered automations,
+              we turn your ideas into enterprise-grade products.
+            </p>
+            <div className="flex flex-wrap gap-2">
+              <span className="text-xs px-2 py-1 rounded-full bg-cyan-400/15 text-cyan-200">
+                React / Next.js
+              </span>
+              <span className="text-xs px-2 py-1 rounded-full bg-cyan-400/15 text-cyan-200">
+                Node.js / Python
+              </span>
+              <span className="text-xs px-2 py-1 rounded-full bg-cyan-400/15 text-cyan-200">
+                UI/UX Design
+              </span>
+              <span className="text-xs px-2 py-1 rounded-full bg-cyan-400/15 text-cyan-200">
+                Flutter / React Native
+              </span>
+              <span className="text-xs px-2 py-1 rounded-full bg-cyan-400/15 text-cyan-200">
+                AI & Automation
+              </span>
+            </div>
+          </motion.div>
+
+          {/* Card 2: Brand & Marketing */}
+          <motion.div
+            className="p-6 md:p-8 rounded-xl border border-white/10 bg-white/[0.02]"
+            variants={itemVariants}
+          >
+            <div className="text-3xl mb-4">📈</div>
+            <h3 className="font-semibold mb-3 text-xl text-fuchsia-300">
+              Brand & Marketing
+            </h3>
+            <p className="text-white/70 text-sm mb-5">
+              We build scroll-stopping brands. Our team creates
+              performance-driven digital marketing campaigns, studio-quality
+              social content, and paid ad strategies that convert.
+            </p>
+            <div className="flex flex-wrap gap-2">
+              <span className="text-xs px-2 py-1 rounded-full bg-fuchsia-500/15 text-fuchsia-200">
+                Social Media Mgmt
+              </span>
+              <span className="text-xs px-2 py-1 rounded-full bg-fuchsia-500/15 text-fuchsia-200">
+                Content Studio (Reels)
+              </span>
+              <span className="text-xs px-2 py-1 rounded-full bg-fuchsia-500/15 text-fuchsia-200">
+                Paid Ads (Meta/Google)
+              </span>
+              <span className="text-xs px-2 py-1 rounded-full bg-fuchsia-500/15 text-fuchsia-200">
+                Influencer & UGC
+              </span>
+              <span className="text-xs px-2 py-1 rounded-full bg-fuchsia-500/15 text-fuchsia-200">
+                Brand Strategy
+              </span>
+            </div>
           </motion.div>
         </div>
       </motion.section>
@@ -285,6 +389,7 @@ export default function Gateway() {
       >
         © {new Date().getFullYear()} Vincie Studios — ElixorTech & ClickCrafters
       </motion.footer>
+      <WhatsAppFloat />
     </main>
   );
 }
@@ -380,7 +485,9 @@ const ContactSection = () => {
         {/* Contact Info */}
         <motion.div className="space-y-8" variants={itemVariants}>
           <div>
-            <h3 className="text-2xl font-bold mb-6">Let's Start a Conversation</h3>
+            <h3 className="text-2xl font-bold mb-6">
+              Let's Start a Conversation
+            </h3>
             <p className="text-white/70 mb-8 leading-relaxed">
               Whether you have a project in mind, need a consultation, or just
               want to say hello, we're here to help. Our team is ready to bring
@@ -424,26 +531,41 @@ const ContactSection = () => {
           {/* Social Links */}
           <div>
             <p className="font-medium mb-4">Follow Us</p>
+            {/* Social Links */}
+          <div>
+            <p className="font-medium mb-4">Follow Us</p>
             <div className="flex gap-4">
+              {/* --- Instagram --- */}
               <a
-                href="#"
+                href="https://www.instagram.com/studiovincie/" // <-- Add your link
+                target="_blank"
+                rel="noopener noreferrer"
                 className="w-10 h-10 bg-white/[0.02] border border-white/10 rounded-lg flex items-center justify-center hover:bg-white/[0.05] hover:text-cyan-300 transition-colors duration-300"
               >
-                <Github className="w-5 h-5" />
+                <Instagram className="w-5 h-5" />
               </a>
+              
+              {/* --- LinkedIn --- */}
               <a
-                href="#"
+                href="https://www.linkedin.com/in/vincie-studios-034378398/" // <-- Add your link
+                target="_blank"
+                rel="noopener noreferrer"
                 className="w-10 h-10 bg-white/[0.02] border border-white/10 rounded-lg flex items-center justify-center hover:bg-white/[0.05] hover:text-cyan-300 transition-colors duration-300"
               >
                 <Linkedin className="w-5 h-5" />
               </a>
+
+              {/* --- WhatsApp --- */}
               <a
-                href="#"
+                href="https://wa.me/7375038069" // <-- Add your WhatsApp link (e.g., 917375038069)
+                target="_blank"
+                rel="noopener noreferrer"
                 className="w-10 h-10 bg-white/[0.02] border border-white/10 rounded-lg flex items-center justify-center hover:bg-white/[0.05] hover:text-cyan-300 transition-colors duration-300"
               >
-                <Twitter className="w-5 h-5" />
+                <MessageSquare className="w-5 h-5" />
               </a>
             </div>
+          </div>
           </div>
         </motion.div>
 
@@ -486,7 +608,7 @@ const ContactSection = () => {
                 value={formData.email}
                 onChange={handleInputChange}
                 required
-                className="w-full px-4 py-3 bg-white/[0.05] border border-white/10 rounded-lg text-white placeholder:text-white/40 focus:outline-none focus:ring-2 focus:ring-cyan-300 focus:border-transparent transition-all duration-200"
+                className="w-full px-4 py-3 bg-white/[0.Lg 05] border border-white/10 rounded-lg text-white placeholder:text-white/40 focus:outline-none focus:ring-2 focus:ring-cyan-300 focus:border-transparent transition-all duration-200"
                 placeholder="Enter your email address"
               />
             </div>
@@ -527,6 +649,7 @@ const ContactSection = () => {
           </form>
         </motion.div>
       </motion.div>
+
     </motion.section>
   );
 };
