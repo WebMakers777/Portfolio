@@ -530,8 +530,7 @@ const ContactSection = () => {
 
           {/* Social Links */}
           <div>
-            <p className="font-medium mb-4">Follow Us</p>
-            {/* Social Links */}
+
           <div>
             <p className="font-medium mb-4">Follow Us</p>
             <div className="flex gap-4">
@@ -608,7 +607,7 @@ const ContactSection = () => {
                 value={formData.email}
                 onChange={handleInputChange}
                 required
-                className="w-full px-4 py-3 bg-white/[0.Lg 05] border border-white/10 rounded-lg text-white placeholder:text-white/40 focus:outline-none focus:ring-2 focus:ring-cyan-300 focus:border-transparent transition-all duration-200"
+                className= "w-full px-4 py-3 bg-white/[0.05] border border-white/10 rounded-lg text-white placeholder:text-white/40 focus:outline-none focus:ring-2 focus:ring-cyan-300 focus:border-transparent transition-all duration-200"
                 placeholder="Enter your email address"
               />
             </div>
