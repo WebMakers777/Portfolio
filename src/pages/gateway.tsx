@@ -503,7 +503,12 @@ const ContactSection = () => {
               </div>
               <div>
                 <p className="font-medium">Email Us</p>
-                <p className="text-white/70">vinciestudios@gmail.com</p>
+                <a
+                  href="mailto:vinciestudios@gmail.com"
+                  className="text-white/70"
+                >
+                  vinciestudios@gmail.com
+                </a>
               </div>
             </div>
 
@@ -513,7 +518,12 @@ const ContactSection = () => {
               </div>
               <div>
                 <p className="font-medium">Call Us</p>
-                <p className="text-white/70">+91 73750 38069</p>
+                <a
+                  href="tel:+917375038069"
+                  className="text-white/70 hover:text-white transition"
+                >
+                  +91 73750 38069
+                </a>
               </div>
             </div>
 
@@ -530,41 +540,40 @@ const ContactSection = () => {
 
           {/* Social Links */}
           <div>
+            <div>
+              <p className="font-medium mb-4">Follow Us</p>
+              <div className="flex gap-4">
+                {/* --- Instagram --- */}
+                <a
+                  href="https://www.instagram.com/studiovincie/" // <-- Add your link
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-10 h-10 bg-white/[0.02] border border-white/10 rounded-lg flex items-center justify-center hover:bg-white/[0.05] hover:text-cyan-300 transition-colors duration-300"
+                >
+                  <Instagram className="w-5 h-5" />
+                </a>
 
-          <div>
-            <p className="font-medium mb-4">Follow Us</p>
-            <div className="flex gap-4">
-              {/* --- Instagram --- */}
-              <a
-                href="https://www.instagram.com/studiovincie/" // <-- Add your link
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-10 h-10 bg-white/[0.02] border border-white/10 rounded-lg flex items-center justify-center hover:bg-white/[0.05] hover:text-cyan-300 transition-colors duration-300"
-              >
-                <Instagram className="w-5 h-5" />
-              </a>
-              
-              {/* --- LinkedIn --- */}
-              <a
-                href="https://www.linkedin.com/in/vincie-studios-034378398/" // <-- Add your link
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-10 h-10 bg-white/[0.02] border border-white/10 rounded-lg flex items-center justify-center hover:bg-white/[0.05] hover:text-cyan-300 transition-colors duration-300"
-              >
-                <Linkedin className="w-5 h-5" />
-              </a>
+                {/* --- LinkedIn --- */}
+                <a
+                  href="https://www.linkedin.com/in/vincie-studios-034378398/" // <-- Add your link
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-10 h-10 bg-white/[0.02] border border-white/10 rounded-lg flex items-center justify-center hover:bg-white/[0.05] hover:text-cyan-300 transition-colors duration-300"
+                >
+                  <Linkedin className="w-5 h-5" />
+                </a>
 
-              {/* --- WhatsApp --- */}
-              <a
-                href="https://wa.me/7375038069" // <-- Add your WhatsApp link (e.g., 917375038069)
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-10 h-10 bg-white/[0.02] border border-white/10 rounded-lg flex items-center justify-center hover:bg-white/[0.05] hover:text-cyan-300 transition-colors duration-300"
-              >
-                <MessageSquare className="w-5 h-5" />
-              </a>
+                {/* --- WhatsApp --- */}
+                <a
+                  href="https://wa.me/7375038069" // <-- Add your WhatsApp link (e.g., 917375038069)
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-10 h-10 bg-white/[0.02] border border-white/10 rounded-lg flex items-center justify-center hover:bg-white/[0.05] hover:text-cyan-300 transition-colors duration-300"
+                >
+                  <MessageSquare className="w-5 h-5" />
+                </a>
+              </div>
             </div>
-          </div>
           </div>
         </motion.div>
 
@@ -607,7 +616,7 @@ const ContactSection = () => {
                 value={formData.email}
                 onChange={handleInputChange}
                 required
-                className= "w-full px-4 py-3 bg-white/[0.05] border border-white/10 rounded-lg text-white placeholder:text-white/40 focus:outline-none focus:ring-2 focus:ring-cyan-300 focus:border-transparent transition-all duration-200"
+                className="w-full px-4 py-3 bg-white/[0.05] border border-white/10 rounded-lg text-white placeholder:text-white/40 focus:outline-none focus:ring-2 focus:ring-cyan-300 focus:border-transparent transition-all duration-200"
                 placeholder="Enter your email address"
               />
             </div>
@@ -648,7 +657,6 @@ const ContactSection = () => {
           </form>
         </motion.div>
       </motion.div>
-
     </motion.section>
   );
 };
