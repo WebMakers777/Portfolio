@@ -11,6 +11,8 @@ import NotFound from "./pages/NotFound";
 // 🆕 add these imports
 import Gateway from "./pages/gateway";
 import Builders from "./pages/builders";
+import Blog from "./pages/blog";
+import BlogPost from "./pages/BlogPost";
 import ScrollToTop from "./components/ScrollToTop";
 
 const queryClient = new QueryClient();
@@ -21,7 +23,7 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
-      <ScrollToTop />
+        <ScrollToTop />
         <Routes>
           {/* New landing with two blocks */}
           <Route path="/" element={<Gateway />} />
@@ -31,6 +33,10 @@ const App = () => (
 
           {/* ClickCrafters = new interface */}
           <Route path="/clickcrafters" element={<Builders />} />
+
+          {/* Blog routes */}
+          <Route path="/blog" element={<Blog />} />
+          <Route path="/blog/:slug" element={<BlogPost />} />
 
           {/* Catch-all */}
           <Route path="*" element={<NotFound />} />
