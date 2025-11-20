@@ -33,20 +33,7 @@ export default function Blog() {
   const API_BASE =
     (import.meta as any).env?.VITE_API_BASE ??
     (import.meta as any).env?.VITE_BASE_URL ??
-    "";
-
-  useEffect(() => {
-    try {
-      // eslint-disable-next-line no-console
-      console.debug("VITE env:", {
-        VITE_API_BASE: (import.meta as any).env?.VITE_API_BASE,
-        VITE_BASE_URL: (import.meta as any).env?.VITE_BASE_URL,
-        resolved_API_BASE: API_BASE,
-      });
-    } catch (e) {}
-
-    fetchPosts(currentPage);
-  }, [currentPage]);
+    "https://admin-panel-portofolio.onrender.com";
 
   const fetchPosts = async (page: number) => {
     try {
