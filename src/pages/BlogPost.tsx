@@ -39,9 +39,8 @@ export default function BlogPost() {
         import.meta.env.VITE_API_BASE ||
         "https://admin-panel-portofolio.onrender.com";
       if (!slugParam) throw new Error("Invalid post slug");
-      const response = await fetch(
-        `${API_BASE}/api/posts/slug/${encodeURIComponent(slugParam)}`
-      );
+      const url = `${API_BASE}/api/posts/slug/${encodeURIComponent(slugParam)}`;
+      const response = await fetch(url);
       if (!response.ok) throw new Error("Post not found");
       const data = await response.json();
       let payload: any = null;

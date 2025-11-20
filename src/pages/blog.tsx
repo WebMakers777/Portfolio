@@ -32,8 +32,12 @@ export default function Blog() {
   const [totalPosts, setTotalPosts] = useState(0);
   const API_BASE =
     (import.meta as any).env?.VITE_API_BASE ??
-    (import.meta as any).env?.VITE_BASE_URL ??
     "https://admin-panel-portofolio.onrender.com";
+
+  useEffect(() => {
+    fetchPosts(currentPage);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentPage]);
 
   const fetchPosts = async (page: number) => {
     try {
