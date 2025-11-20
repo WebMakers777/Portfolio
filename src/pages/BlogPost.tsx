@@ -20,22 +20,25 @@ interface BlogPostDetail {
 }
 
 export default function BlogPost() {
-  const { slug } = useParams<{ slug: string }>();
+  const params = useParams();
+  const slugParam = (params as any).postSlug || (params as any).slug;
   const navigate = useNavigate();
   const [post, setPost] = useState<BlogPostDetail | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    if (!slug) return;
+    if (!slugParam) return;
     fetchPost();
-  }, [slug]);
+  }, [slugParam]);
 
   const fetchPost = async () => {
     try {
       setLoading(true);
+      const API_BASE = (import.meta as any).env?.VITE_API_BASE || "";
+      if (!slugParam) throw new Error("Invalid post slug");
       const response = await fetch(
-        `http://localhost:3001/api/posts/slug/${slug}`
+        `${API_BASE}/api/posts/slug/${encodeURIComponent(slugParam)}`
       );
       if (!response.ok) throw new Error("Post not found");
       const data = await response.json();
@@ -45,8 +48,14 @@ export default function BlogPost() {
       }
       if (data.post) payload = data.post;
       else if (data.data && data.data.post) payload = data.data.post;
-      else if (data.posts && Array.isArray(data.posts) && data.posts.length === 1) payload = data.posts[0];
-      else if (data.posts && Array.isArray(data.posts) && data.posts.length > 1) payload = data.posts[0];
+      else if (
+        data.posts &&
+        Array.isArray(data.posts) &&
+        data.posts.length === 1
+      )
+        payload = data.posts[0];
+      else if (data.posts && Array.isArray(data.posts) && data.posts.length > 1)
+        payload = data.posts[0];
       else payload = data;
 
       if (!payload || typeof payload !== "object") {
