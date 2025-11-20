@@ -30,8 +30,21 @@ export default function Blog() {
   const [error, setError] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPosts, setTotalPosts] = useState(0);
+  const API_BASE =
+    (import.meta as any).env?.VITE_API_BASE ??
+    (import.meta as any).env?.VITE_BASE_URL ??
+    "";
 
   useEffect(() => {
+    try {
+      // eslint-disable-next-line no-console
+      console.debug("VITE env:", {
+        VITE_API_BASE: (import.meta as any).env?.VITE_API_BASE,
+        VITE_BASE_URL: (import.meta as any).env?.VITE_BASE_URL,
+        resolved_API_BASE: API_BASE,
+      });
+    } catch (e) {}
+
     fetchPosts(currentPage);
   }, [currentPage]);
 
@@ -39,22 +52,60 @@ export default function Blog() {
     try {
       setLoading(true);
       const skip = (page - 1) * POSTS_PER_PAGE;
-      const response = await fetch(
-        `http://localhost:3001/api/posts/published?skip=${skip}&limit=${POSTS_PER_PAGE}`
-      );
+      const url = `${API_BASE}/api/posts/published?skip=${skip}&limit=${POSTS_PER_PAGE}`;
+      const response = await fetch(url);
 
       if (!response.ok) {
         throw new Error(`API Error: ${response.status} ${response.statusText}`);
       }
 
-      const data: ApiResponse = await response.json();
-      if (data.success) {
-        setPosts(data.posts || []);
-        setTotalPosts(data.total);
-        setError(null);
+      const data = await response.json();
+
+      // Normalize response shapes: { success, total, posts }, { posts: [...] }, or plain array
+      let postsPayload: any[] = [];
+      let total = 0;
+      if (data == null) {
+        postsPayload = [];
+      } else if (Array.isArray(data)) {
+        postsPayload = data;
+        total = data.length;
+      } else if (data.posts && Array.isArray(data.posts)) {
+        postsPayload = data.posts;
+        total = data.total || data.posts.length;
+      } else if (data.success && data.posts && Array.isArray(data.posts)) {
+        postsPayload = data.posts;
+        total = data.total || data.posts.length;
+      } else if (data.post && !Array.isArray(data.post)) {
+        postsPayload = [data.post];
+        total = 1;
+      } else if (data.post && Array.isArray(data.post)) {
+        postsPayload = data.post;
+        total = data.post.length;
       } else {
-        throw new Error("API returned unsuccessful response");
+        // if object contains fields of a post, treat it as single post
+        const keys = ["_id", "slug", "title"].every((k) => k in data);
+        if (keys) {
+          postsPayload = [data];
+          total = 1;
+        } else {
+          postsPayload = [];
+        }
       }
+
+      // Ensure each post has sanitizedHtml fallback
+      postsPayload = postsPayload.map((p: any) => {
+        const rawHtml = p.sanitizedHtml || p.html || "";
+        if (!p.sanitizedHtml && rawHtml)
+          p.sanitizedHtml = rawHtml.replace(
+            /<script[\s\S]*?>[\s\S]*?<\/script>/gi,
+            ""
+          );
+        return p;
+      });
+
+      setPosts(postsPayload);
+      setTotalPosts(total || postsPayload.length);
+      setError(null);
     } catch (err) {
       const message =
         err instanceof Error ? err.message : "Failed to load posts";

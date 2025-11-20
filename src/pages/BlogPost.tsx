@@ -35,7 +35,9 @@ export default function BlogPost() {
   const fetchPost = async () => {
     try {
       setLoading(true);
-      const API_BASE = (import.meta as any).env?.VITE_API_BASE || "";
+      const API_BASE =
+        import.meta.env.VITE_API_BASE ||
+        "https://admin-panel-portofolio.onrender.com";
       if (!slugParam) throw new Error("Invalid post slug");
       const response = await fetch(
         `${API_BASE}/api/posts/slug/${encodeURIComponent(slugParam)}`
