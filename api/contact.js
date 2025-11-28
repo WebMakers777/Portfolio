@@ -1,10 +1,10 @@
 const APPS_SCRIPT_URL =
   "https://script.google.com/macros/s/AKfycbxCaEQWft1iItNEauWhgqTTCOCRJ7ZdtY9j-ETE0tt2gESRjzFxVDGTqMzryiQiimus/exec";
 
-export default async function handler(req: any, res: any) {
+export default async function handler(req, res) {
   // CORS headers
   res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
+  res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
   res.setHeader("Access-Control-Allow-Headers", "Content-Type");
 
   // Preflight
@@ -15,7 +15,7 @@ export default async function handler(req: any, res: any) {
   if (req.method !== "POST") {
     return res
       .status(405)
-      .json({ success: false, error: "Method Not Allowed" });
+      .json({ success: false, error: "Method: " + req.method });
   }
 
   try {
@@ -27,7 +27,7 @@ export default async function handler(req: any, res: any) {
 
     const data = await response.json();
     return res.status(200).json(data);
-  } catch (error: any) {
+  } catch (error) {
     console.error("Error:", error);
     return res.status(500).json({ success: false, error: String(error) });
   }
