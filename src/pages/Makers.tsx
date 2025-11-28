@@ -30,7 +30,7 @@ const ElixorTech = () => {
       <DeplymentTimeline />
       <AIFlowAutomation />
       {/* <AboutSection /> */}
-      <ContactSection />
+      {/* <ContactSection /> */}
       <Footer />
     </div>
   );

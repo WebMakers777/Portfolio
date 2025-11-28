@@ -1,10 +1,35 @@
 import { Github, Linkedin, Twitter, Mail, Phone, MapPin } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
 
+  const navigate = useNavigate();
+  const location = useLocation();
+
   const scrollToSection = (sectionId: string) => {
+    // Special-case: Contact should always target the gateway contact form.
+    if (sectionId === "contact") {
+      // If we're not on the gateway (root), navigate there and request a scroll.
+      // If we are already on the gateway, still trigger the same behavior (scroll in-page).
+      if (location.pathname !== "/") {
+        navigate("/", { state: { scrollTo: sectionId } });
+        return;
+      }
+      const contactEl = document.getElementById(sectionId);
+      if (contactEl) {
+        contactEl.scrollIntoView({ behavior: "smooth" });
+      }
+      return;
+    }
+
+    // For all other sections: target the ElixorTech page.
+    // If we're not on `/elixortech`, navigate there and request a scroll;
+    // if already on `/elixortech`, perform an in-page smooth scroll.
+    if (location.pathname !== "/elixortech") {
+      navigate("/elixortech", { state: { scrollTo: sectionId } });
+      return;
+    }
     const element = document.getElementById(sectionId);
     if (element) {
       element.scrollIntoView({ behavior: "smooth" });

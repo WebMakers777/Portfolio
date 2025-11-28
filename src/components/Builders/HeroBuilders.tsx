@@ -17,7 +17,7 @@ export default function HeroBuilders() {
   }, []);
 
   return (
-    <section className="relative overflow-hidden">
+    <section id="home" className="relative overflow-hidden">
       {/* soft background already added from page, keep hero clean */}
       <div className="mx-auto max-w-6xl px-4 pt-16 pb-10 grid md:grid-cols-2 gap-10 items-center">
         {/* LEFT: copy */}

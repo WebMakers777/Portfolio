@@ -50,9 +50,9 @@ export default function Builders() {
             <BuildersAdvanced />
           {/* </AnimatedSection> */}
 
-          <AnimatedSection direction="fade">
+          {/* <AnimatedSection direction="fade">
             <ContactBuilders />
-          </AnimatedSection>
+          </AnimatedSection> */}
         </main>
 
         <NewFooterBuilders />

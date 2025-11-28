@@ -1,8 +1,15 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import { ArrowRight, Sparkles } from "lucide-react";
-import { motion, useMotionValue, useSpring, useTransform, animate } from "framer-motion";
+import {
+  motion,
+  useMotionValue,
+  useSpring,
+  useTransform,
+  animate,
+} from "framer-motion";
 import heroBackground from "@/assets/hero-bg.jpg";
 
 const HeroSection = () => {
@@ -19,18 +26,36 @@ const HeroSection = () => {
   const layer2Y = useTransform(py, [0, 1], [10, -10]);
 
   const onMouseMove: React.MouseEventHandler = (e) => {
-    const { left, width, top, height } = (e.currentTarget as HTMLElement).getBoundingClientRect();
+    const { left, width, top, height } = (
+      e.currentTarget as HTMLElement
+    ).getBoundingClientRect();
     mouseX.set((e.clientX - left) / width);
     mouseY.set((e.clientY - top) / height);
   };
 
-  const scrollToContact = () =>
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const scrollToContact = () => {
+    if (location.pathname !== "/") {
+      navigate("/", { state: { scrollTo: "contact" } });
+      return;
+    }
     document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" });
+  };
   const scrollToWork = () =>
     document.getElementById("work")?.scrollIntoView({ behavior: "smooth" });
 
   // Animated counters
-  const Stat = ({ to, label, suffix = "" }: { to: number; label: string; suffix?: string }) => {
+  const Stat = ({
+    to,
+    label,
+    suffix = "",
+  }: {
+    to: number;
+    label: string;
+    suffix?: string;
+  }) => {
     const mv = useMotionValue(0);
     const [val, setVal] = useState(0);
     useEffect(() => {
@@ -63,7 +88,11 @@ const HeroSection = () => {
       {/* Background Image */}
       <div
         className="absolute inset-0 bg-cover bg-center bg-no-repeat will-change-transform"
-        style={{ backgroundImage: `url(${(heroBackground as any).src ?? heroBackground})` }}
+        style={{
+          backgroundImage: `url(${
+            (heroBackground as any).src ?? heroBackground
+          })`,
+        }}
       >
         <div className="absolute inset-0 bg-background/70" />
       </div>
@@ -98,7 +127,11 @@ const HeroSection = () => {
           animate="show"
           variants={{
             hidden: { opacity: 0, y: 20 },
-            show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } },
+            show: {
+              opacity: 1,
+              y: 0,
+              transition: { duration: 0.6, ease: "easeOut" },
+            },
           }}
         >
           {/* Badge (no splash) */}
@@ -136,8 +169,9 @@ const HeroSection = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.9, duration: 0.6 }}
           >
-            We&apos;re a team of passionate developers and designers who transform your ideas into
-            stunning, high-performance Software that drive results and engage your audience.
+            We&apos;re a team of passionate developers and designers who
+            transform your ideas into stunning, high-performance Software that
+            drive results and engage your audience.
           </motion.p>
 
           {/* CTAs (ONLY these have splashes) */}
@@ -174,7 +208,10 @@ const HeroSection = () => {
             initial="hidden"
             whileInView="show"
             viewport={{ once: true, amount: 0.3 }}
-            variants={{ hidden: {}, show: { transition: { staggerChildren: 0.12 } } }}
+            variants={{
+              hidden: {},
+              show: { transition: { staggerChildren: 0.12 } },
+            }}
           >
             {[
               { to: 5, label: "Projects Delivered", suffix: "+" },
@@ -184,7 +221,10 @@ const HeroSection = () => {
             ].map((s, i) => (
               <motion.div
                 key={i}
-                variants={{ hidden: { opacity: 0, y: 8 }, show: { opacity: 1, y: 0 } }}
+                variants={{
+                  hidden: { opacity: 0, y: 8 },
+                  show: { opacity: 1, y: 0 },
+                }}
               >
                 <Stat to={s.to} label={s.label} suffix={s.suffix} />
               </motion.div>

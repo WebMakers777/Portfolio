@@ -76,6 +76,7 @@ export default function CodeToProductHero({ className = "" }) {
 
   return (
     <section
+      id="about"
       className={`relative w-full py-12 sm:py-16 md:py-24 lg:py-32 px-3 sm:px-6 md:px-10 ${className}`}
     >
       <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 md:gap-8 lg:gap-12 items-stretch md:items-center">

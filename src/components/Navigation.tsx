@@ -3,7 +3,7 @@ import { Menu, X } from "lucide-react";
 import { Link } from "react-router-dom";
 import logo from "../assets/elixor.png";
 
-const Navigation = () => {
+export function Navigation() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -33,15 +33,19 @@ const Navigation = () => {
       }`}
     >
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16 lg:h-20">
+        <div className="flex items-center justify-between h-14 sm:h-16 lg:h-20">
           {/* Logo */}
           <div className="flex items-center space-x-2">
             <Link
-              to="/elixortech"
+              to="/"
               className="flex items-center space-x-2 hover:opacity-80 transition"
             >
-              <img src={logo} alt="ElixorTech Logo" className="h-14 w-18" />
-              <h1 className="text-xl lg:text-2xl font-bold text-gradient">
+              <img
+                src={logo}
+                alt="ElixorTech Logo"
+                className="h-8 w-auto sm:h-10 md:h-12 lg:h-14"
+              />
+              <h1 className="text-lg sm:text-xl lg:text-2xl font-bold text-gradient">
                 ElixorTech
               </h1>
             </Link>
@@ -73,12 +77,6 @@ const Navigation = () => {
                 className="nav-link"
               >
                 About Us
-              </button>
-              <button
-                onClick={() => scrollToSection("contact")}
-                className="nav-link"
-              >
-                Contact
               </button>
               <Link
                 to="/clickcrafters"
@@ -132,12 +130,7 @@ const Navigation = () => {
               >
                 About Us
               </button>
-              <button
-                onClick={() => scrollToSection("contact")}
-                className="block px-3 py-2 text-base font-medium nav-link w-full text-left"
-              >
-                Contact
-              </button>
+
               <Link
                 to="/clickcrafters"
                 className="block px-3 py-2 text-base font-medium rounded-lg bg-gradient-to-r from-cyan-400/20 to-blue-400/20 border border-cyan-400/50 text-cyan-300 hover:text-cyan-200 hover:border-cyan-300 hover:shadow-[0_0_20px_rgba(34,211,238,0.5)] transition-all duration-300 mt-2"
@@ -150,6 +143,6 @@ const Navigation = () => {
       </div>
     </nav>
   );
-};
+}
 
 export default Navigation;

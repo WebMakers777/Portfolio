@@ -1,5 +1,6 @@
 // No "use client" needed in Vite, but harmless if kept
 import React, { useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import {
   Film,
@@ -112,6 +113,12 @@ function CreativeRibbon() {
   );
 }
 
+// helper: SPA navigate to gateway and request scroll
+function useContactNavigator() {
+  const navigate = useNavigate();
+  return () => navigate("/", { state: { scrollTo: "contact" } });
+}
+
 /***************************
  * 2) Showreel Grid
  ***************************/
@@ -156,6 +163,7 @@ function HoverVideo({
 }
 
 function ShowreelGrid() {
+  const goContact = useContactNavigator();
   return (
     <Section id="portfolio" className="py-16">
       <Title
@@ -188,12 +196,12 @@ function ShowreelGrid() {
         />
       </div>
       <div className="mt-8 flex justify-center">
-        <a
-          href="#contact"
+        <button
+          onClick={goContact}
           className="rounded-xl border border-border bg-primary/10 px-5 py-2 text-sm hover:bg-primary/20"
         >
           Get a custom showreel →
-        </a>
+        </button>
       </div>
     </Section>
   );
@@ -408,6 +416,7 @@ function ToolsWall() {
  * 6) Sticky CTA
  ***************************/
 function StickyCta() {
+  const goContact = useContactNavigator();
   return (
     <div className="sticky bottom-3 z-30 mx-auto max-w-3xl px-4">
       <div className="rounded-2xl border border-border/70 bg-gradient-to-r from-indigo-500/15 via-violet-500/15 to-fuchsia-500/15 p-3 backdrop-blur-md">
@@ -416,12 +425,12 @@ function StickyCta() {
             Have raw footage or assets? We’ll turn them into scroll-stoppers
             within 72h.*
           </p>
-          <a
-            href="#contact"
+          <button
+            onClick={goContact}
             className="rounded-xl border border-border bg-primary/10 px-4 py-2 text-sm hover:bg-primary/20"
           >
             Start a Project
-          </a>
+          </button>
         </div>
       </div>
     </div>

@@ -1,6 +1,6 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
-import { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Mail,
   Phone,
@@ -16,6 +16,27 @@ import { useToast } from "@/hooks/use-toast"; // Assuming this path is correct f
 import WhatsAppFloat from "@/components/WhatsappFloat";
 
 export default function Gateway() {
+  const location = useLocation();
+
+  // If navigated here with state.scrollTo, scroll to that element on mount
+  useEffect(() => {
+    const to = (location.state as any)?.scrollTo;
+    if (to) {
+      // small delay to allow DOM to paint
+      setTimeout(() => {
+        const el = document.getElementById(to);
+        if (el) el.scrollIntoView({ behavior: "smooth" });
+        // clear the history state so refresh/back doesn't re-trigger
+        try {
+          window.history.replaceState(
+            {},
+            document.title,
+            window.location.pathname + window.location.search
+          );
+        } catch (e) {}
+      }, 80);
+    }
+  }, [location]);
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {

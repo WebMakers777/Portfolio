@@ -1,45 +1,59 @@
-import { Code, Palette, Smartphone, Zap, Globe, Shield } from 'lucide-react';
+import { Code, Palette, Smartphone, Zap, Globe, Shield } from "lucide-react";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const services = [
   {
     icon: Code,
-    title: 'Software Development',
+    title: "Software Development",
     description:
-      'Custom websites and software built with modern technologies for optimal performance and scalability.',
+      "Custom websites and software built with modern technologies for optimal performance and scalability.",
   },
   {
     icon: Palette,
-    title: 'UI/UX Design',
+    title: "UI/UX Design",
     description:
-      'Beautiful, intuitive interfaces that provide exceptional user experiences and drive conversions.',
+      "Beautiful, intuitive interfaces that provide exceptional user experiences and drive conversions.",
   },
   {
     icon: Smartphone,
-    title: 'Mobile-First Design',
+    title: "Mobile-First Design",
     description:
-      'Responsive designs that look and work perfectly on all devices, from mobile to desktop.',
+      "Responsive designs that look and work perfectly on all devices, from mobile to desktop.",
   },
   {
     icon: Zap,
-    title: 'Performance Optimization',
+    title: "Performance Optimization",
     description:
-      'Lightning-fast software optimized for speed, SEO, and user engagement.',
+      "Lightning-fast software optimized for speed, SEO, and user engagement.",
   },
   {
     icon: Globe,
-    title: 'E-Commerce Solutions',
+    title: "E-Commerce Solutions",
     description:
-      'Complete online stores with secure payment processing and inventory management.',
+      "Complete online stores with secure payment processing and inventory management.",
   },
   {
     icon: Shield,
-    title: 'Security & Maintenance',
+    title: "Security & Maintenance",
     description:
-      'Robust security measures and ongoing maintenance to keep your site safe and updated.',
+      "Robust security measures and ongoing maintenance to keep your site safe and updated.",
   },
 ];
 
 const ServicesSection = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const goContact = () => {
+    // If not on the gateway, navigate there and request the contact scroll.
+    if (location.pathname !== "/") {
+      navigate("/", { state: { scrollTo: "contact" } });
+      return;
+    }
+    const el = document.getElementById("contact");
+    if (el) el.scrollIntoView({ behavior: "smooth" });
+  };
+
   return (
     <section id="services" className="py-20 lg:py-32 relative">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -49,8 +63,9 @@ const ServicesSection = () => {
             What We <span className="text-gradient">Do</span>
           </h2>
           <p className="text-lg lg:text-xl text-muted-foreground max-w-3xl mx-auto">
-            We offer comprehensive Software Development services to bring your digital vision to life.
-            From concept to launch, we&apos;ve got you covered.
+            We offer comprehensive Software Development services to bring your
+            digital vision to life. From concept to launch, we&apos;ve got you
+            covered.
           </p>
         </div>
 
@@ -90,16 +105,10 @@ const ServicesSection = () => {
         {/* Bottom CTA */}
         <div className="text-center mt-16">
           <p className="text-muted-foreground mb-6">
-            Don&apos;t see what you&apos;re looking for? We love custom challenges.
+            Don&apos;t see what you&apos;re looking for? We love custom
+            challenges.
           </p>
-          <button
-            data-splash
-            onClick={() => {
-              const element = document.getElementById('contact');
-              if (element) element.scrollIntoView({ behavior: 'smooth' });
-            }}
-            className="btn-secondary-1"
-          >
+          <button data-splash onClick={goContact} className="btn-secondary-1">
             Discuss Your Project
           </button>
         </div>
