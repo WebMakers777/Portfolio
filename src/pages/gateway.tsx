@@ -459,21 +459,60 @@ const ContactSection = () => {
       [name]: value,
     }));
   };
+  // Apps Script URL (direct). Vite dev server proxies `/api/contact` to this URL during development.
+  const APPS_SCRIPT_URL =
+    "https://script.google.com/macros/s/AKfycbxCaEQWft1iItNEauWhgqTTCOCRJ7ZdtY9j-ETE0tt2gESRjzFxVDGTqMzryiQiimus/exec";
+
+  // Use the dev proxy when running locally, otherwise call the Apps Script URL directly in production.
+  const SCRIPT_URL = import.meta.env.DEV ? "/api/contact" : APPS_SCRIPT_URL;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
 
-    // Simulate form submission
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+    try {
+      const payload = {
+        name: formData.name,
+        email: formData.email,
+        message: formData.message,
+        source: "gateway",
+        utm: window.location.search || "",
+      };
 
-    toast({
-      title: "Message sent successfully!",
-      description: "We'll get back to you within 24 hours.",
-    });
+      const resp = await fetch(SCRIPT_URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
 
-    setFormData({ name: "", email: "", message: "" });
-    setIsSubmitting(false);
+      let data;
+      try {
+        data = await resp.json();
+      } catch (jsonErr) {
+        data = { success: resp.ok };
+      }
+
+      if (data && data.success) {
+        toast({
+          title: "Message sent successfully!",
+          description: "We'll get back to you within 24 hours.",
+        });
+        setFormData({ name: "", email: "", message: "" });
+      } else {
+        throw new Error((data && data.error) || "Submission failed");
+      }
+    } catch (err) {
+      console.error("Submit error", err);
+      toast({
+        title: "Unable to send message",
+        description:
+          "There was a problem sending your message. Try again later.",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
