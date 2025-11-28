@@ -459,12 +459,8 @@ const ContactSection = () => {
       [name]: value,
     }));
   };
-  // Apps Script URL (direct). Vite dev server proxies `/api/contact` to this URL during development.
-  const APPS_SCRIPT_URL =
-    "https://script.google.com/macros/s/AKfycbxCaEQWft1iItNEauWhgqTTCOCRJ7ZdtY9j-ETE0tt2gESRjzFxVDGTqMzryiQiimus/exec";
-
-  // Use the dev proxy when running locally, otherwise call the Apps Script URL directly in production.
-  const SCRIPT_URL = import.meta.env.DEV ? "/api/contact" : APPS_SCRIPT_URL;
+  // Post to Vercel function which proxies to Apps Script (handles CORS)
+  const SCRIPT_URL = "/api/contact";
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

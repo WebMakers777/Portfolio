@@ -26,9 +26,8 @@ export default defineConfig(({ mode }) => {
     server: {
       host: "::",
       port: 8080,
-      // Dev proxy to avoid CORS when calling external web apps (Apps Script)
+      // Dev proxy: forward /api/contact to Apps Script
       proxy: {
-        // Forward local /api/contact -> Apps Script URL
         "/api/contact": {
           target:
             "https://script.google.com/macros/s/AKfycbxCaEQWft1iItNEauWhgqTTCOCRJ7ZdtY9j-ETE0tt2gESRjzFxVDGTqMzryiQiimus/exec",
