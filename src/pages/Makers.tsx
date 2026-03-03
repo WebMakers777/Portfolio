@@ -17,9 +17,9 @@ const ElixorTech = () => {
   return (
     <div className="theme-elixortech relative min-h-screen bg-background text-foreground overflow-hidden">
       {/* Rain only on ElixorTech */}
-      <div className="pointer-events-none fixed inset-0 z-[4]">
+      {/* <div className="pointer-events-none fixed inset-0 z-[4]">
         <RainOverlay density={80} speed={1.0} color="#2472b7" zIndex={4} />
-      </div>
+      </div> */}
 
       <Navigation />
       <HeroSection />
