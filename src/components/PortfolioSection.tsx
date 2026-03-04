@@ -6,45 +6,34 @@ const projects = [
   {
     id: 1,
     title: "Book My CA",
-    category: "Software Development",
+    category: "Website Development",
     description:
       "BookMyCA is a financial services platform that provides end-to-end solutions including tax filing, GST, accounting, company registration, compliance, audits, and advisory. The website is designed to offer a seamless user experience, secure transactions, and easy integration of multiple financial service modules for individuals, startups, and enterprises.",
 
-    image: "/1.png",
+    image: "/bookmyca (1).png",
     tags: ["Next js", "Razorpay", "MongoDB"],
 
     demoUrl: "https://www.bookmyca.in",
   },
   {
     id: 2,
-    title: "Hack-Crux Website",
+    title: "ACTTS CRM",
     category: "Software Development",
     description:
-      "Official website for GDG HackCrux Hackathon, featuring event details, registrations, schedules, and team management with a modern UI.",
-    image: "/2.png",
-    tags: ["React", "TypeScript", "Tailwind", "Vercel"],
-    demoUrl: "https://www.hackcrux.tech",
+            "ACTTS CRM is a customer relationship management (CRM) system designed to help businesses manage their customer interactions and data effectively. The system provides features such as contact management, lead tracking, and sales tracking to help businesses improve their customer relationships and sales processes.",
+    image: "/actts-crm-1.png",
+    tags: ["React", "TypeScript", "Tailwind", "Databases"],
+    // demoUrl: "https://www.hackcrux.tech",
   },
-  {
-    id: 3,
-    title: "StoreWise",
-    category: "Software Development",
-    description:
-      "A secure and scalable online storage application that allows users to manage, share, and organize files with cloud integration.",
-    image: "/3.png",
-    tags: ["Next.js", "Node.js", "MongoDB", "Cloudinary"],
-    demoUrl: "https://storewise-eight.vercel.app/sign-in",
-  },
-  {
-    id: 4,
-    title: "Imaginest",
-    category: "Software Development",
-    description:
-      "An AI-powered SaaS platform for all image transformations including background removal, upscaling, colorization, and generative editing.",
-    image: "/4.png",
-    tags: ["Next.js", "Cloudinary API", "Tailwind"],
-    demoUrl: "https://imaginestmain.vercel.app/",
-  },
+{
+  id: 4, 
+  title: "Enterprise Resource Planning (ERP) Portal", 
+  category: "Software Development",
+  description: "A comprehensive, full-stack enterprise management system designed to streamline project tracking, financial calculations, and invoicing. Features interactive data grids, secure role-based employee management, and robust reporting.",
+  image: "/erp.png", 
+  tags: ["React", "Node.js", "MongoDB", "Tailwind CSS"],
+  demoUrl: "#", // Client link removed for confidentiality
+},
 
   {
     id: 5,
@@ -52,9 +41,9 @@ const projects = [
     category: "Pharma Company",
     description:
       "Leading pharmaceutical company focused on manufacturing and supplying high-quality medicines and healthcare products.",
-    image: "/5.png",
-    tags: ["Next.js", "Cloudinary API", "Tailwind"],
-    demoUrl: "https://www.hanshapharmaceuticals.com",
+    image: "/hansha-1.png",
+    tags: ["Next.js", "React", "Tailwind"],
+    demoUrl: "https://www.hanshapharmaceuticals.in",
   },
 
   // {
