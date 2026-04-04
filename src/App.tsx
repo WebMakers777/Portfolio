@@ -1,11 +1,12 @@
 // src/App.tsx
+import React from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
-import Index from "./pages/Makers";
+// ElixorTech page removed — redirects to elixortech.com
 import NotFound from "./pages/NotFound";
 
 // 🆕 add these imports
@@ -17,6 +18,14 @@ import ScrollToTop from "./components/ScrollToTop";
 
 const queryClient = new QueryClient();
 
+// Instantly redirects the browser to an external URL
+const ExternalRedirect = ({ to }: { to: string }) => {
+  React.useEffect(() => {
+    window.location.replace(to);
+  }, [to]);
+  return null;
+};
+
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
@@ -25,11 +34,14 @@ const App = () => (
       <BrowserRouter>
         <ScrollToTop />
         <Routes>
-          {/* New landing with two blocks */}
+          {/* Main landing page */}
           <Route path="/" element={<Gateway />} />
 
-          {/* ElixorTech = your existing interface (was "/") */}
-          <Route path="/elixortech" element={<Index />} />
+          {/* ElixorTech redirects to the live domain */}
+          <Route
+            path="/elixortech"
+            element={<ExternalRedirect to="https://elixortech.com" />}
+          />
 
           {/* ClickCrafters = new interface */}
           <Route path="/clickcrafters" element={<Builders />} />

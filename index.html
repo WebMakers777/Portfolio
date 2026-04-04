@@ -3,27 +3,144 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vincie Studios - Premium Software and content management team</title>
+
+    <!-- ===== Primary SEO ===== -->
+    <title>Vincie Studios — Premium Software Development & Digital Marketing</title>
     <meta
       name="description"
-      content="Professional software development team creating stunning digital experiences that convert. Expert software development, UI/UX design, and digital solutions."
+      content="Vincie Studios is a full-service digital agency combining elite software engineering (ElixorTech) with performance-driven marketing (ClickCrafters). We build scalable web apps, mobile apps, and brand campaigns that convert."
     />
+    <meta
+      name="keywords"
+      content="software development agency, MVP development, SaaS development, React development, Next.js agency, mobile app development, UI UX design, digital marketing agency, social media management, content creation, Jaipur tech company, Vincie Studios, ElixorTech, ClickCrafters"
+    />
+    <meta name="author" content="Vincie Studios" />
+    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+    <meta name="theme-color" content="#0B1120" />
+
+    <!-- ===== Canonical ===== -->
+    <link rel="canonical" href="https://www.vinciestudios.com/" />
+
+    <!-- ===== Open Graph / Facebook ===== -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Vincie Studios" />
+    <meta property="og:title" content="Vincie Studios — Premium Software Development & Digital Marketing" />
+    <meta
+      property="og:description"
+      content="We build scalable web & mobile applications and run performance-driven marketing campaigns. ElixorTech + ClickCrafters under one roof."
+    />
+    <meta property="og:url" content="https://www.vinciestudios.com/" />
+    <meta property="og:image" content="https://www.vinciestudios.com/vinciestudio.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Vincie Studios — Digital Agency" />
+    <meta property="og:locale" content="en_IN" />
+
+    <!-- ===== Twitter / X Card ===== -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@studiovincie" />
+    <meta name="twitter:creator" content="@studiovincie" />
+    <meta name="twitter:title" content="Vincie Studios — Premium Software Development & Digital Marketing" />
+    <meta
+      name="twitter:description"
+      content="Full-service digital agency: elite engineering + performance marketing. Build products. Grow brands."
+    />
+    <meta name="twitter:image" content="https://www.vinciestudios.com/vinciestudio.png" />
+    <meta name="twitter:image:alt" content="Vincie Studios Logo" />
+
+    <!-- ===== Geo / Local SEO ===== -->
+    <meta name="geo.region" content="IN-RJ" />
+    <meta name="geo.placename" content="Jaipur, Rajasthan, India" />
+    <meta name="geo.position" content="26.9124;75.7873" />
+    <meta name="ICBM" content="26.9124, 75.7873" />
+
+    <!-- ===== Fonts ===== -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
       rel="stylesheet"
     />
+
+    <!-- ===== Icons & PWA ===== -->
     <link rel="icon" href="/favicon.ico" sizes="any" />
     <link rel="apple-touch-icon" href="/favicon.ico" />
     <link rel="manifest" href="/manifest.json" />
+
+    <!-- ===== JSON-LD Structured Data ===== -->
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
-        "@type": "Organization",
-        "url": "https://www.vinciestudios.com",
-        "name": "Vincie Studios",
-        "logo": "https://www.vinciestudios.com/vinciestudio.png"
+        "@graph": [
+          {
+            "@type": "Organization",
+            "@id": "https://www.vinciestudios.com/#organization",
+            "name": "Vincie Studios",
+            "url": "https://www.vinciestudios.com",
+            "logo": {
+              "@type": "ImageObject",
+              "url": "https://www.vinciestudios.com/vinciestudio.png"
+            },
+            "description": "Full-service digital agency offering premium software development and performance-driven digital marketing.",
+            "address": {
+              "@type": "PostalAddress",
+              "addressLocality": "Jaipur",
+              "addressRegion": "Rajasthan",
+              "postalCode": "302031",
+              "addressCountry": "IN"
+            },
+            "contactPoint": {
+              "@type": "ContactPoint",
+              "telephone": "+91-73750-38069",
+              "contactType": "customer service",
+              "email": "vinciestudios@gmail.com",
+              "availableLanguage": ["English", "Hindi"]
+            },
+            "sameAs": [
+              "https://www.instagram.com/studiovincie/",
+              "https://www.linkedin.com/in/vincie-studios-034378398/"
+            ],
+            "hasOfferCatalog": {
+              "@type": "OfferCatalog",
+              "name": "Digital Services",
+              "itemListElement": [
+                {
+                  "@type": "Offer",
+                  "itemOffered": {
+                    "@type": "Service",
+                    "name": "Custom Software Development",
+                    "description": "React, Next.js, Node.js, Flutter, and AWS application development."
+                  }
+                },
+                {
+                  "@type": "Offer",
+                  "itemOffered": {
+                    "@type": "Service",
+                    "name": "Digital Marketing & Social Media",
+                    "description": "Performance campaigns, content creation, paid ads, and brand strategy."
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://www.vinciestudios.com/#website",
+            "url": "https://www.vinciestudios.com",
+            "name": "Vincie Studios",
+            "publisher": {
+              "@id": "https://www.vinciestudios.com/#organization"
+            },
+            "potentialAction": {
+              "@type": "SearchAction",
+              "target": {
+                "@type": "EntryPoint",
+                "urlTemplate": "https://www.vinciestudios.com/?q={search_term_string}"
+              },
+              "query-input": "required name=search_term_string"
+            }
+          }
+        ]
       }
     </script>
   </head>
@@ -33,3 +150,4 @@
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
+

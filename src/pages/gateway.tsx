@@ -318,10 +318,12 @@ export default function Gateway() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {/* ElixorTech */}
           <motion.div variants={itemVariants}>
-            <Link
-              to="/elixortech"
+            <a
+              href="https://elixortech.com"
+              target="_blank"
+              rel="noopener noreferrer"
               className="group relative overflow-hidden rounded-2xl border border-white/10 bg-white/[0.04] hover:bg-white/[0.06] transition will-change-transform h-full block"
-              aria-label="Enter ElixorTech site"
+              aria-label="Visit ElixorTech website"
             >
               {/* Shine */}
               <div className="pointer-events-none absolute -top-24 -left-24 h-72 w-72 rounded-full bg-cyan-400/20 blur-3xl group-hover:opacity-100 opacity-80 transition" />
@@ -348,12 +350,12 @@ export default function Gateway() {
                   className="mt-6 inline-flex items-center gap-2 text-sm font-medium text-white/90 group-hover:translate-x-1 transition"
                   whileHover={{ x: 4 }}
                 >
-                  Enter ElixorTech →
+                  Visit ElixorTech ↗
                 </motion.span>
               </div>
               {/* Bottom border glow */}
               <div className="absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-cyan-400/40 to-transparent" />
-            </Link>
+            </a>
           </motion.div>
 
           {/* ClickCrafters */}
