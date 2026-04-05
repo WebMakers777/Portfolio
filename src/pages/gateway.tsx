@@ -1,14 +1,10 @@
 import { Link, useLocation } from "react-router-dom";
-import { motion } from "framer-motion";
-import React, { useEffect, useState, useRef } from "react";
+import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
+import React, { useEffect, useState } from "react";
 import {
   Mail,
   Phone,
-  MapPin,
   Send,
-  Linkedin,
-  MessageSquare,
-  Instagram,
   ArrowUpRight,
   Zap,
   Gem,
@@ -22,79 +18,169 @@ import {
 import { useToast } from "@/hooks/use-toast";
 import WhatsAppFloat from "@/components/WhatsappFloat";
 
-/* ─────────────────────────────────────────────
-   DESIGN TOKENS  (used as Tailwind arbitrary values)
-   Base:      #060B18
-   Surface:   #0D1321
-   Gold:      #C8A04E
-   Gold-lt:   #D4AD5F
-   Text-1:    #F0EDE6  (warm cream)
-   Text-2:    #8B93A7  (muted slate)
-   Text-3:    #5B6478  (dimmed)
-   Border:    rgba(255,255,255,0.06)
-   Gold-brd:  rgba(200,160,78,0.25)
-────────────────────────────────────────────── */
-
-// Noise grain — inline SVG data URI for subtle film-grain texture
-const GRAIN_URI = `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='.7' numOctaves='4' type='fractalNoise' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")`;
-
-// ──────── Animation presets (subtle, refined) ────────
-const ease = [0.25, 0.46, 0.45, 0.94] as const;
+// ─────────────────────────────────────────────────────────────────────────────
+// MOTION PRESETS (Refined cinematic timings)
+// ─────────────────────────────────────────────────────────────────────────────
+const easeOutQuint = [0.22, 1, 0.36, 1] as const;
 
 const fadeUp = {
-  hidden: { opacity: 0, y: 18 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.7, ease } },
+  hidden: { opacity: 0, y: 40 },
+  visible: { 
+    opacity: 1, 
+    y: 0, 
+    transition: { duration: 1, ease: easeOutQuint } 
+  },
 };
 
 const stagger = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
-    transition: { staggerChildren: 0.1, delayChildren: 0.05 },
+    transition: { staggerChildren: 0.15, delayChildren: 0.1 },
   },
 };
 
-// ──────── Animated counter hook ────────
-function useCounter(end: number, duration = 2000) {
-  const [count, setCount] = useState(0);
-  const ref = useRef<HTMLDivElement>(null);
-  const started = useRef(false);
+const MarqueeItem = ({ children }: { children: React.ReactNode }) => (
+  <span className="mx-8 text-[#555] font-semibold tracking-widest uppercase text-xs flex items-center gap-4">
+    <Gem className="w-3 h-3 text-[#333]" />
+    {children}
+  </span>
+);
+
+const TechMarquee = () => {
+  return (
+    <div className="w-full relative overflow-hidden py-10 border-y border-white/[0.04] bg-[#0A0A0A]">
+      <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-[#0A0A0A] to-transparent z-10 pointer-events-none" />
+      <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-[#0A0A0A] to-transparent z-10 pointer-events-none" />
+      
+      <motion.div 
+        className="flex whitespace-nowrap items-center w-max"
+        animate={{ x: ["0%", "-50%"] }}
+        transition={{ repeat: Infinity, duration: 30, ease: "linear" }}
+      >
+        <div className="flex items-center">
+          <MarqueeItem>React & Next.js</MarqueeItem>
+          <MarqueeItem>High-Performance APIs</MarqueeItem>
+          <MarqueeItem>Conversion Optimization</MarqueeItem>
+          <MarqueeItem>iOS & Android Native</MarqueeItem>
+          <MarqueeItem>Framer Motion</MarqueeItem>
+          <MarqueeItem>Enterprise Architecture</MarqueeItem>
+          <MarqueeItem>Data Science & AI</MarqueeItem>
+        </div>
+        <div className="flex items-center">
+          <MarqueeItem>React & Next.js</MarqueeItem>
+          <MarqueeItem>High-Performance APIs</MarqueeItem>
+          <MarqueeItem>Conversion Optimization</MarqueeItem>
+          <MarqueeItem>iOS & Android Native</MarqueeItem>
+          <MarqueeItem>Framer Motion</MarqueeItem>
+          <MarqueeItem>Enterprise Architecture</MarqueeItem>
+          <MarqueeItem>Data Science & AI</MarqueeItem>
+        </div>
+      </motion.div>
+    </div>
+  );
+};
+
+const PhilosophySection = () => {
+  return (
+    <section className="relative z-10 py-32 px-6 md:px-12 bg-[#0A0A0A]">
+      <div className="mx-auto max-w-[1280px]">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-8 items-center">
+          <motion.div 
+            initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }} variants={fadeUp}
+            className="lg:col-span-7"
+          >
+            <div className="text-[12px] uppercase font-semibold tracking-[0.2em] text-[#A3A3A3] mb-8 flex items-center gap-3">
+              <span className="w-8 h-px bg-white/20"></span>
+              The Standard
+            </div>
+            <h2 className="text-4xl md:text-5xl lg:text-5xl font-bold tracking-tight text-[#F5F5F5] leading-[1.1] mb-8">
+              We don't build MVPs.<br />
+              <span className="text-[#888]">We build market leaders.</span>
+            </h2>
+            <p className="text-lg md:text-xl text-[#A3A3A3] font-light leading-relaxed max-w-[45ch]">
+              At Vincie Studios, we believe that software should feel tactile and marketing should be invisible. We combine obsessive product engineering with elite digital strategy to scale ambitious brands.
+            </p>
+          </motion.div>
+          
+          <motion.div 
+            initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }} variants={fadeUp}
+            className="lg:col-span-5 relative group"
+          >
+            <div className="absolute inset-0 bg-gradient-to-br from-white/[0.04] to-transparent rounded-3xl -m-4 opacity-0 group-hover:opacity-100 transition-opacity duration-700 blur-2xl" />
+            <div className="relative p-10 md:p-12 rounded-3xl bg-[#111111]/60 backdrop-blur-md border border-white/[0.06] shadow-[0_10px_30px_rgba(0,0,0,0.5)]">
+              <div className="w-12 h-12 rounded-full border border-white/[0.1] bg-white/[0.03] flex items-center justify-center mb-8 shadow-inner">
+                <Target className="w-5 h-5 text-white/80" />
+              </div>
+              <h3 className="text-2xl font-bold text-white mb-4">Precision over Pace</h3>
+              <p className="text-[#A3A3A3] text-sm leading-relaxed mb-8">
+                While others rush to ship incomplete code, we engineer for the long term. Every pixel, animation, and database query is calibrated for absolute perfection.
+              </p>
+              <div className="flex items-center gap-4 border-t border-white/[0.08] pt-6">
+                <div className="flex -space-x-3">
+                  {[1, 2, 3].map((i) => (
+                     <div key={i} className="w-8 h-8 rounded-full bg-[#1A1A1A] border-2 border-[#111] shadow-[0_4px_10px_rgba(0,0,0,0.5)] flex items-center justify-center">
+                        <ArrowUpRight className="w-3 h-3 text-[#666]" />
+                     </div>
+                  ))}
+                </div>
+                <span className="text-[10px] uppercase tracking-widest text-[#666] font-semibold">Elite Talent</span>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+const LoadingScreen = () => {
+  return (
+    <motion.div
+      initial={{ opacity: 1 }}
+      exit={{ opacity: 0, y: "-10% ", filter: "blur(20px)", transition: { duration: 0.8, ease: easeOutQuint } }}
+      className="fixed inset-0 z-[10000] bg-[#0A0A0A] flex flex-col items-center justify-center"
+    >
+      <motion.div 
+        initial={{ opacity: 0, scale: 0.95, filter: "blur(10px)" }}
+        animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
+        exit={{ opacity: 0, scale: 1.05, filter: "blur(10px)" }}
+        transition={{ duration: 0.8, ease: easeOutQuint }}
+        className="flex flex-col items-center gap-8"
+      >
+        <img src="/vinciestudio.png" alt="Vincie Studios" className="h-10 md:h-12 w-auto object-contain" />
+        <div className="w-48 md:w-64 h-[2px] bg-white/[0.05] rounded-full overflow-hidden relative shadow-inner">
+          <motion.div
+            className="h-full bg-gradient-to-r from-transparent via-[#FFF] to-[#FFF]"
+            initial={{ x: "-100%" }}
+            animate={{ x: "0%" }}
+            transition={{ duration: 1.6, ease: easeOutQuint }}
+          >
+             <div className="absolute top-0 right-0 h-full w-8 bg-white shadow-[0_0_15px_white]" />
+          </motion.div>
+        </div>
+      </motion.div>
+    </motion.div>
+  );
+};
+
+export default function Gateway() {
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const obs = new IntersectionObserver(
-      ([e]) => {
-        if (e.isIntersecting && !started.current) {
-          started.current = true;
-          const start = performance.now();
-          const tick = (now: number) => {
-            const t = Math.min((now - start) / duration, 1);
-            // ease-out quad
-            const val = Math.round(end * (1 - (1 - t) * (1 - t)));
-            setCount(val);
-            if (t < 1) requestAnimationFrame(tick);
-          };
-          requestAnimationFrame(tick);
-        }
-      },
-      { threshold: 0.5 }
-    );
-    obs.observe(el);
-    return () => obs.disconnect();
-  }, [end, duration]);
-
-  return { count, ref };
-}
-
-// ════════════════════════════════════════════
-//  GATEWAY  (main export)
-// ════════════════════════════════════════════
-export default function Gateway() {
+    // 2-Second premium cinematic delay
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 2000);
+    return () => clearTimeout(timer);
+  }, []);
   const location = useLocation();
   const [scrolled, setScrolled] = useState(false);
+  const { scrollY } = useScroll();
+  const heroY = useTransform(scrollY, [0, 800], ["0%", "15%"]);
+  const heroOpacity = useTransform(scrollY, [0, 600], [1, 0]);
 
-  // scroll-to from router state
+  // Navigate to sections via router state
   useEffect(() => {
     const to = (location.state as any)?.scrollTo;
     if (to) {
@@ -107,568 +193,379 @@ export default function Gateway() {
     }
   }, [location]);
 
-  // sticky nav opacity
   useEffect(() => {
-    const fn = () => setScrolled(window.scrollY > 60);
-    window.addEventListener("scroll", fn, { passive: true });
-    return () => window.removeEventListener("scroll", fn);
+    const handleScroll = () => setScrolled(window.scrollY > 30);
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // stat counters
-  const projects = useCounter(50);
-  const clients  = useCounter(100);
-  const years    = useCounter(5);
-
   return (
-    <main className="relative min-h-screen w-full bg-[#060B18] text-[#F0EDE6] overflow-hidden font-inter">
-      {/* ── Grain overlay ── */}
-      <div
-        className="pointer-events-none fixed inset-0 z-[60] opacity-[0.025] mix-blend-overlay"
-        style={{ backgroundImage: GRAIN_URI }}
+    <main className="relative min-h-screen w-full bg-[#0A0A0A] text-[#F5F5F5] selection:bg-[#F5F5F5] selection:text-[#0A0A0A] overflow-hidden font-inter">
+      <AnimatePresence mode="wait">
+        {isLoading && <LoadingScreen key="loader" />}
+      </AnimatePresence>
+      {/* ──────────────── GRAIN & TEXTURE (Cinematic feel) ──────────────── */}
+      <div 
+        className="pointer-events-none fixed inset-0 z-50 opacity-[0.035] mix-blend-overlay"
+        style={{
+          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='0.8' numOctaves='3' type='fractalNoise' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")`
+        }}
       />
 
-      {/* ── Ambient warm glow (very faint) ── */}
-      <div className="pointer-events-none absolute top-[-20rem] left-1/2 -translate-x-1/2 h-[50rem] w-[50rem] rounded-full blur-[160px] bg-[#C8A04E]/[0.035]" />
-      <div className="pointer-events-none absolute bottom-[-16rem] right-[-8rem] h-[36rem] w-[36rem] rounded-full blur-[140px] bg-[#C8A04E]/[0.02]" />
-
-      {/* ── Top gold accent bar ── */}
-      <div className="fixed top-0 inset-x-0 z-50 h-[2px] bg-gradient-to-r from-transparent via-[#C8A04E]/60 to-transparent" />
-
-      {/* ═══════ STICKY NAV ═══════ */}
+      {/* ──────────────── STICKY NAV ──────────────── */}
       <motion.nav
-        className={`fixed top-[2px] inset-x-0 z-40 transition-all duration-500 ${
+        className={`fixed top-0 inset-x-0 z-50 transition-all duration-500 ${
           scrolled
-            ? "bg-[#060B18]/80 backdrop-blur-xl border-b border-white/[0.06]"
-            : "bg-transparent"
+            ? "bg-[#0A0A0A]/40 backdrop-blur-xl border-b border-white/[0.06] py-3 shadow-[0_4px_30px_rgba(0,0,0,0.5)]"
+            : "bg-transparent border-transparent py-5"
         }`}
-        initial={{ opacity: 0, y: -12 }}
+        initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, delay: 0.1 }}
+        transition={{ duration: 0.8, ease: easeOutQuint }}
       >
-        <div className="mx-auto max-w-6xl flex items-center justify-between px-6 py-4">
-          {/* Logo */}
+        <div className="mx-auto max-w-[1280px] flex items-center justify-between px-6 md:px-12">
           <a href="/" className="flex items-center gap-3 group" aria-label="Home">
-            <img
-              src="/vinciestudio.png"
-              alt="Vincie Studios"
-              className="h-8 w-auto"
+            <img 
+              src="/vinciestudio.png" 
+              alt="Vincie Studios Logo" 
+              className="h-8 w-auto object-contain transition-transform duration-500 group-hover:scale-105" 
             />
-            <span className="text-sm font-medium tracking-wide text-[#F0EDE6]/80 group-hover:text-[#F0EDE6] transition-colors hidden sm:inline">
+            <span className="text-base font-semibold tracking-wide text-[#F5F5F5] hidden sm:inline-block">
               Vincie Studios
             </span>
           </a>
 
-          {/* Right nav */}
-          <div className="flex items-center gap-6">
+          <div className="flex items-center gap-8">
             <Link
               to="/blog"
-              className="text-sm text-[#8B93A7] hover:text-[#F0EDE6] transition-colors duration-200"
+              className="text-sm font-medium text-[#A3A3A3] hover:text-[#F5F5F5] transition-colors"
             >
               Journal
             </Link>
             <a
               href="#contact"
-              className="text-sm font-medium px-5 py-2 rounded-lg bg-[#C8A04E] text-[#060B18] hover:bg-[#D4AD5F] transition-colors duration-200"
+              className="group relative px-5 py-2.5 rounded-lg text-sm font-medium bg-gradient-to-b from-white to-[#E5E5E5] text-black shadow-[0_0_20px_rgba(255,255,255,0.1)] hover:shadow-[0_0_25px_rgba(255,255,255,0.2)] active:scale-[0.98] transition-all overflow-hidden"
             >
-              Start a Project
+              <span className="relative z-10">Start a Project</span>
             </a>
           </div>
         </div>
       </motion.nav>
 
-      {/* ═══════ HERO ═══════ */}
-      <motion.section
-        className="relative z-10 mx-auto max-w-5xl px-6 pt-36 pb-20 md:pt-44 md:pb-28"
-        variants={stagger}
-        initial="hidden"
-        animate="visible"
-      >
-        {/* Section label */}
-        <motion.p
-          className="font-mono text-[11px] tracking-[0.25em] text-[#C8A04E] uppercase mb-8"
-          variants={fadeUp}
+      {/* ──────────────── HERO ──────────────── */}
+      <section className="relative z-10 pt-[24vh] pb-[16vh] px-6 md:px-12">
+        {/* Floating gradient vignette (subtle luxury lighting) */}
+        <div className="pointer-events-none absolute top-[-10%] left-1/2 -translate-x-1/2 w-[1000px] h-[800px] bg-[radial-gradient(ellipse_at_center,_rgba(44,42,38,0.12)_0%,_transparent_70%)] rounded-[100%] blur-[120px]" />
+        
+        <motion.div
+          className="relative mx-auto max-w-[1280px] flex flex-col items-center text-center"
+          variants={stagger}
+          initial="hidden"
+          animate="visible"
+          style={{ y: heroY, opacity: heroOpacity }}
         >
-          Engineering · Marketing · Design
-        </motion.p>
-
-        {/* Headline */}
-        <motion.h1
-          className="text-[clamp(2.4rem,6vw,4.5rem)] font-semibold leading-[1.08] tracking-tight"
-          variants={fadeUp}
-        >
-          We build products.
-          <br />
-          <span className="text-[#C8A04E]">We grow brands.</span>
-        </motion.h1>
-
-        {/* Supporting copy */}
-        <motion.p
-          className="mt-8 text-[#8B93A7] max-w-[52ch] text-base md:text-lg leading-relaxed"
-          variants={fadeUp}
-        >
-          Vincie Studios is where engineering meets storytelling. We ship
-          production-grade software through{" "}
-          <span className="text-[#F0EDE6]/90">ElixorTech</span> and build
-          brand presence through{" "}
-          <span className="text-[#F0EDE6]/90">ClickCrafters</span> — two
-          studios, one standard of excellence.
-        </motion.p>
-
-        {/* CTA row */}
-        <motion.div className="mt-10 flex flex-wrap gap-4" variants={fadeUp}>
-          <a
-            href="#contact"
-            id="hero-cta-primary"
-            className="inline-flex items-center gap-2 rounded-lg bg-[#C8A04E] text-[#060B18] px-7 py-3.5 text-sm font-semibold hover:bg-[#D4AD5F] transition-colors duration-200"
+          {/* Tag */}
+          <motion.div
+            variants={fadeUp}
+            className="mb-8 inline-flex items-center gap-2 rounded-full border border-white/[0.08] bg-[#111111]/40 px-5 py-1.5 md:mb-10 text-[12px] uppercase font-semibold tracking-[0.1em] text-[#A3A3A3] backdrop-blur-md shadow-[0_4px_20px_rgba(0,0,0,0.5)]"
           >
-            Start a Project
-            <ArrowUpRight className="w-4 h-4" />
-          </a>
-          <a
-            href="#divisions"
-            id="hero-cta-secondary"
-            className="inline-flex items-center gap-2 rounded-lg border border-white/[0.12] text-[#F0EDE6] px-7 py-3.5 text-sm font-medium hover:bg-white/[0.04] transition-colors duration-200"
+            Engineering meets storytelling
+          </motion.div>
+
+          {/* Headline */}
+          <motion.h1
+            variants={fadeUp}
+            className="text-[clamp(3rem,8vw,6.5rem)] font-bold leading-[1] tracking-[-0.04em] max-w-[15ch]"
           >
-            Explore Our Work
-            <ArrowDown className="w-4 h-4" />
-          </a>
-        </motion.div>
-      </motion.section>
+            <span className="bg-gradient-to-r from-white via-[#E0E0E0] to-[#999999] bg-clip-text text-transparent drop-shadow-sm">
+              We build products.
+            </span>
+            <br />
+            <span className="bg-gradient-to-r from-[#999999] via-[#C0C0C0] to-[#FFFFFF] bg-clip-text text-transparent drop-shadow-sm">
+              We grow brands.
+            </span>
+          </motion.h1>
 
-      {/* ─── Thin divider ─── */}
-      <div className="mx-auto max-w-6xl px-6">
-        <div className="h-px bg-white/[0.06]" />
-      </div>
+          <motion.p
+            variants={fadeUp}
+            className="mt-8 text-base md:text-xl text-[#A3A3A3] max-w-[48ch] leading-relaxed font-light"
+          >
+            Production-grade software and performance-driven marketing under one standard. Designed for startups, funded companies, and serious businesses.
+          </motion.p>
 
-      {/* ═══════ STATS ═══════ */}
-      <motion.section
-        className="relative z-10 mx-auto max-w-6xl px-6 py-16 md:py-20"
-        variants={stagger}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, margin: "-80px" }}
-      >
-        <div className="grid grid-cols-3 gap-6 md:gap-12">
-          {/* — Projects — */}
-          <motion.div className="text-center md:text-left" variants={fadeUp}>
-            <div
-              ref={projects.ref}
-              className="text-3xl md:text-5xl font-bold text-[#F0EDE6] tabular-nums"
-            >
-              {projects.count}+
-            </div>
-            <p className="mt-2 text-xs md:text-sm text-[#5B6478] uppercase tracking-wider">
-              Projects Shipped
-            </p>
-          </motion.div>
-
-          {/* — Clients — */}
-          <motion.div className="text-center" variants={fadeUp}>
-            <div
-              ref={clients.ref}
-              className="text-3xl md:text-5xl font-bold text-[#F0EDE6] tabular-nums"
-            >
-              {clients.count}+
-            </div>
-            <p className="mt-2 text-xs md:text-sm text-[#5B6478] uppercase tracking-wider">
-              Clients Served
-            </p>
-          </motion.div>
-
-          {/* — Years — */}
-          <motion.div className="text-center md:text-right" variants={fadeUp}>
-            <div
-              ref={years.ref}
-              className="text-3xl md:text-5xl font-bold text-[#F0EDE6] tabular-nums"
-            >
-              {years.count}+
-            </div>
-            <p className="mt-2 text-xs md:text-sm text-[#5B6478] uppercase tracking-wider">
-              Years in the Industry
-            </p>
-          </motion.div>
-        </div>
-
-        <motion.p
-          className="mt-10 text-center text-sm text-[#5B6478]"
-          variants={fadeUp}
-        >
-          Trusted by startups and growing businesses across India&nbsp;&&nbsp;beyond.
-        </motion.p>
-      </motion.section>
-
-      {/* ─── Thin divider ─── */}
-      <div className="mx-auto max-w-6xl px-6">
-        <div className="h-px bg-white/[0.06]" />
-      </div>
-
-      {/* ═══════ DIVISIONS ═══════ */}
-      <motion.section
-        id="divisions"
-        className="relative z-10 mx-auto max-w-6xl px-6 py-20 md:py-28"
-        variants={stagger}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, margin: "-80px" }}
-      >
-        {/* Section label */}
-        <motion.p
-          className="font-mono text-[11px] tracking-[0.25em] text-[#C8A04E] uppercase mb-4"
-          variants={fadeUp}
-        >
-          Our Studios
-        </motion.p>
-        <motion.h2
-          className="text-3xl md:text-4xl font-semibold mb-4 tracking-tight"
-          variants={fadeUp}
-        >
-          Two studios. One vision.
-        </motion.h2>
-        <motion.p
-          className="text-[#8B93A7] max-w-[48ch] mb-14 text-base leading-relaxed"
-          variants={fadeUp}
-        >
-          Product engineering that ships, and marketing that scales — working
-          in lockstep so every launch has momentum from day one.
-        </motion.p>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {/* ── ElixorTech card ── */}
-          <motion.div variants={fadeUp}>
+          <motion.div variants={fadeUp} className="mt-14 flex flex-col sm:flex-row items-center gap-5">
             <a
-              href="https://elixortech.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              id="card-elixortech"
-              className="group relative flex flex-col justify-between rounded-2xl border border-white/[0.06] bg-white/[0.02] p-8 md:p-10 min-h-[360px] hover:border-[#C8A04E]/20 transition-all duration-500"
-              aria-label="Visit ElixorTech website"
+              href="#contact"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-b from-[#FFFFFF] to-[#E5E5E5] border border-white/[0.1] text-black px-8 py-4.5 text-sm font-semibold shadow-[0_0_30px_rgba(255,255,255,0.15)] hover:shadow-[0_0_40px_rgba(255,255,255,0.25)] hover:-translate-y-0.5 active:scale-[0.98] transition-all"
             >
-              {/* Icon */}
-              <div className="w-11 h-11 rounded-xl bg-[#C8A04E]/10 border border-[#C8A04E]/20 flex items-center justify-center mb-8">
-                <Code2 className="w-5 h-5 text-[#C8A04E]" />
-              </div>
-
-              <div>
-                <span className="font-mono text-[10px] tracking-[0.2em] text-[#5B6478] uppercase">
-                  Product Development & Engineering
-                </span>
-                <h3 className="text-2xl md:text-3xl font-semibold mt-2 tracking-tight">
-                  ElixorTech
-                </h3>
-                <p className="mt-4 text-[#8B93A7] text-sm leading-relaxed max-w-[38ch]">
-                  From concept to production — high-performance web and mobile
-                  applications engineered for scale. React, Next.js, Node,
-                  Flutter, and cloud-native infrastructure.
-                </p>
-
-                {/* Tech tags */}
-                <div className="flex flex-wrap gap-2 mt-6">
-                  {["React / Next.js", "Node.js", "Flutter", "AWS", "AI & Automation"].map((t) => (
-                    <span
-                      key={t}
-                      className="text-[11px] px-2.5 py-1 rounded-md bg-[#C8A04E]/8 text-[#8B93A7] border border-white/[0.06]"
-                    >
-                      {t}
-                    </span>
-                  ))}
-                </div>
-
-                {/* CTA */}
-                <span className="mt-8 inline-flex items-center gap-2 text-sm font-medium text-[#C8A04E] group-hover:gap-3 transition-all duration-300">
-                  Visit ElixorTech
-                  <ArrowUpRight className="w-4 h-4" />
-                </span>
-              </div>
-
-              {/* Bottom accent line */}
-              <div className="absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-[#C8A04E]/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              Start a Project
+            </a>
+            <a
+              href="#studios"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-xl border border-white/[0.08] bg-[#111111]/80 hover:bg-[#161616] text-[#F5F5F5] px-8 py-4.5 text-sm font-medium shadow-[0_10px_30px_rgba(0,0,0,0.5)] hover:shadow-[0_15px_40px_rgba(0,0,0,0.6)] hover:-translate-y-0.5 active:scale-[0.98] transition-all backdrop-blur-sm"
+            >
+              Explore Our Work
+              <ArrowDown className="w-4 h-4 ml-1 opacity-60" />
             </a>
           </motion.div>
 
-          {/* ── ClickCrafters card ── */}
-          <motion.div variants={fadeUp}>
-            <Link
-              to="/clickcrafters"
-              id="card-clickcrafters"
-              className="group relative flex flex-col justify-between rounded-2xl border border-white/[0.06] bg-white/[0.02] p-8 md:p-10 min-h-[360px] hover:border-[#C8A04E]/20 transition-all duration-500"
-              aria-label="Explore ClickCrafters"
+          {/* Trust Indicators */}
+          <motion.div variants={fadeUp} className="mt-20 md:mt-28 flex items-center justify-center gap-8 md:gap-16 border-t border-white/[0.06] pt-10">
+            <div className="flex flex-col items-center">
+              <span className="text-2xl md:text-3xl font-bold tracking-tight bg-gradient-to-b from-white to-[#888] bg-clip-text text-transparent">50+</span>
+              <span className="text-[10px] md:text-[11px] font-semibold text-[#888888] tracking-[0.15em] uppercase mt-2">Projects</span>
+            </div>
+            <div className="w-px h-10 bg-white/[0.06] shadow-[0_0_10px_rgba(255,255,255,0.05)]"></div>
+            <div className="flex flex-col items-center">
+              <span className="text-2xl md:text-3xl font-bold tracking-tight bg-gradient-to-b from-white to-[#888] bg-clip-text text-transparent">100+</span>
+              <span className="text-[10px] md:text-[11px] font-semibold text-[#888888] tracking-[0.15em] uppercase mt-2">Clients</span>
+            </div>
+            <div className="w-px h-10 bg-white/[0.06] shadow-[0_0_10px_rgba(255,255,255,0.05)]"></div>
+            <div className="flex flex-col items-center">
+              <span className="text-2xl md:text-3xl font-bold tracking-tight bg-gradient-to-b from-white to-[#888] bg-clip-text text-transparent">5+</span>
+              <span className="text-[10px] md:text-[11px] font-semibold text-[#888888] tracking-[0.15em] uppercase mt-2">Years</span>
+            </div>
+          </motion.div>
+
+          {/* Additional Trust Content */}
+          <motion.div variants={fadeUp} className="mt-12 text-center max-w-[60ch]">
+            <p className="text-sm text-[#A3A3A3] font-light leading-relaxed">
+              Trusted by bold founders and established enterprises globally. From <strong className="text-white font-medium">high-performance SaaS platforms</strong> to <strong className="text-white font-medium">convert-first digital campaigns</strong>, we bring Silicon Valley standards to every project we undertake.
+            </p>
+          </motion.div>
+        </motion.div>
+      </section>
+
+      {/* ──────────────── NEW CONTENT: MARQUEE & PHILOSOPHY ──────────────── */}
+      <TechMarquee />
+      <PhilosophySection />
+
+      {/* ──────────────── DUAL STUDIOS (Depth & Tactics) ──────────────── */}
+      <section id="studios" className="relative z-10 py-32 px-6 md:px-12 bg-gradient-to-b from-[#0A0A0A] to-[#111111]">
+        <div className="mx-auto max-w-[1280px]">
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-100px" }}
+            variants={fadeUp}
+            className="mb-20 text-center"
+          >
+            <h2 className="text-3xl md:text-5xl font-bold tracking-tight bg-gradient-to-r from-white to-[#999] bg-clip-text text-transparent">
+              Two studios. One standard.
+            </h2>
+          </motion.div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-10">
+            {/* ElixorTech Card */}
+            <motion.a
+              href="https://elixortech.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              initial={{ opacity: 0, scale: 0.96, y: 30 }}
+              whileInView={{ opacity: 1, scale: 1, y: 0 }}
+              viewport={{ once: true, margin: "-50px" }}
+              transition={{ duration: 0.8, ease: easeOutQuint }}
+              className="group relative flex flex-col p-10 md:p-14 rounded-3xl overflow-hidden transition-all duration-500 ease-out hover:-translate-y-2 hover:scale-[1.01]"
+              style={{
+                background: "rgba(255,255,255,0.02)",
+                backdropFilter: "blur(12px)",
+                border: "1px solid rgba(255,255,255,0.08)",
+                boxShadow: "0 10px 40px rgba(0,0,0,0.6)",
+              }}
             >
-              {/* Icon */}
-              <div className="w-11 h-11 rounded-xl bg-[#C8A04E]/10 border border-[#C8A04E]/20 flex items-center justify-center mb-8">
-                <Megaphone className="w-5 h-5 text-[#C8A04E]" />
+              {/* Inner glow on hover */}
+              <div className="absolute inset-0 bg-gradient-to-br from-white/[0.04] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+              {/* Directional light pulse */}
+              <div className="absolute -top-32 -left-32 w-64 h-64 bg-white/[0.04] rounded-full blur-[80px] opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+              
+              <div className="absolute top-0 right-0 p-10 opacity-0 group-hover:opacity-100 transition-all transform translate-x-4 -translate-y-4 group-hover:translate-x-0 group-hover:translate-y-0 duration-500">
+                <div className="p-3 rounded-full bg-white/[0.04] border border-white/[0.08] backdrop-blur-md">
+                  <ArrowUpRight className="w-5 h-5 text-white" />
+                </div>
+              </div>
+              
+              <div className="relative z-10 mb-12 w-14 h-14 rounded-xl bg-gradient-to-br from-[#2A2A2A] to-[#1C1C1C] border border-white/[0.08] shadow-[0_8px_16px_rgba(0,0,0,0.8)] flex items-center justify-center">
+                <Code2 className="w-6 h-6 text-white/80" />
               </div>
 
-              <div>
-                <span className="font-mono text-[10px] tracking-[0.2em] text-[#5B6478] uppercase">
-                  Digital Marketing & Social Media
-                </span>
-                <h3 className="text-2xl md:text-3xl font-semibold mt-2 tracking-tight">
-                  ClickCrafters
-                </h3>
-                <p className="mt-4 text-[#8B93A7] text-sm leading-relaxed max-w-[38ch]">
-                  Strategic content, data-driven campaigns, and creative that
-                  converts. We turn brands into movements through social
-                  media, paid acquisition, and audience building.
+              <div className="relative z-10 mt-auto">
+                <div className="text-[10px] uppercase font-bold tracking-[0.2em] text-[#A3A3A3] mb-4">Product Engineering</div>
+                <h3 className="text-4xl font-bold tracking-tight text-white mb-5 drop-shadow-md">ElixorTech</h3>
+                <p className="text-base text-[#A3A3A3] leading-relaxed max-w-[36ch] mb-10 font-light">
+                  Production-grade software architectures engineered for scale. We turn complex requirements into fast, reliable applications.
                 </p>
-
-                {/* Marketing tags */}
-                <div className="flex flex-wrap gap-2 mt-6">
-                  {["Social Media", "Paid Ads", "Content Studio", "UGC & Influencer", "Brand Strategy"].map((t) => (
-                    <span
-                      key={t}
-                      className="text-[11px] px-2.5 py-1 rounded-md bg-[#C8A04E]/8 text-[#8B93A7] border border-white/[0.06]"
-                    >
-                      {t}
+                
+                <div className="flex flex-wrap gap-2.5">
+                  {["React", "Next.js", "Node", "Flutter", "AWS"].map((tech) => (
+                    <span key={tech} className="text-[11px] uppercase font-semibold tracking-wider px-3.5 py-1.5 rounded-full bg-[#1A1A1A] border border-white/[0.06] text-[#D4D4D4] shadow-inner">
+                      {tech}
                     </span>
                   ))}
                 </div>
+              </div>
+            </motion.a>
 
-                {/* CTA */}
-                <span className="mt-8 inline-flex items-center gap-2 text-sm font-medium text-[#C8A04E] group-hover:gap-3 transition-all duration-300">
-                  Explore ClickCrafters
-                  <ArrowUpRight className="w-4 h-4" />
-                </span>
+            {/* ClickCrafters Card */}
+            <motion.a
+                href="/clickcrafters"
+                onClick={(e) => {
+                  e.preventDefault();
+                  // For the sake of routing within react-router, normally useLinkClickHandler or <Link>. 
+                  // Using an anchor with onClick to keep the same motion API layout wrapper easily.
+                  window.location.href = "/clickcrafters";
+                }}
+              initial={{ opacity: 0, scale: 0.96, y: 30 }}
+              whileInView={{ opacity: 1, scale: 1, y: 0 }}
+              viewport={{ once: true, margin: "-50px" }}
+              transition={{ duration: 0.8, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
+              className="group relative flex flex-col h-full p-10 md:p-14 rounded-3xl overflow-hidden transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] hover:-translate-y-2 hover:scale-[1.01]"
+              style={{
+                background: "rgba(255,255,255,0.02)",
+                backdropFilter: "blur(12px)",
+                border: "1px solid rgba(255,255,255,0.08)",
+                boxShadow: "0 10px 40px rgba(0,0,0,0.6)",
+              }}
+            >
+              {/* Inner glow on hover */}
+              <div className="absolute inset-0 bg-gradient-to-br from-white/[0.04] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+              {/* Directional light pulse */}
+              <div className="absolute -top-32 -left-32 w-64 h-64 bg-[rgba(44,42,38,0.2)] rounded-full blur-[80px] opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+              
+              <div className="absolute top-0 right-0 p-10 opacity-0 group-hover:opacity-100 transition-all transform translate-x-4 -translate-y-4 group-hover:translate-x-0 group-hover:translate-y-0 duration-500">
+                <div className="p-3 rounded-full bg-white/[0.04] border border-white/[0.08] backdrop-blur-md">
+                  <ArrowUpRight className="w-5 h-5 text-white" />
+                </div>
+              </div>
+              
+              <div className="relative z-10 mb-12 w-14 h-14 rounded-xl bg-gradient-to-br from-[#2A2A2A] to-[#1C1C1C] border border-white/[0.08] shadow-[0_8px_16px_rgba(0,0,0,0.8)] flex items-center justify-center">
+                <Megaphone className="w-6 h-6 text-white/80" />
               </div>
 
-              {/* Bottom accent line */}
-              <div className="absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-[#C8A04E]/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-            </Link>
-          </motion.div>
-        </div>
-      </motion.section>
-
-      {/* ─── Thin divider ─── */}
-      <div className="mx-auto max-w-6xl px-6">
-        <div className="h-px bg-white/[0.06]" />
-      </div>
-
-      {/* ═══════ CAPABILITIES ═══════ */}
-      <motion.section
-        className="relative z-10 mx-auto max-w-6xl px-6 py-20 md:py-28"
-        variants={stagger}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, margin: "-80px" }}
-      >
-        <motion.p
-          className="font-mono text-[11px] tracking-[0.25em] text-[#C8A04E] uppercase mb-4"
-          variants={fadeUp}
-        >
-          Why Us
-        </motion.p>
-        <motion.h2
-          className="text-3xl md:text-4xl font-semibold tracking-tight mb-14"
-          variants={fadeUp}
-        >
-          What drives our work
-        </motion.h2>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {/* Card 1 */}
-          <motion.div
-            className="group rounded-2xl border border-white/[0.06] bg-white/[0.02] p-7 md:p-8 hover:border-[#C8A04E]/15 transition-all duration-500"
-            variants={fadeUp}
-          >
-            <div className="w-10 h-10 rounded-lg bg-[#C8A04E]/10 border border-[#C8A04E]/20 flex items-center justify-center mb-6">
-              <Zap className="w-5 h-5 text-[#C8A04E]" />
-            </div>
-            <h3 className="font-semibold text-lg mb-3">Speed & Scale</h3>
-            <p className="text-[#8B93A7] text-sm leading-relaxed">
-              We ship fast. MVPs in weeks, not months. Our architecture scales
-              from launch day to enterprise loads without a rewrite.
-            </p>
-          </motion.div>
-
-          {/* Card 2 */}
-          <motion.div
-            className="group rounded-2xl border border-white/[0.06] bg-white/[0.02] p-7 md:p-8 hover:border-[#C8A04E]/15 transition-all duration-500"
-            variants={fadeUp}
-          >
-            <div className="w-10 h-10 rounded-lg bg-[#C8A04E]/10 border border-[#C8A04E]/20 flex items-center justify-center mb-6">
-              <Gem className="w-5 h-5 text-[#C8A04E]" />
-            </div>
-            <h3 className="font-semibold text-lg mb-3">Craft & Precision</h3>
-            <p className="text-[#8B93A7] text-sm leading-relaxed">
-              Every interface hand-crafted. Every interaction considered.
-              Design that earns trust, holds attention, and drives action.
-            </p>
-          </motion.div>
-
-          {/* Card 3 */}
-          <motion.div
-            className="group rounded-2xl border border-white/[0.06] bg-white/[0.02] p-7 md:p-8 hover:border-[#C8A04E]/15 transition-all duration-500"
-            variants={fadeUp}
-          >
-            <div className="w-10 h-10 rounded-lg bg-[#C8A04E]/10 border border-[#C8A04E]/20 flex items-center justify-center mb-6">
-              <Target className="w-5 h-5 text-[#C8A04E]" />
-            </div>
-            <h3 className="font-semibold text-lg mb-3">Strategy & Results</h3>
-            <p className="text-[#8B93A7] text-sm leading-relaxed">
-              No vanity metrics. Every campaign, every feature backed by data
-              and tied directly to business outcomes that matter.
-            </p>
-          </motion.div>
-        </div>
-      </motion.section>
-
-      {/* ─── Thin divider ─── */}
-      <div className="mx-auto max-w-6xl px-6">
-        <div className="h-px bg-white/[0.06]" />
-      </div>
-
-      {/* ═══════ SERVICES ═══════ */}
-      <motion.section
-        className="relative z-10 mx-auto max-w-6xl px-6 py-20 md:py-28"
-        variants={stagger}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, margin: "-80px" }}
-      >
-        <motion.p
-          className="font-mono text-[11px] tracking-[0.25em] text-[#C8A04E] uppercase mb-4"
-          variants={fadeUp}
-        >
-          Services
-        </motion.p>
-        <motion.h2
-          className="text-3xl md:text-4xl font-semibold tracking-tight mb-14"
-          variants={fadeUp}
-        >
-          A unified approach to digital
-        </motion.h2>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {/* Engineering */}
-          <motion.div
-            className="rounded-2xl border border-white/[0.06] bg-white/[0.02] p-8 md:p-10"
-            variants={fadeUp}
-          >
-            <div className="flex items-center gap-3 mb-5">
-              <div className="w-9 h-9 rounded-lg bg-[#C8A04E]/10 border border-[#C8A04E]/20 flex items-center justify-center">
-                <Layers className="w-4 h-4 text-[#C8A04E]" />
+              <div className="relative z-10 mt-auto">
+                <div className="text-[10px] uppercase font-bold tracking-[0.2em] text-[#A3A3A3] mb-4">Brand & Growth</div>
+                <h3 className="text-4xl font-bold tracking-tight text-white mb-5 drop-shadow-md">ClickCrafters</h3>
+                <p className="text-base text-[#A3A3A3] leading-relaxed max-w-[36ch] mb-10 font-light">
+                  High-performance digital marketing, strategic content, and paid acquisition that converts attention into revenue.
+                </p>
+                
+                <div className="flex flex-wrap gap-2.5">
+                  {["Social Media", "Paid Ads", "Content", "Strategy"].map((srv) => (
+                    <span key={srv} className="text-[11px] uppercase font-semibold tracking-wider px-3.5 py-1.5 rounded-full bg-[#1A1A1A] border border-white/[0.06] text-[#D4D4D4] shadow-inner">
+                      {srv}
+                    </span>
+                  ))}
+                </div>
               </div>
-              <h3 className="font-semibold text-lg">Product & Engineering</h3>
-            </div>
-            <p className="text-[#8B93A7] text-sm leading-relaxed mb-6">
-              We build high-performance, scalable web and mobile applications.
-              From custom software and UI/UX design to AI-powered automations
-              — ideas become enterprise-grade products.
-            </p>
-            <div className="flex flex-wrap gap-2">
-              {[
-                "React / Next.js",
-                "Node.js / Python",
-                "UI/UX Design",
-                "Flutter / React Native",
-                "AI & Automation",
-              ].map((t) => (
-                <span
-                  key={t}
-                  className="text-[11px] px-2.5 py-1 rounded-md bg-[#C8A04E]/8 text-[#C8A04E]/80 border border-[#C8A04E]/15"
-                >
-                  {t}
-                </span>
-              ))}
-            </div>
-          </motion.div>
+            </motion.a>
+          </div>
+        </div>
+      </section>
 
-          {/* Marketing */}
-          <motion.div
-            className="rounded-2xl border border-white/[0.06] bg-white/[0.02] p-8 md:p-10"
-            variants={fadeUp}
-          >
-            <div className="flex items-center gap-3 mb-5">
-              <div className="w-9 h-9 rounded-lg bg-[#C8A04E]/10 border border-[#C8A04E]/20 flex items-center justify-center">
-                <Globe className="w-4 h-4 text-[#C8A04E]" />
+      {/* ──────────────── WHY US (Authority) ──────────────── */}
+      <section className="relative z-10 py-32 px-6 md:px-12 bg-[#111111]">
+        <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-white/[0.06] to-transparent" />
+        <div className="mx-auto max-w-[1280px]">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-16 md:gap-12">
+            <motion.div 
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-50px" }}
+              transition={{ duration: 0.8, ease: easeOutQuint }}
+              className="flex flex-col group"
+            >
+              <div className="w-12 h-12 mb-8 flex items-center justify-center rounded-xl bg-[#1C1C1C] border border-white/[0.08] shadow-[0_4px_12px_rgba(0,0,0,0.4)] group-hover:-translate-y-1 transition-transform">
+                <Zap className="w-5 h-5 text-white/80" />
               </div>
-              <h3 className="font-semibold text-lg">Brand & Marketing</h3>
-            </div>
-            <p className="text-[#8B93A7] text-sm leading-relaxed mb-6">
-              We build scroll-stopping brands. Performance-driven digital
-              marketing campaigns, studio-quality social content, and paid ad
-              strategies that convert attention into revenue.
+              <h4 className="text-xl font-semibold tracking-tight text-white mb-3">Speed & Scale</h4>
+              <p className="text-[#A3A3A3] text-base leading-relaxed font-light">
+                We move fast without breaking things. Our engineered solutions are designed to scale smoothly from day one to enterprise loads.
+              </p>
+            </motion.div>
+
+            <motion.div 
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-50px" }}
+              transition={{ duration: 0.8, delay: 0.1, ease: easeOutQuint }}
+              className="flex flex-col group"
+            >
+              <div className="w-12 h-12 mb-8 flex items-center justify-center rounded-xl bg-[#1C1C1C] border border-white/[0.08] shadow-[0_4px_12px_rgba(0,0,0,0.4)] group-hover:-translate-y-1 transition-transform">
+                <Gem className="w-5 h-5 text-white/80" />
+              </div>
+              <h4 className="text-xl font-semibold tracking-tight text-white mb-3">Craft & Precision</h4>
+              <p className="text-[#A3A3A3] text-base leading-relaxed font-light">
+                Every line of code and pixel of design is meticulously refined. We deliver a Stripe-level feel to your digital presence.
+              </p>
+            </motion.div>
+
+            <motion.div 
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-50px" }}
+              transition={{ duration: 0.8, delay: 0.2, ease: easeOutQuint }}
+              className="flex flex-col group"
+            >
+              <div className="w-12 h-12 mb-8 flex items-center justify-center rounded-xl bg-[#1C1C1C] border border-white/[0.08] shadow-[0_4px_12px_rgba(0,0,0,0.4)] group-hover:-translate-y-1 transition-transform">
+                <Target className="w-5 h-5 text-white/80" />
+              </div>
+              <h4 className="text-xl font-semibold tracking-tight text-white mb-3">Strategy & Results</h4>
+              <p className="text-[#A3A3A3] text-base leading-relaxed font-light">
+                No vanity metrics. Everything we ship is tied to concrete business results, user engagement, and measurable ROI.
+              </p>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* ──────────────── CTA ──────────────── */}
+      <section className="relative z-10 py-40 px-6 md:px-12 bg-gradient-to-b from-[#111111] to-[#0A0A0A]">
+        <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-white/[0.06] to-transparent" />
+        <div className="mx-auto max-w-[800px] text-center">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 1, ease: easeOutQuint }}
+          >
+            <h2 className="text-[clamp(2.5rem,5vw,4.5rem)] font-bold tracking-tight text-white mb-8 leading-[1.05]">
+              Ready to build something <span className="bg-gradient-to-r from-[#DDDDDD] to-[#888888] bg-clip-text text-transparent">remarkable?</span>
+            </h2>
+            <p className="text-[#A3A3A3] text-lg md:text-xl font-light mb-14 max-w-[40ch] mx-auto">
+              We don't just deliver. We scale what matters. Let's engineer your next big move.
             </p>
-            <div className="flex flex-wrap gap-2">
-              {[
-                "Social Media Mgmt",
-                "Content Studio (Reels)",
-                "Paid Ads (Meta/Google)",
-                "Influencer & UGC",
-                "Brand Strategy",
-              ].map((t) => (
-                <span
-                  key={t}
-                  className="text-[11px] px-2.5 py-1 rounded-md bg-[#C8A04E]/8 text-[#C8A04E]/80 border border-[#C8A04E]/15"
-                >
-                  {t}
-                </span>
-              ))}
-            </div>
+            <a
+              href="#contact"
+              className="inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-b from-[#FFFFFF] to-[#E5E5E5] border border-white/[0.1] text-black px-10 py-5 text-base font-bold shadow-[0_0_40px_rgba(255,255,255,0.15)] hover:shadow-[0_0_60px_rgba(255,255,255,0.25)] hover:-translate-y-1 active:scale-[0.98] transition-all"
+            >
+              Start a Conversation
+              <ArrowUpRight className="w-5 h-5 ml-1" />
+            </a>
           </motion.div>
         </div>
-      </motion.section>
+      </section>
 
-      {/* ═══════ CTA BAND ═══════ */}
-      <motion.section
-        className="relative z-10 mx-auto max-w-6xl px-6 py-20 md:py-28 text-center"
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        viewport={{ once: true, margin: "-80px" }}
-        transition={{ duration: 0.8 }}
-      >
-        <div className="mx-auto max-w-2xl">
-          <p className="font-mono text-[11px] tracking-[0.25em] text-[#C8A04E] uppercase mb-6">
-            Next Step
-          </p>
-          <h2 className="text-3xl md:text-4xl font-semibold tracking-tight mb-5">
-            Ready to build something remarkable?
-          </h2>
-          <p className="text-[#8B93A7] mb-10 leading-relaxed">
-            Whether you need a product that scales or a brand that resonates
-            — we're ready when you are.
-          </p>
-          <a
-            href="#contact"
-            className="inline-flex items-center gap-2 rounded-lg bg-[#C8A04E] text-[#060B18] px-8 py-4 text-sm font-semibold hover:bg-[#D4AD5F] transition-colors duration-200"
-          >
-            Start a Conversation
-            <ArrowUpRight className="w-4 h-4" />
-          </a>
-        </div>
-      </motion.section>
-
-      {/* ═══════ CONTACT ═══════ */}
+      {/* ──────────────── CONTACT FORM ──────────────── */}
       <ContactSection />
 
-      {/* ═══════ FOOTER ═══════ */}
-      <footer className="relative z-10 mx-auto max-w-6xl px-6 pb-10 pt-6">
-        <div className="h-px bg-white/[0.06] mb-8" />
-        <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-          <p className="text-xs text-[#5B6478]">
-            © {new Date().getFullYear()} Vincie Studios — ElixorTech &
-            ClickCrafters. All rights reserved.
-          </p>
-          <div className="flex items-center gap-6">
-            <Link
-              to="/blog"
-              className="text-xs text-[#5B6478] hover:text-[#8B93A7] transition-colors"
-            >
-              Journal
-            </Link>
-            <a
-              href="https://elixortech.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-xs text-[#5B6478] hover:text-[#8B93A7] transition-colors"
-            >
-              ElixorTech
-            </a>
-            <Link
-              to="/clickcrafters"
-              className="text-xs text-[#5B6478] hover:text-[#8B93A7] transition-colors"
-            >
-              ClickCrafters
-            </Link>
+      {/* ──────────────── FOOTER ──────────────── */}
+      <footer className="relative z-10 bg-[#0A0A0A] pt-16 pb-12 px-6 md:px-12">
+        <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-white/[0.04] to-transparent" />
+        <div className="mx-auto max-w-[1280px] flex flex-col md:flex-row items-center justify-between gap-8">
+          <div className="flex flex-col md:flex-row items-center gap-2 md:gap-4 text-[#888888] text-xs font-semibold tracking-wider uppercase">
+            <img 
+              src="/vinciestudio.png" 
+              alt="Vincie Studios Logo" 
+              className="h-5 w-auto object-contain opacity-50 md:mr-2" 
+            />
+            <span>© {new Date().getFullYear()} Vincie Studios</span>
+            <span className="hidden md:inline text-white/[0.1]">|</span>
+            <span>ElixorTech & ClickCrafters</span>
+          </div>
+          
+          <div className="flex items-center gap-8 text-xs font-semibold tracking-wider uppercase">
+            <Link to="/blog" className="text-[#888888] hover:text-white transition-colors">Journal</Link>
+            <a href="https://elixortech.com" target="_blank" rel="noopener noreferrer" className="text-[#888888] hover:text-white transition-colors">ElixorTech</a>
+            <Link to="/clickcrafters" className="text-[#888888] hover:text-white transition-colors">ClickCrafters</Link>
           </div>
         </div>
       </footer>
@@ -678,9 +575,9 @@ export default function Gateway() {
   );
 }
 
-// ════════════════════════════════════════════
-//  CONTACT SECTION  (internal component)
-// ════════════════════════════════════════════
+/* ─────────────────────────────────────────────────────────────────────────────
+   CONTACT SECTION (Refined Depth)
+───────────────────────────────────────────────────────────────────────────── */
 const ContactSection = () => {
   const { toast } = useToast();
   const [formData, setFormData] = useState({ name: "", email: "", message: "" });
@@ -693,8 +590,6 @@ const ContactSection = () => {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const SCRIPT_URL = "/api/contact";
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
@@ -704,231 +599,114 @@ const ContactSection = () => {
         email: formData.email,
         message: formData.message,
         source: "gateway",
-        utm: window.location.search || "",
       };
-      const resp = await fetch(SCRIPT_URL, {
+      const resp = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
       });
-      let data;
-      try {
-        data = await resp.json();
-      } catch {
-        data = { success: resp.ok };
-      }
+      let data = await resp.json().catch(() => ({ success: resp.ok }));
       if (data?.success) {
-        toast({
-          title: "Message sent successfully!",
-          description: "We'll get back to you within 24 hours.",
-        });
+        toast({ title: "Inquiry received.", description: "We will reach out shortly." });
         setFormData({ name: "", email: "", message: "" });
       } else {
-        throw new Error(data?.error || "Submission failed");
+        throw new Error(data?.error || "Failed");
       }
     } catch (err) {
-      console.error("Submit error", err);
-      toast({
-        title: "Unable to send message",
-        description: "There was a problem sending your message. Try again later.",
-      });
+      toast({ title: "Error", description: "Submission failed. Please try again." });
     } finally {
       setIsSubmitting(false);
     }
   };
 
   return (
-    <motion.section
-      id="contact"
-      className="relative z-10 mx-auto max-w-6xl px-6 py-20 md:py-28"
-      variants={stagger}
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true, margin: "-80px" }}
-    >
-      {/* Divider */}
-      <div className="h-px bg-white/[0.06] mb-16" />
-
-      {/* Header */}
-      <motion.div className="mb-14" variants={fadeUp}>
-        <p className="font-mono text-[11px] tracking-[0.25em] text-[#C8A04E] uppercase mb-4">
-          Contact
-        </p>
-        <h2 className="text-3xl md:text-4xl font-semibold tracking-tight mb-4">
-          Get in touch
-        </h2>
-        <p className="text-[#8B93A7] max-w-[50ch] leading-relaxed">
-          Have a project in mind? We'd love to hear about it. Send us a
-          message and we'll respond within 24 hours.
-        </p>
-      </motion.div>
-
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16">
-        {/* ── Info column ── */}
-        <motion.div className="space-y-8" variants={fadeUp}>
-          <div className="space-y-5">
-            {/* Email */}
-            <div className="flex items-start gap-4">
-              <div className="w-10 h-10 rounded-lg bg-[#C8A04E]/10 border border-[#C8A04E]/20 flex items-center justify-center flex-shrink-0">
-                <Mail className="w-4 h-4 text-[#C8A04E]" />
-              </div>
-              <div>
-                <p className="text-sm font-medium mb-0.5">Email</p>
-                <a
-                  href="mailto:vinciestudios@gmail.com"
-                  className="text-sm text-[#8B93A7] hover:text-[#F0EDE6] transition-colors"
-                >
-                  vinciestudios@gmail.com
-                </a>
-              </div>
-            </div>
-
-            {/* Phone */}
-            <div className="flex items-start gap-4">
-              <div className="w-10 h-10 rounded-lg bg-[#C8A04E]/10 border border-[#C8A04E]/20 flex items-center justify-center flex-shrink-0">
-                <Phone className="w-4 h-4 text-[#C8A04E]" />
-              </div>
-              <div>
-                <p className="text-sm font-medium mb-0.5">Phone</p>
-                <a
-                  href="tel:+917375038069"
-                  className="text-sm text-[#8B93A7] hover:text-[#F0EDE6] transition-colors"
-                >
-                  +91 73750 38069
-                </a>
-              </div>
-            </div>
-
-            {/* Location */}
-            <div className="flex items-start gap-4">
-              <div className="w-10 h-10 rounded-lg bg-[#C8A04E]/10 border border-[#C8A04E]/20 flex items-center justify-center flex-shrink-0">
-                <MapPin className="w-4 h-4 text-[#C8A04E]" />
-              </div>
-              <div>
-                <p className="text-sm font-medium mb-0.5">Location</p>
-                <p className="text-sm text-[#8B93A7]">
-                  Jaipur, Rajasthan, 302031
-                </p>
-              </div>
-            </div>
-          </div>
-
-          {/* Social */}
-          <div>
-            <p className="text-sm font-medium mb-4">Follow us</p>
-            <div className="flex gap-3">
-              <a
-                href="https://www.instagram.com/studiovincie/"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Instagram"
-                className="w-10 h-10 rounded-lg border border-white/[0.06] bg-white/[0.02] flex items-center justify-center hover:border-[#C8A04E]/25 hover:text-[#C8A04E] text-[#8B93A7] transition-all duration-300"
-              >
-                <Instagram className="w-4 h-4" />
-              </a>
-              <a
-                href="https://www.linkedin.com/in/vincie-studios-034378398/"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="LinkedIn"
-                className="w-10 h-10 rounded-lg border border-white/[0.06] bg-white/[0.02] flex items-center justify-center hover:border-[#C8A04E]/25 hover:text-[#C8A04E] text-[#8B93A7] transition-all duration-300"
-              >
-                <Linkedin className="w-4 h-4" />
-              </a>
-              <a
-                href="https://wa.me/7375038069"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="WhatsApp"
-                className="w-10 h-10 rounded-lg border border-white/[0.06] bg-white/[0.02] flex items-center justify-center hover:border-[#C8A04E]/25 hover:text-[#C8A04E] text-[#8B93A7] transition-all duration-300"
-              >
-                <MessageSquare className="w-4 h-4" />
-              </a>
-            </div>
-          </div>
-        </motion.div>
-
-        {/* ── Form column ── */}
-        <motion.div variants={fadeUp}>
-          <form
-            onSubmit={handleSubmit}
-            className="rounded-2xl border border-white/[0.06] bg-white/[0.02] p-8 space-y-5"
+    <section id="contact" className="relative z-10 py-32 px-6 md:px-12 bg-[#0A0A0A]">
+      <div className="mx-auto max-w-[1280px]">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 md:gap-24 items-start">
+          
+          <motion.div 
+            initial={{ opacity: 0, x: -30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
           >
-            <div>
-              <label
-                htmlFor="contact-name"
-                className="block text-sm font-medium mb-2 text-[#F0EDE6]/80"
-              >
-                Name
-              </label>
+            <h2 className="text-4xl md:text-5xl font-bold tracking-tight text-white mb-6">Connect with us.</h2>
+            <p className="text-[#A3A3A3] font-light max-w-[40ch] mb-14 leading-relaxed text-lg">
+              Have an enterprise requirement or a new project idea? Send us the details.
+            </p>
+
+            <div className="flex flex-col gap-10">
+              <div className="flex items-center gap-6 group">
+                <div className="w-12 h-12 flex items-center justify-center rounded-xl bg-[#111111] border border-white/[0.08] shadow-[0_4px_12px_rgba(0,0,0,0.5)] group-hover:scale-105 transition-transform">
+                  <Mail className="w-5 h-5 text-white/80" />
+                </div>
+                <a href="mailto:vinciestudios@gmail.com" className="text-lg font-medium text-white hover:text-[#A3A3A3] transition-colors">vinciestudios@gmail.com</a>
+              </div>
+              <div className="flex items-center gap-6 group">
+                <div className="w-12 h-12 flex items-center justify-center rounded-xl bg-[#111111] border border-white/[0.08] shadow-[0_4px_12px_rgba(0,0,0,0.5)] group-hover:scale-105 transition-transform">
+                  <Phone className="w-5 h-5 text-white/80" />
+                </div>
+                <a href="tel:+917375038069" className="text-lg font-medium text-white hover:text-[#A3A3A3] transition-colors">+91 73750 38069</a>
+              </div>
+            </div>
+          </motion.div>
+
+          <motion.form 
+            onSubmit={handleSubmit}
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 1, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
+            className="flex flex-col gap-6 p-10 md:p-14 rounded-3xl overflow-hidden relative"
+            style={{
+              background: "rgba(255,255,255,0.02)",
+              backdropFilter: "blur(12px)",
+              border: "1px solid rgba(255,255,255,0.06)",
+              boxShadow: "0 20px 60px rgba(0,0,0,0.5)",
+            }}
+          >
+            {/* Ambient light for form */}
+            <div className="absolute -top-32 -right-32 w-64 h-64 bg-white/[0.03] rounded-full blur-[80px] pointer-events-none" />
+
+            <div className="flex flex-col gap-2 relative z-10">
+              <label htmlFor="name" className="text-[10px] font-bold text-[#A3A3A3] tracking-[0.15em] uppercase">Full Name</label>
               <input
-                type="text"
-                id="contact-name"
-                name="name"
-                value={formData.name}
-                onChange={handleInputChange}
-                required
-                className="w-full px-4 py-3 rounded-lg bg-white/[0.03] border border-white/[0.08] text-[#F0EDE6] placeholder:text-[#5B6478] focus:outline-none focus:border-[#C8A04E]/40 focus:ring-1 focus:ring-[#C8A04E]/20 transition-all text-sm"
-                placeholder="Your full name"
+                id="name" name="name" type="text" required
+                value={formData.name} onChange={handleInputChange}
+                className="w-full bg-[#0A0A0A]/50 border border-white/[0.08] rounded-xl px-4 py-4 text-white focus:outline-none focus:border-white/[0.2] transition-colors text-base shadow-inner"
+              />
+            </div>
+            
+            <div className="flex flex-col gap-2 relative z-10">
+              <label htmlFor="email" className="text-[10px] font-bold text-[#A3A3A3] tracking-[0.15em] uppercase">Email Address</label>
+              <input
+                id="email" name="email" type="email" required
+                value={formData.email} onChange={handleInputChange}
+                className="w-full bg-[#0A0A0A]/50 border border-white/[0.08] rounded-xl px-4 py-4 text-white focus:outline-none focus:border-white/[0.2] transition-colors text-base shadow-inner"
               />
             </div>
 
-            <div>
-              <label
-                htmlFor="contact-email"
-                className="block text-sm font-medium mb-2 text-[#F0EDE6]/80"
-              >
-                Email
-              </label>
-              <input
-                type="email"
-                id="contact-email"
-                name="email"
-                value={formData.email}
-                onChange={handleInputChange}
-                required
-                className="w-full px-4 py-3 rounded-lg bg-white/[0.03] border border-white/[0.08] text-[#F0EDE6] placeholder:text-[#5B6478] focus:outline-none focus:border-[#C8A04E]/40 focus:ring-1 focus:ring-[#C8A04E]/20 transition-all text-sm"
-                placeholder="you@company.com"
-              />
-            </div>
-
-            <div>
-              <label
-                htmlFor="contact-message"
-                className="block text-sm font-medium mb-2 text-[#F0EDE6]/80"
-              >
-                Project Details
-              </label>
+            <div className="flex flex-col gap-2 mb-6 relative z-10">
+              <label htmlFor="message" className="text-[10px] font-bold text-[#A3A3A3] tracking-[0.15em] uppercase">Project Details</label>
               <textarea
-                id="contact-message"
-                name="message"
-                value={formData.message}
-                onChange={handleInputChange}
-                required
-                rows={5}
-                className="w-full px-4 py-3 rounded-lg bg-white/[0.03] border border-white/[0.08] text-[#F0EDE6] placeholder:text-[#5B6478] focus:outline-none focus:border-[#C8A04E]/40 focus:ring-1 focus:ring-[#C8A04E]/20 transition-all text-sm resize-none"
-                placeholder="Tell us about your project, timeline, and budget..."
+                id="message" name="message" rows={4} required
+                value={formData.message} onChange={handleInputChange}
+                className="w-full bg-[#0A0A0A]/50 border border-white/[0.08] rounded-xl px-4 py-4 text-white focus:outline-none focus:border-white/[0.2] transition-colors resize-none text-base shadow-inner"
               />
             </div>
 
             <button
               type="submit"
-              id="contact-submit"
               disabled={isSubmitting}
-              className="w-full inline-flex items-center justify-center gap-2 rounded-lg bg-[#C8A04E] text-[#060B18] py-3.5 px-6 font-semibold text-sm hover:bg-[#D4AD5F] disabled:opacity-50 transition-colors duration-200"
+              className="group relative z-10 flex items-center justify-center gap-2 bg-gradient-to-b from-[#FFFFFF] to-[#E5E5E5] text-[#0A0A0A] rounded-xl py-4 font-bold shadow-[0_0_20px_rgba(255,255,255,0.1)] hover:shadow-[0_0_30px_rgba(255,255,255,0.2)] hover:-translate-y-0.5 active:scale-[0.98] transition-all disabled:opacity-50"
             >
-              {isSubmitting ? (
-                "Sending..."
-              ) : (
-                <>
-                  Send Message
-                  <Send className="w-4 h-4" />
-                </>
-              )}
+              {isSubmitting ? "Sending..." : "Submit Inquiry"}
+              {!isSubmitting && <Send className="w-4 h-4 ml-1 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />}
             </button>
-          </form>
-        </motion.div>
+          </motion.form>
+
+        </div>
       </div>
-    </motion.section>
+    </section>
   );
-};
+}

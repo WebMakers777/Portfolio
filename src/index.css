@@ -2,6 +2,13 @@
 @tailwind components;
 @tailwind utilities;
 
+@media (pointer: fine) {
+  body.hide-cursor, body.hide-cursor * {
+    cursor: none !important;
+  }
+}
+@tailwind utilities;
+
 /* Hide scrollbars globally while keeping scroll functionality */
 html {
   scrollbar-width: none; /* Firefox */
