@@ -179,6 +179,7 @@ export default function Gateway() {
   const { scrollY } = useScroll();
   const heroY = useTransform(scrollY, [0, 800], ["0%", "15%"]);
   const heroOpacity = useTransform(scrollY, [0, 600], [1, 0]);
+  const heroBlur = useTransform(scrollY, [0, 600], ["blur(0px)", "blur(24px)"]);
 
   // Navigate to sections via router state
   useEffect(() => {
@@ -262,68 +263,70 @@ export default function Gateway() {
           variants={stagger}
           initial="hidden"
           animate="visible"
-          style={{ y: heroY, opacity: heroOpacity }}
         >
-          {/* Tag */}
-          <motion.div
-            variants={fadeUp}
-            className="mb-8 inline-flex items-center gap-2 rounded-full border border-white/[0.08] bg-[#111111]/40 px-5 py-1.5 md:mb-10 text-[12px] uppercase font-semibold tracking-[0.1em] text-[#A3A3A3] backdrop-blur-md shadow-[0_4px_20px_rgba(0,0,0,0.5)]"
-          >
-            Engineering meets storytelling
-          </motion.div>
-
-          {/* Headline */}
-          <motion.h1
-            variants={fadeUp}
-            className="text-[clamp(3rem,8vw,6.5rem)] font-bold leading-[1] tracking-[-0.04em] max-w-[15ch]"
-          >
-            <span className="bg-gradient-to-r from-white via-[#E0E0E0] to-[#999999] bg-clip-text text-transparent drop-shadow-sm">
-              We build products.
-            </span>
-            <br />
-            <span className="bg-gradient-to-r from-[#999999] via-[#C0C0C0] to-[#FFFFFF] bg-clip-text text-transparent drop-shadow-sm">
-              We grow brands.
-            </span>
-          </motion.h1>
-
-          <motion.p
-            variants={fadeUp}
-            className="mt-8 text-base md:text-xl text-[#A3A3A3] max-w-[48ch] leading-relaxed font-light"
-          >
-            Production-grade software and performance-driven marketing under one standard. Designed for startups, funded companies, and serious businesses.
-          </motion.p>
-
-          <motion.div variants={fadeUp} className="mt-14 flex flex-col sm:flex-row items-center gap-5">
-            <a
-              href="#contact"
-              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-b from-[#FFFFFF] to-[#E5E5E5] border border-white/[0.1] text-black px-8 py-4.5 text-sm font-semibold shadow-[0_0_30px_rgba(255,255,255,0.15)] hover:shadow-[0_0_40px_rgba(255,255,255,0.25)] hover:-translate-y-0.5 active:scale-[0.98] transition-all"
+          {/* Top Hero Content that fades out on scroll */}
+          <motion.div style={{ y: heroY, opacity: heroOpacity, filter: heroBlur }} className="flex flex-col items-center w-full">
+            {/* Tag */}
+            <motion.div
+              variants={fadeUp}
+              className="mb-8 inline-flex items-center gap-2 rounded-full border border-white/[0.08] bg-[#111111]/40 px-4 sm:px-5 py-1.5 md:mb-10 text-[10px] sm:text-[12px] uppercase font-semibold tracking-[0.1em] text-[#A3A3A3] backdrop-blur-md shadow-[0_4px_20px_rgba(0,0,0,0.5)] text-center max-w-full"
             >
-              Start a Project
-            </a>
-            <a
-              href="#studios"
-              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-xl border border-white/[0.08] bg-[#111111]/80 hover:bg-[#161616] text-[#F5F5F5] px-8 py-4.5 text-sm font-medium shadow-[0_10px_30px_rgba(0,0,0,0.5)] hover:shadow-[0_15px_40px_rgba(0,0,0,0.6)] hover:-translate-y-0.5 active:scale-[0.98] transition-all backdrop-blur-sm"
+              Engineering meets storytelling
+            </motion.div>
+
+            {/* Headline */}
+            <motion.h1
+              variants={fadeUp}
+              className="text-[clamp(2.5rem,8vw,6.5rem)] font-bold leading-[1.05] sm:leading-[1] tracking-[-0.04em] max-w-[15ch] px-2 sm:px-0"
             >
-              Explore Our Work
-              <ArrowDown className="w-4 h-4 ml-1 opacity-60" />
-            </a>
+              <span className="bg-gradient-to-r from-white via-[#E0E0E0] to-[#999999] bg-clip-text text-transparent drop-shadow-sm">
+                We build products.
+              </span>
+              <br />
+              <span className="bg-gradient-to-r from-[#999999] via-[#C0C0C0] to-[#FFFFFF] bg-clip-text text-transparent drop-shadow-sm">
+                We grow brands.
+              </span>
+            </motion.h1>
+
+            <motion.p
+              variants={fadeUp}
+              className="mt-6 sm:mt-8 text-sm sm:text-base md:text-xl text-[#A3A3A3] max-w-[48ch] leading-relaxed font-light px-4 sm:px-0"
+            >
+              Production-grade software and performance-driven marketing under one standard. Designed for startups, funded companies, and serious businesses.
+            </motion.p>
+
+            <motion.div variants={fadeUp} className="mt-10 sm:mt-14 flex flex-col sm:flex-row items-center gap-4 sm:gap-5 w-full sm:w-auto px-6 sm:px-0">
+              <a
+                href="#contact"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-b from-[#FFFFFF] to-[#E5E5E5] border border-white/[0.1] text-black px-8 py-4 text-sm font-semibold shadow-[0_0_30px_rgba(255,255,255,0.15)] hover:shadow-[0_0_40px_rgba(255,255,255,0.25)] hover:-translate-y-0.5 active:scale-[0.98] transition-all"
+              >
+                Start a Project
+              </a>
+              <a
+                href="#studios"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-xl border border-white/[0.08] bg-[#111111]/80 hover:bg-[#161616] text-[#F5F5F5] px-8 py-4 text-sm font-medium shadow-[0_10px_30px_rgba(0,0,0,0.5)] hover:shadow-[0_15px_40px_rgba(0,0,0,0.6)] hover:-translate-y-0.5 active:scale-[0.98] transition-all backdrop-blur-sm"
+              >
+                Explore Our Work
+                <ArrowDown className="w-4 h-4 ml-1 opacity-60" />
+              </a>
+            </motion.div>
           </motion.div>
 
           {/* Trust Indicators */}
-          <motion.div variants={fadeUp} className="mt-20 md:mt-28 flex items-center justify-center gap-8 md:gap-16 border-t border-white/[0.06] pt-10">
+          <motion.div variants={fadeUp} className="mt-16 md:mt-28 flex items-center justify-center gap-4 sm:gap-8 md:gap-16 border-t border-white/[0.06] pt-10 w-full max-w-[800px] mx-auto px-4 sm:px-0">
             <div className="flex flex-col items-center">
-              <span className="text-2xl md:text-3xl font-bold tracking-tight bg-gradient-to-b from-white to-[#888] bg-clip-text text-transparent">50+</span>
-              <span className="text-[10px] md:text-[11px] font-semibold text-[#888888] tracking-[0.15em] uppercase mt-2">Projects</span>
+              <span className="text-2xl sm:text-3xl font-bold tracking-tight bg-gradient-to-b from-white to-[#888] bg-clip-text text-transparent">50+</span>
+              <span className="text-[9px] sm:text-[11px] font-semibold text-[#888888] tracking-[0.15em] uppercase mt-1 sm:mt-2">Projects</span>
             </div>
-            <div className="w-px h-10 bg-white/[0.06] shadow-[0_0_10px_rgba(255,255,255,0.05)]"></div>
+            <div className="w-px h-8 sm:h-10 bg-white/[0.06] shadow-[0_0_10px_rgba(255,255,255,0.05)]"></div>
             <div className="flex flex-col items-center">
-              <span className="text-2xl md:text-3xl font-bold tracking-tight bg-gradient-to-b from-white to-[#888] bg-clip-text text-transparent">100+</span>
-              <span className="text-[10px] md:text-[11px] font-semibold text-[#888888] tracking-[0.15em] uppercase mt-2">Clients</span>
+              <span className="text-2xl sm:text-3xl font-bold tracking-tight bg-gradient-to-b from-white to-[#888] bg-clip-text text-transparent">100+</span>
+              <span className="text-[9px] sm:text-[11px] font-semibold text-[#888888] tracking-[0.15em] uppercase mt-1 sm:mt-2">Clients</span>
             </div>
-            <div className="w-px h-10 bg-white/[0.06] shadow-[0_0_10px_rgba(255,255,255,0.05)]"></div>
+            <div className="w-px h-8 sm:h-10 bg-white/[0.06] shadow-[0_0_10px_rgba(255,255,255,0.05)]"></div>
             <div className="flex flex-col items-center">
-              <span className="text-2xl md:text-3xl font-bold tracking-tight bg-gradient-to-b from-white to-[#888] bg-clip-text text-transparent">5+</span>
-              <span className="text-[10px] md:text-[11px] font-semibold text-[#888888] tracking-[0.15em] uppercase mt-2">Years</span>
+              <span className="text-2xl sm:text-3xl font-bold tracking-tight bg-gradient-to-b from-white to-[#888] bg-clip-text text-transparent">5+</span>
+              <span className="text-[9px] sm:text-[11px] font-semibold text-[#888888] tracking-[0.15em] uppercase mt-1 sm:mt-2">Years</span>
             </div>
           </motion.div>
 
