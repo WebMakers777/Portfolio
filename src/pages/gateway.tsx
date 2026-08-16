@@ -1,6 +1,6 @@
-import { Link, useLocation } from "react-router-dom";
-import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
-import React, { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
+import { motion, useScroll, useTransform, useInView, AnimatePresence } from "framer-motion";
+import React, { useEffect, useState, useRef } from "react";
 import {
   Mail,
   Phone,
@@ -17,6 +17,9 @@ import {
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import WhatsAppFloat from "@/components/WhatsappFloat";
+import ServicesGrid from "@/components/gateway/ServicesGrid";
+import TechStackShowcase from "@/components/gateway/TechStackShowcase";
+import HowWeWork from "@/components/gateway/HowWeWork";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // MOTION PRESETS (Refined cinematic timings)
@@ -60,21 +63,25 @@ const TechMarquee = () => {
       >
         <div className="flex items-center">
           <MarqueeItem>React & Next.js</MarqueeItem>
-          <MarqueeItem>High-Performance APIs</MarqueeItem>
-          <MarqueeItem>Conversion Optimization</MarqueeItem>
+          <MarqueeItem>SaaS Architecture</MarqueeItem>
+          <MarqueeItem>Custom Software</MarqueeItem>
           <MarqueeItem>iOS & Android Native</MarqueeItem>
-          <MarqueeItem>Framer Motion</MarqueeItem>
+          <MarqueeItem>Cloud Infrastructure</MarqueeItem>
           <MarqueeItem>Enterprise Architecture</MarqueeItem>
           <MarqueeItem>Data Science & AI</MarqueeItem>
+          <MarqueeItem>CI/CD Pipelines</MarqueeItem>
+          <MarqueeItem>PostgreSQL & Redis</MarqueeItem>
         </div>
         <div className="flex items-center">
           <MarqueeItem>React & Next.js</MarqueeItem>
-          <MarqueeItem>High-Performance APIs</MarqueeItem>
-          <MarqueeItem>Conversion Optimization</MarqueeItem>
+          <MarqueeItem>SaaS Architecture</MarqueeItem>
+          <MarqueeItem>Custom Software</MarqueeItem>
           <MarqueeItem>iOS & Android Native</MarqueeItem>
-          <MarqueeItem>Framer Motion</MarqueeItem>
+          <MarqueeItem>Cloud Infrastructure</MarqueeItem>
           <MarqueeItem>Enterprise Architecture</MarqueeItem>
           <MarqueeItem>Data Science & AI</MarqueeItem>
+          <MarqueeItem>CI/CD Pipelines</MarqueeItem>
+          <MarqueeItem>PostgreSQL & Redis</MarqueeItem>
         </div>
       </motion.div>
     </div>
@@ -129,6 +136,168 @@ const PhilosophySection = () => {
             </div>
           </motion.div>
         </div>
+      </div>
+    </section>
+  );
+};
+
+// ─────────────────────────────────────────────────────────────────────────────
+// ANIMATED COUNTER HOOK
+// ─────────────────────────────────────────────────────────────────────────────
+const AnimatedCounter = ({ target, suffix = "" }: { target: number; suffix?: string }) => {
+  const ref = useRef<HTMLSpanElement>(null);
+  const isInView = useInView(ref, { once: true });
+  const [count, setCount] = useState(0);
+
+  useEffect(() => {
+    if (!isInView) return;
+    let startTime: number | null = null;
+    const duration = 2000;
+    const animate = (currentTime: number) => {
+      if (!startTime) startTime = currentTime;
+      const elapsed = currentTime - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      const easedProgress = 1 - Math.pow(1 - progress, 3);
+      setCount(Math.floor(easedProgress * target));
+      if (progress < 1) requestAnimationFrame(animate);
+    };
+    requestAnimationFrame(animate);
+  }, [isInView, target]);
+
+  return (
+    <span ref={ref} className="text-3xl sm:text-4xl font-bold tracking-tight bg-gradient-to-b from-white to-[#888] bg-clip-text text-transparent">
+      {count}{suffix}
+    </span>
+  );
+};
+
+// ─────────────────────────────────────────────────────────────────────────────
+// WHY US SECTION (Enhanced with counters + hover effects)
+// ─────────────────────────────────────────────────────────────────────────────
+const whyUsItems = [
+  {
+    icon: Zap,
+    title: "Speed & Scale",
+    description: "We move fast without breaking things. Our engineered solutions are designed to scale smoothly from day one to enterprise loads.",
+  },
+  {
+    icon: Gem,
+    title: "Craft & Precision",
+    description: "Every line of code and pixel of design is meticulously refined. We deliver a Stripe-level feel to your digital presence.",
+  },
+  {
+    icon: Target,
+    title: "Strategy & Results",
+    description: "No vanity metrics. Everything we ship is tied to concrete business results, user engagement, and measurable ROI.",
+  },
+];
+
+const WhyUsSection = () => {
+  return (
+    <section className="relative z-10 py-32 px-6 md:px-12 bg-[#0A0A0A]">
+      <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-white/[0.06] to-transparent" />
+      <div className="mx-auto max-w-[1280px]">
+        {/* Section Header */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 1, ease: easeOutQuint }}
+          className="text-center mb-20"
+        >
+          <div className="text-[12px] uppercase font-semibold tracking-[0.2em] text-[#A3A3A3] mb-6 flex items-center justify-center gap-3">
+            <span className="w-8 h-px bg-white/20" />
+            Why Vincie Studios
+            <span className="w-8 h-px bg-white/20" />
+          </div>
+          <h2 className="text-3xl md:text-5xl font-bold tracking-tight bg-gradient-to-r from-white to-[#999] bg-clip-text text-transparent">
+            Built different.
+          </h2>
+        </motion.div>
+
+        {/* Animated Stat Counters */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-50px" }}
+          transition={{ duration: 0.8, ease: easeOutQuint }}
+          className="grid grid-cols-3 gap-6 md:gap-12 mb-20 max-w-[700px] mx-auto"
+        >
+          <div className="flex flex-col items-center text-center">
+            <AnimatedCounter target={50} suffix="+" />
+            <span className="text-[10px] sm:text-[11px] font-semibold text-[#888888] tracking-[0.15em] uppercase mt-2">Projects</span>
+          </div>
+          <div className="flex flex-col items-center text-center relative">
+            <div className="absolute left-0 top-1/2 -translate-y-1/2 w-px h-10 bg-white/[0.06]" />
+            <div className="absolute right-0 top-1/2 -translate-y-1/2 w-px h-10 bg-white/[0.06]" />
+            <AnimatedCounter target={100} suffix="+" />
+            <span className="text-[10px] sm:text-[11px] font-semibold text-[#888888] tracking-[0.15em] uppercase mt-2">Clients</span>
+          </div>
+          <div className="flex flex-col items-center text-center">
+            <AnimatedCounter target={5} suffix="+" />
+            <span className="text-[10px] sm:text-[11px] font-semibold text-[#888888] tracking-[0.15em] uppercase mt-2">Years</span>
+          </div>
+        </motion.div>
+
+        {/* Why Us Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {whyUsItems.map((item, i) => {
+            const Icon = item.icon;
+            return (
+              <motion.div
+                key={item.title}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-50px" }}
+                transition={{ duration: 0.8, delay: i * 0.1, ease: easeOutQuint }}
+                className="group relative flex flex-col p-8 md:p-10 rounded-2xl transition-all duration-500 hover:-translate-y-1"
+                style={{
+                  background: "rgba(255,255,255,0.02)",
+                  border: "1px solid rgba(255,255,255,0.06)",
+                }}
+              >
+                {/* Hover border gradient */}
+                <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none"
+                  style={{
+                    background: "linear-gradient(135deg, rgba(255,255,255,0.08) 0%, transparent 50%, rgba(255,255,255,0.04) 100%)",
+                    mask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
+                    maskComposite: "xor",
+                    WebkitMaskComposite: "xor",
+                    padding: "1px",
+                    borderRadius: "inherit",
+                  }}
+                />
+                {/* Hover inner glow */}
+                <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-white/[0.03] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
+
+                <div className="relative z-10">
+                  <div className="w-12 h-12 mb-8 flex items-center justify-center rounded-xl bg-[#1C1C1C] border border-white/[0.08] shadow-[0_4px_12px_rgba(0,0,0,0.4)] group-hover:bg-[#222] group-hover:border-white/[0.14] group-hover:shadow-[0_4px_20px_rgba(0,0,0,0.6),0_0_15px_rgba(255,255,255,0.04)] transition-all duration-500">
+                    <Icon className="w-5 h-5 text-white/80" />
+                  </div>
+                  <h4 className="text-xl font-semibold tracking-tight text-white mb-3">
+                    {item.title}
+                  </h4>
+                  <p className="text-[#A3A3A3] text-base leading-relaxed font-light">
+                    {item.description}
+                  </p>
+                </div>
+              </motion.div>
+            );
+          })}
+        </div>
+
+        {/* Social Proof Quote */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8, delay: 0.3, ease: easeOutQuint }}
+          className="mt-16 text-center"
+        >
+          <p className="text-sm text-[#A3A3A3] font-light italic max-w-[50ch] mx-auto leading-relaxed">
+            "Trusted by bold founders and established enterprises globally. From high-performance SaaS platforms to convert-first digital campaigns."
+          </p>
+        </motion.div>
       </div>
     </section>
   );
@@ -237,12 +406,6 @@ export default function Gateway() {
           </a>
 
           <div className="flex items-center gap-8">
-            <Link
-              to="/blog"
-              className="text-sm font-medium text-[#A3A3A3] hover:text-[#F5F5F5] transition-colors"
-            >
-              Journal
-            </Link>
             <a
               href="#contact"
               className="group relative px-5 py-2.5 rounded-lg text-sm font-medium bg-gradient-to-b from-white to-[#E5E5E5] text-black shadow-[0_0_20px_rgba(255,255,255,0.1)] hover:shadow-[0_0_25px_rgba(255,255,255,0.2)] active:scale-[0.98] transition-all overflow-hidden"
@@ -292,7 +455,7 @@ export default function Gateway() {
               variants={fadeUp}
               className="mt-6 sm:mt-8 text-sm sm:text-base md:text-xl text-[#A3A3A3] max-w-[48ch] leading-relaxed font-light px-4 sm:px-0"
             >
-              Production-grade software and performance-driven marketing under one standard. Designed for startups, funded companies, and serious businesses.
+              From SaaS platforms to custom enterprise software — we engineer, design, and scale your entire digital presence. Built for startups, funded companies, and serious businesses.
             </motion.p>
 
             <motion.div variants={fadeUp} className="mt-10 sm:mt-14 flex flex-col sm:flex-row items-center gap-4 sm:gap-5 w-full sm:w-auto px-6 sm:px-0">
@@ -303,7 +466,7 @@ export default function Gateway() {
                 Start a Project
               </a>
               <a
-                href="#studios"
+                href="#services"
                 className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-xl border border-white/[0.08] bg-[#111111]/80 hover:bg-[#161616] text-[#F5F5F5] px-8 py-4 text-sm font-medium shadow-[0_10px_30px_rgba(0,0,0,0.5)] hover:shadow-[0_15px_40px_rgba(0,0,0,0.6)] hover:-translate-y-0.5 active:scale-[0.98] transition-all backdrop-blur-sm"
               >
                 Explore Our Work
@@ -343,182 +506,17 @@ export default function Gateway() {
       <TechMarquee />
       <PhilosophySection />
 
-      {/* ──────────────── DUAL STUDIOS (Depth & Tactics) ──────────────── */}
-      <section id="studios" className="relative z-10 py-32 px-6 md:px-12 bg-gradient-to-b from-[#0A0A0A] to-[#111111]">
-        <div className="mx-auto max-w-[1280px]">
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-100px" }}
-            variants={fadeUp}
-            className="mb-20 text-center"
-          >
-            <h2 className="text-3xl md:text-5xl font-bold tracking-tight bg-gradient-to-r from-white to-[#999] bg-clip-text text-transparent">
-              Two studios. One standard.
-            </h2>
-          </motion.div>
+      {/* ──────────────── INTERACTIVE SERVICES GRID ──────────────── */}
+      <ServicesGrid />
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-10">
-            {/* ElixorTech Card */}
-            <motion.a
-              href="https://elixortech.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              initial={{ opacity: 0, scale: 0.96, y: 30 }}
-              whileInView={{ opacity: 1, scale: 1, y: 0 }}
-              viewport={{ once: true, margin: "-50px" }}
-              transition={{ duration: 0.8, ease: easeOutQuint }}
-              className="group relative flex flex-col p-10 md:p-14 rounded-3xl overflow-hidden transition-all duration-500 ease-out hover:-translate-y-2 hover:scale-[1.01]"
-              style={{
-                background: "rgba(255,255,255,0.02)",
-                backdropFilter: "blur(12px)",
-                border: "1px solid rgba(255,255,255,0.08)",
-                boxShadow: "0 10px 40px rgba(0,0,0,0.6)",
-              }}
-            >
-              {/* Inner glow on hover */}
-              <div className="absolute inset-0 bg-gradient-to-br from-white/[0.04] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
-              {/* Directional light pulse */}
-              <div className="absolute -top-32 -left-32 w-64 h-64 bg-white/[0.04] rounded-full blur-[80px] opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
-              
-              <div className="absolute top-0 right-0 p-10 opacity-0 group-hover:opacity-100 transition-all transform translate-x-4 -translate-y-4 group-hover:translate-x-0 group-hover:translate-y-0 duration-500">
-                <div className="p-3 rounded-full bg-white/[0.04] border border-white/[0.08] backdrop-blur-md">
-                  <ArrowUpRight className="w-5 h-5 text-white" />
-                </div>
-              </div>
-              
-              <div className="relative z-10 mb-12 w-14 h-14 rounded-xl bg-gradient-to-br from-[#2A2A2A] to-[#1C1C1C] border border-white/[0.08] shadow-[0_8px_16px_rgba(0,0,0,0.8)] flex items-center justify-center">
-                <Code2 className="w-6 h-6 text-white/80" />
-              </div>
+      {/* ──────────────── TECH STACK SHOWCASE ──────────────── */}
+      <TechStackShowcase />
 
-              <div className="relative z-10 mt-auto">
-                <div className="text-[10px] uppercase font-bold tracking-[0.2em] text-[#A3A3A3] mb-4">Product Engineering</div>
-                <h3 className="text-4xl font-bold tracking-tight text-white mb-5 drop-shadow-md">ElixorTech</h3>
-                <p className="text-base text-[#A3A3A3] leading-relaxed max-w-[36ch] mb-10 font-light">
-                  Production-grade software architectures engineered for scale. We turn complex requirements into fast, reliable applications.
-                </p>
-                
-                <div className="flex flex-wrap gap-2.5">
-                  {["React", "Next.js", "Node", "Flutter", "AWS"].map((tech) => (
-                    <span key={tech} className="text-[11px] uppercase font-semibold tracking-wider px-3.5 py-1.5 rounded-full bg-[#1A1A1A] border border-white/[0.06] text-[#D4D4D4] shadow-inner">
-                      {tech}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            </motion.a>
-
-            {/* ClickCrafters Card */}
-            <motion.a
-                href="/clickcrafters"
-                onClick={(e) => {
-                  e.preventDefault();
-                  // For the sake of routing within react-router, normally useLinkClickHandler or <Link>. 
-                  // Using an anchor with onClick to keep the same motion API layout wrapper easily.
-                  window.location.href = "/clickcrafters";
-                }}
-              initial={{ opacity: 0, scale: 0.96, y: 30 }}
-              whileInView={{ opacity: 1, scale: 1, y: 0 }}
-              viewport={{ once: true, margin: "-50px" }}
-              transition={{ duration: 0.8, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
-              className="group relative flex flex-col h-full p-10 md:p-14 rounded-3xl overflow-hidden transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] hover:-translate-y-2 hover:scale-[1.01]"
-              style={{
-                background: "rgba(255,255,255,0.02)",
-                backdropFilter: "blur(12px)",
-                border: "1px solid rgba(255,255,255,0.08)",
-                boxShadow: "0 10px 40px rgba(0,0,0,0.6)",
-              }}
-            >
-              {/* Inner glow on hover */}
-              <div className="absolute inset-0 bg-gradient-to-br from-white/[0.04] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
-              {/* Directional light pulse */}
-              <div className="absolute -top-32 -left-32 w-64 h-64 bg-[rgba(44,42,38,0.2)] rounded-full blur-[80px] opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
-              
-              <div className="absolute top-0 right-0 p-10 opacity-0 group-hover:opacity-100 transition-all transform translate-x-4 -translate-y-4 group-hover:translate-x-0 group-hover:translate-y-0 duration-500">
-                <div className="p-3 rounded-full bg-white/[0.04] border border-white/[0.08] backdrop-blur-md">
-                  <ArrowUpRight className="w-5 h-5 text-white" />
-                </div>
-              </div>
-              
-              <div className="relative z-10 mb-12 w-14 h-14 rounded-xl bg-gradient-to-br from-[#2A2A2A] to-[#1C1C1C] border border-white/[0.08] shadow-[0_8px_16px_rgba(0,0,0,0.8)] flex items-center justify-center">
-                <Megaphone className="w-6 h-6 text-white/80" />
-              </div>
-
-              <div className="relative z-10 mt-auto">
-                <div className="text-[10px] uppercase font-bold tracking-[0.2em] text-[#A3A3A3] mb-4">Brand & Growth</div>
-                <h3 className="text-4xl font-bold tracking-tight text-white mb-5 drop-shadow-md">ClickCrafters</h3>
-                <p className="text-base text-[#A3A3A3] leading-relaxed max-w-[36ch] mb-10 font-light">
-                  High-performance digital marketing, strategic content, and paid acquisition that converts attention into revenue.
-                </p>
-                
-                <div className="flex flex-wrap gap-2.5">
-                  {["Social Media", "Paid Ads", "Content", "Strategy"].map((srv) => (
-                    <span key={srv} className="text-[11px] uppercase font-semibold tracking-wider px-3.5 py-1.5 rounded-full bg-[#1A1A1A] border border-white/[0.06] text-[#D4D4D4] shadow-inner">
-                      {srv}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            </motion.a>
-          </div>
-        </div>
-      </section>
+      {/* ──────────────── HOW WE WORK ──────────────── */}
+      <HowWeWork />
 
       {/* ──────────────── WHY US (Authority) ──────────────── */}
-      <section className="relative z-10 py-32 px-6 md:px-12 bg-[#111111]">
-        <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-white/[0.06] to-transparent" />
-        <div className="mx-auto max-w-[1280px]">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-16 md:gap-12">
-            <motion.div 
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-50px" }}
-              transition={{ duration: 0.8, ease: easeOutQuint }}
-              className="flex flex-col group"
-            >
-              <div className="w-12 h-12 mb-8 flex items-center justify-center rounded-xl bg-[#1C1C1C] border border-white/[0.08] shadow-[0_4px_12px_rgba(0,0,0,0.4)] group-hover:-translate-y-1 transition-transform">
-                <Zap className="w-5 h-5 text-white/80" />
-              </div>
-              <h4 className="text-xl font-semibold tracking-tight text-white mb-3">Speed & Scale</h4>
-              <p className="text-[#A3A3A3] text-base leading-relaxed font-light">
-                We move fast without breaking things. Our engineered solutions are designed to scale smoothly from day one to enterprise loads.
-              </p>
-            </motion.div>
-
-            <motion.div 
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-50px" }}
-              transition={{ duration: 0.8, delay: 0.1, ease: easeOutQuint }}
-              className="flex flex-col group"
-            >
-              <div className="w-12 h-12 mb-8 flex items-center justify-center rounded-xl bg-[#1C1C1C] border border-white/[0.08] shadow-[0_4px_12px_rgba(0,0,0,0.4)] group-hover:-translate-y-1 transition-transform">
-                <Gem className="w-5 h-5 text-white/80" />
-              </div>
-              <h4 className="text-xl font-semibold tracking-tight text-white mb-3">Craft & Precision</h4>
-              <p className="text-[#A3A3A3] text-base leading-relaxed font-light">
-                Every line of code and pixel of design is meticulously refined. We deliver a Stripe-level feel to your digital presence.
-              </p>
-            </motion.div>
-
-            <motion.div 
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-50px" }}
-              transition={{ duration: 0.8, delay: 0.2, ease: easeOutQuint }}
-              className="flex flex-col group"
-            >
-              <div className="w-12 h-12 mb-8 flex items-center justify-center rounded-xl bg-[#1C1C1C] border border-white/[0.08] shadow-[0_4px_12px_rgba(0,0,0,0.4)] group-hover:-translate-y-1 transition-transform">
-                <Target className="w-5 h-5 text-white/80" />
-              </div>
-              <h4 className="text-xl font-semibold tracking-tight text-white mb-3">Strategy & Results</h4>
-              <p className="text-[#A3A3A3] text-base leading-relaxed font-light">
-                No vanity metrics. Everything we ship is tied to concrete business results, user engagement, and measurable ROI.
-              </p>
-            </motion.div>
-          </div>
-        </div>
-      </section>
+      <WhyUsSection />
 
       {/* ──────────────── CTA ──────────────── */}
       <section className="relative z-10 py-40 px-6 md:px-12 bg-gradient-to-b from-[#111111] to-[#0A0A0A]">
@@ -561,14 +559,11 @@ export default function Gateway() {
               className="h-5 w-auto object-contain opacity-50 md:mr-2" 
             />
             <span>© {new Date().getFullYear()} Vincie Studios</span>
-            <span className="hidden md:inline text-white/[0.1]">|</span>
-            <span>ElixorTech & ClickCrafters</span>
+
           </div>
           
           <div className="flex items-center gap-8 text-xs font-semibold tracking-wider uppercase">
-            <Link to="/blog" className="text-[#888888] hover:text-white transition-colors">Journal</Link>
-            <a href="https://elixortech.com" target="_blank" rel="noopener noreferrer" className="text-[#888888] hover:text-white transition-colors">ElixorTech</a>
-            <Link to="/clickcrafters" className="text-[#888888] hover:text-white transition-colors">ClickCrafters</Link>
+            <a href="#contact" className="text-[#888888] hover:text-white transition-colors">Contact</a>
           </div>
         </div>
       </footer>

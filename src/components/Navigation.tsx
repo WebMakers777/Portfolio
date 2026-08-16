@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Menu, X } from "lucide-react";
 import { Link } from "react-router-dom";
-import logo from "../assets/elixor.png";
+const logo = "/vinciestudio.png";
 
 export function Navigation() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -42,11 +42,11 @@ export function Navigation() {
             >
               <img
                 src={logo}
-                alt="ElixorTech Logo"
+                alt="Vincie Studios Logo"
                 className="h-8 w-auto sm:h-10 md:h-12 lg:h-14"
               />
               <h1 className="text-lg sm:text-xl lg:text-2xl font-bold text-gradient">
-                ElixorTech
+                Vincie Studios
               </h1>
             </Link>
           </div>
@@ -78,12 +78,6 @@ export function Navigation() {
               >
                 About Us
               </button>
-              <Link
-                to="/clickcrafters"
-                className="relative inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-gradient-to-r from-cyan-400/20 to-blue-400/20 border border-cyan-400/50 text-cyan-300 hover:text-cyan-200 hover:border-cyan-300 hover:shadow-[0_0_20px_rgba(34,211,238,0.5)] transition-all duration-300 text-sm font-medium"
-              >
-                ClickCrafters
-              </Link>
             </div>
           </div>
 
@@ -130,13 +124,6 @@ export function Navigation() {
               >
                 About Us
               </button>
-
-              <Link
-                to="/clickcrafters"
-                className="block px-3 py-2 text-base font-medium rounded-lg bg-gradient-to-r from-cyan-400/20 to-blue-400/20 border border-cyan-400/50 text-cyan-300 hover:text-cyan-200 hover:border-cyan-300 hover:shadow-[0_0_20px_rgba(34,211,238,0.5)] transition-all duration-300 mt-2"
-              >
-                ClickCrafters
-              </Link>
             </div>
           </div>
         )}

@@ -7,18 +7,7 @@
     "env": {
         "NODE_ENV": "production"
     },
-    "redirects": [
-        {
-            "source": "/elixortech",
-            "destination": "https://elixortech.com",
-            "permanent": true
-        },
-        {
-            "source": "/elixortech/(.*)",
-            "destination": "https://elixortech.com/$1",
-            "permanent": true
-        }
-    ],
+    "redirects": [],
     "routes": [
         {
             "src": "/api/contact",

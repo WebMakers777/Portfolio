@@ -32,7 +32,7 @@ export default function NavigationBuilders() {
           to="/"
           className="text-2xl md:text-3xl font-semibold gradient-text hover:opacity-80 transition"
         >
-          ClickCrafters
+          Vincie Studios
         </Link>
 
         <nav className="hidden md:flex items-baseline ml-10 space-x-8">
@@ -54,12 +54,6 @@ export default function NavigationBuilders() {
           <button onClick={() => scrollToSection("about")} className="nav-link">
             About Us
           </button>
-          <Link
-            to="/elixortech"
-            className="relative inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-gradient-to-r from-purple-400/20 to-pink-400/20 border border-purple-400/50 text-purple-300 hover:text-purple-200 hover:border-purple-300 transition-all duration-300 text-sm font-medium"
-          >
-            ElixorTech
-          </Link>
         </nav>
 
         <div className="md:hidden">
@@ -116,12 +110,6 @@ export default function NavigationBuilders() {
             >
               About Us
             </button>
-            <Link
-              to="/elixortech"
-              className="block px-3 py-2 text-base font-medium rounded-lg bg-gradient-to-r from-purple-400/20 to-pink-400/20 border border-purple-400/50 text-purple-300 hover:text-purple-200 transition-all duration-300 mt-2"
-            >
-              ElixorTech
-            </Link>
           </div>
         </div>
       )}

@@ -23,13 +23,7 @@ const Footer = () => {
       return;
     }
 
-    // For all other sections: target the ElixorTech page.
-    // If we're not on `/elixortech`, navigate there and request a scroll;
-    // if already on `/elixortech`, perform an in-page smooth scroll.
-    if (location.pathname !== "/elixortech") {
-      navigate("/elixortech", { state: { scrollTo: sectionId } });
-      return;
-    }
+    // For all other sections: scroll on the current page.
     const element = document.getElementById(sectionId);
     if (element) {
       element.scrollIntoView({ behavior: "smooth" });
@@ -131,26 +125,10 @@ const Footer = () => {
             </div>
           </div>
 
-          {/* Portals */}
+          {/* Quick Links */}
           <div>
-            <h4 className="font-semibold mb-4">Our Portals</h4>
+            <h4 className="font-semibold mb-4">Quick Links</h4>
             <ul className="space-y-2">
-              <li>
-                <Link
-                  to="/elixortech"
-                  className="text-muted-foreground hover:text-foreground transition-colors duration-200"
-                >
-                  ElixorTech
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/clickcrafters"
-                  className="text-muted-foreground hover:text-foreground transition-colors duration-200"
-                >
-                  ClickCrafters
-                </Link>
-              </li>
               <li>
                 <Link
                   to="/"

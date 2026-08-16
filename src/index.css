@@ -98,8 +98,8 @@ body::-webkit-scrollbar {
 
 /* -------------------------
    THEME TOKENS (scoped)
-   - ElixorTech: dark, electric blue
-   - ClickCrafters: light, creative
+   - Dark theme: dark, electric blue
+   - Light theme: light, creative
 --------------------------*/
 
 @layer base {
@@ -150,7 +150,7 @@ body::-webkit-scrollbar {
     --transition-bounce: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
   }
 
-  /* ELIXORTECH (your current dark design moved here) */
+  /* DARK THEME (electric blue) */
   .theme-elixortech {
     /* Core Dark Theme Colors */
     --background: 222 84% 5%;
@@ -218,8 +218,8 @@ body::-webkit-scrollbar {
     --popover-foreground: 210 40% 98%;
   }
 
-  /* CLICKCRAFTERS (light, creative) */
-  /* CLICKCRAFTERS THEME — bright, creative, design-studio vibe */
+  /* LIGHT THEME (bright, creative) */
+  /* Light theme — bright, creative, design-studio vibe */
   .theme-clickcrafters {
     --background: 0 0% 100%; /* White canvas */
     --foreground: 230 15% 10%; /* Deep neutral text */
