@@ -14,12 +14,15 @@ import {
   Layers,
   Code2,
   Megaphone,
+  Menu,
+  X,
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import WhatsAppFloat from "@/components/WhatsappFloat";
-import ServicesGrid from "@/components/gateway/ServicesGrid";
 import TechStackShowcase from "@/components/gateway/TechStackShowcase";
 import HowWeWork from "@/components/gateway/HowWeWork";
+import Navbar from "@/components/gateway/Navbar";
+import Footer from "@/components/gateway/Footer";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // MOTION PRESETS (Refined cinematic timings)
@@ -90,12 +93,12 @@ const TechMarquee = () => {
 
 const PhilosophySection = () => {
   return (
-    <section className="relative z-10 py-32 px-6 md:px-12 bg-[#0A0A0A]">
+    <section id="about" className="relative z-10 py-32 px-6 md:px-12 bg-[#0A0A0A] overflow-hidden">
       <div className="mx-auto max-w-[1280px]">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-8 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-12 items-center">
           <motion.div 
             initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }} variants={fadeUp}
-            className="lg:col-span-7"
+            className="lg:col-span-6"
           >
             <div className="text-[12px] uppercase font-semibold tracking-[0.2em] text-[#A3A3A3] mb-8 flex items-center gap-3">
               <span className="w-8 h-px bg-white/20"></span>
@@ -105,33 +108,48 @@ const PhilosophySection = () => {
               We don't build MVPs.<br />
               <span className="text-[#888]">We build market leaders.</span>
             </h2>
-            <p className="text-lg md:text-xl text-[#A3A3A3] font-light leading-relaxed max-w-[45ch]">
+            <p className="text-lg md:text-xl text-[#A3A3A3] font-light leading-relaxed max-w-[45ch] mb-8">
               At Vincie Studios, we believe that software should feel tactile and marketing should be invisible. We combine obsessive product engineering with elite digital strategy to scale ambitious brands.
             </p>
+            <div className="flex items-center gap-6">
+              <div className="flex items-center gap-2.5">
+                <div className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
+                <span className="text-xs font-semibold uppercase tracking-widest text-[#AAA]">Zero-Debt Code</span>
+              </div>
+              <div className="w-px h-4 bg-white/10" />
+              <div className="flex items-center gap-2.5">
+                <div className="w-1.5 h-1.5 rounded-full bg-white/50" />
+                <span className="text-xs font-semibold uppercase tracking-widest text-[#AAA]">Custom Architecture</span>
+              </div>
+            </div>
           </motion.div>
           
           <motion.div 
             initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }} variants={fadeUp}
-            className="lg:col-span-5 relative group"
+            className="lg:col-span-6 relative group"
           >
-            <div className="absolute inset-0 bg-gradient-to-br from-white/[0.04] to-transparent rounded-3xl -m-4 opacity-0 group-hover:opacity-100 transition-opacity duration-700 blur-2xl" />
-            <div className="relative p-10 md:p-12 rounded-3xl bg-[#111111]/60 backdrop-blur-md border border-white/[0.06] shadow-[0_10px_30px_rgba(0,0,0,0.5)]">
-              <div className="w-12 h-12 rounded-full border border-white/[0.1] bg-white/[0.03] flex items-center justify-center mb-8 shadow-inner">
-                <Target className="w-5 h-5 text-white/80" />
+            <div className="relative rounded-3xl overflow-hidden border border-white/[0.08] shadow-[0_20px_60px_rgba(0,0,0,0.8)] bg-[#111111]/80 backdrop-blur-md">
+              <div className="relative aspect-[16/10] w-full overflow-hidden">
+                <img 
+                  src="/cloud-code.jpg" 
+                  alt="Vincie Studios Code Engineering Workstation" 
+                  className="w-full h-full object-cover grayscale contrast-125 opacity-80 group-hover:scale-105 group-hover:opacity-95 transition-all duration-700" 
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#111111] via-[#111111]/40 to-transparent" />
               </div>
-              <h3 className="text-2xl font-bold text-white mb-4">Precision over Pace</h3>
-              <p className="text-[#A3A3A3] text-sm leading-relaxed mb-8">
-                While others rush to ship incomplete code, we engineer for the long term. Every pixel, animation, and database query is calibrated for absolute perfection.
-              </p>
-              <div className="flex items-center gap-4 border-t border-white/[0.08] pt-6">
-                <div className="flex -space-x-3">
-                  {[1, 2, 3].map((i) => (
-                     <div key={i} className="w-8 h-8 rounded-full bg-[#1A1A1A] border-2 border-[#111] shadow-[0_4px_10px_rgba(0,0,0,0.5)] flex items-center justify-center">
-                        <ArrowUpRight className="w-3 h-3 text-[#666]" />
-                     </div>
-                  ))}
+              
+              <div className="p-8 sm:p-10 relative -mt-16 z-10">
+                <div className="w-12 h-12 rounded-xl border border-white/[0.12] bg-black/80 backdrop-blur-md flex items-center justify-center mb-6 shadow-xl">
+                  <Target className="w-5 h-5 text-white" />
                 </div>
-                <span className="text-[10px] uppercase tracking-widest text-[#666] font-semibold">Elite Talent</span>
+                <h3 className="text-2xl font-bold text-white mb-3">Precision over Pace</h3>
+                <p className="text-[#A3A3A3] text-sm leading-relaxed mb-6 font-light">
+                  While others rush to ship incomplete code, we engineer for the long term. Every line of code, software architecture, and database query is calibrated for absolute perfection.
+                </p>
+                <div className="flex items-center justify-between border-t border-white/[0.08] pt-4 text-xs text-[#888]">
+                  <span className="text-[10px] uppercase tracking-widest text-[#AAA] font-semibold">Silicon Valley Standard</span>
+                  <span>100% Crafted In-House</span>
+                </div>
               </div>
             </div>
           </motion.div>
@@ -344,7 +362,6 @@ export default function Gateway() {
     return () => clearTimeout(timer);
   }, []);
   const location = useLocation();
-  const [scrolled, setScrolled] = useState(false);
   const { scrollY } = useScroll();
   const heroY = useTransform(scrollY, [0, 800], ["0%", "15%"]);
   const heroOpacity = useTransform(scrollY, [0, 600], [1, 0]);
@@ -363,12 +380,6 @@ export default function Gateway() {
     }
   }, [location]);
 
-  useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 30);
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
   return (
     <main className="relative min-h-screen w-full bg-[#0A0A0A] text-[#F5F5F5] selection:bg-[#F5F5F5] selection:text-[#0A0A0A] overflow-hidden font-inter">
       <AnimatePresence mode="wait">
@@ -383,38 +394,7 @@ export default function Gateway() {
       />
 
       {/* ──────────────── STICKY NAV ──────────────── */}
-      <motion.nav
-        className={`fixed top-0 inset-x-0 z-50 transition-all duration-500 ${
-          scrolled
-            ? "bg-[#0A0A0A]/40 backdrop-blur-xl border-b border-white/[0.06] py-3 shadow-[0_4px_30px_rgba(0,0,0,0.5)]"
-            : "bg-transparent border-transparent py-5"
-        }`}
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8, ease: easeOutQuint }}
-      >
-        <div className="mx-auto max-w-[1280px] flex items-center justify-between px-6 md:px-12">
-          <a href="/" className="flex items-center gap-3 group" aria-label="Home">
-            <img 
-              src="/vinciestudio.png" 
-              alt="Vincie Studios Logo" 
-              className="h-8 w-auto object-contain transition-transform duration-500 group-hover:scale-105" 
-            />
-            <span className="text-base font-semibold tracking-wide text-[#F5F5F5] hidden sm:inline-block">
-              Vincie Studios
-            </span>
-          </a>
-
-          <div className="flex items-center gap-8">
-            <a
-              href="#contact"
-              className="group relative px-5 py-2.5 rounded-lg text-sm font-medium bg-gradient-to-b from-white to-[#E5E5E5] text-black shadow-[0_0_20px_rgba(255,255,255,0.1)] hover:shadow-[0_0_25px_rgba(255,255,255,0.2)] active:scale-[0.98] transition-all overflow-hidden"
-            >
-              <span className="relative z-10">Start a Project</span>
-            </a>
-          </div>
-        </div>
-      </motion.nav>
+      <Navbar />
 
       {/* ──────────────── HERO ──────────────── */}
       <section className="relative z-10 pt-[24vh] pb-[16vh] px-6 md:px-12">
@@ -506,9 +486,6 @@ export default function Gateway() {
       <TechMarquee />
       <PhilosophySection />
 
-      {/* ──────────────── INTERACTIVE SERVICES GRID ──────────────── */}
-      <ServicesGrid />
-
       {/* ──────────────── TECH STACK SHOWCASE ──────────────── */}
       <TechStackShowcase />
 
@@ -549,24 +526,7 @@ export default function Gateway() {
       <ContactSection />
 
       {/* ──────────────── FOOTER ──────────────── */}
-      <footer className="relative z-10 bg-[#0A0A0A] pt-16 pb-12 px-6 md:px-12">
-        <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-white/[0.04] to-transparent" />
-        <div className="mx-auto max-w-[1280px] flex flex-col md:flex-row items-center justify-between gap-8">
-          <div className="flex flex-col md:flex-row items-center gap-2 md:gap-4 text-[#888888] text-xs font-semibold tracking-wider uppercase">
-            <img 
-              src="/vinciestudio.png" 
-              alt="Vincie Studios Logo" 
-              className="h-5 w-auto object-contain opacity-50 md:mr-2" 
-            />
-            <span>© {new Date().getFullYear()} Vincie Studios</span>
-
-          </div>
-          
-          <div className="flex items-center gap-8 text-xs font-semibold tracking-wider uppercase">
-            <a href="#contact" className="text-[#888888] hover:text-white transition-colors">Contact</a>
-          </div>
-        </div>
-      </footer>
+      <Footer />
 
       <WhatsAppFloat />
     </main>

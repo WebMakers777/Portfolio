@@ -1,132 +1,52 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import {
-  Layers,
-  Code2,
-  Monitor,
-  Smartphone,
-  Cloud,
-  Megaphone,
   CheckCircle2,
   ArrowUpRight,
+  ArrowRight,
   ChevronDown,
   X,
+  Monitor,
+  Layers,
+  Database,
+  Building2,
+  Cpu,
+  Smartphone,
+  Cloud,
+  TrendingUp,
+  Sparkles,
 } from "lucide-react";
+import { servicesData } from "@/data/servicesData";
 
 const easeOutQuint = [0.22, 1, 0.36, 1] as const;
 
-interface Service {
-  id: string;
-  icon: React.ComponentType<{ className?: string }>;
-  label: string;
-  brief: string;
-  description: string;
-  deliverables: string[];
-  tags: string[];
-}
-
-const services: Service[] = [
-  {
-    id: "saas",
-    icon: Layers,
-    label: "SaaS Development",
-    brief: "Multi-tenant platforms built for scale",
-    description:
-      "End-to-end SaaS platform engineering — multi-tenant architecture, subscription billing, user dashboards, and analytics. We handle the full lifecycle from MVP to enterprise-grade scale.",
-    deliverables: [
-      "Multi-tenant Architecture",
-      "Subscription & Billing Integration",
-      "Admin Dashboards & Analytics",
-      "Role-based Access Control",
-      "API-first Design",
-    ],
-    tags: ["React", "Next.js", "Node.js", "Stripe", "AWS"],
-  },
-  {
-    id: "custom",
-    icon: Code2,
-    label: "Custom Software",
-    brief: "Bespoke solutions for unique workflows",
-    description:
-      "Tailored software engineered from the ground up for your unique business processes — ERP systems, CRM platforms, inventory management, and internal tools designed specifically for how you operate.",
-    deliverables: [
-      "Business Process Automation",
-      "Custom ERP & CRM Systems",
-      "Internal Tools & Portals",
-      "Legacy System Modernization",
-      "Third-party Integrations",
-    ],
-    tags: ["TypeScript", "Python", "PostgreSQL", "Docker", "Redis"],
-  },
-  {
-    id: "web",
-    icon: Monitor,
-    label: "Web Applications",
-    brief: "High-performance, pixel-perfect experiences",
-    description:
-      "Responsive web applications with stunning UI, real-time features, and enterprise-grade security. From complex data dashboards to consumer-facing platforms — built for performance.",
-    deliverables: [
-      "Responsive & Adaptive UI",
-      "Real-time Data & WebSockets",
-      "Progressive Web Apps (PWA)",
-      "SEO & Performance Optimization",
-      "Accessibility Compliance",
-    ],
-    tags: ["React", "Next.js", "Tailwind", "GraphQL", "WebSocket"],
-  },
-  {
-    id: "mobile",
-    icon: Smartphone,
-    label: "Mobile Development",
-    brief: "Native & cross-platform mobile apps",
-    description:
-      "Beautiful, performant mobile applications for iOS and Android — from consumer-facing apps to enterprise mobility solutions with offline-first architecture and seamless sync.",
-    deliverables: [
-      "Cross-platform Development",
-      "Native iOS & Android",
-      "Push Notifications & Deep Links",
-      "Offline-first Architecture",
-      "App Store Optimization",
-    ],
-    tags: ["Flutter", "React Native", "Swift", "Kotlin", "Firebase"],
-  },
-  {
-    id: "cloud",
-    icon: Cloud,
-    label: "Cloud & DevOps",
-    brief: "Scalable infrastructure, zero downtime",
-    description:
-      "Production-grade cloud infrastructure, CI/CD pipelines, auto-scaling, monitoring, and security hardening — we architect, deploy, and manage your entire cloud ecosystem so you can focus on growth.",
-    deliverables: [
-      "Cloud Architecture Design",
-      "CI/CD Pipeline Setup",
-      "Auto-scaling & Load Balancing",
-      "Monitoring, Logging & Alerts",
-      "Security & Compliance Audits",
-    ],
-    tags: ["AWS", "GCP", "Docker", "Kubernetes", "Terraform"],
-  },
-  {
-    id: "marketing",
-    icon: Megaphone,
-    label: "Digital Marketing",
-    brief: "Performance campaigns that convert",
-    description:
-      "Data-driven digital marketing with measurable ROI — social media management, paid acquisition, content strategy, and SEO that turns attention into revenue and builds lasting brand equity.",
-    deliverables: [
-      "Social Media Management",
-      "Paid Advertising (Meta & Google)",
-      "Content Strategy & Creation",
-      "SEO & Search Marketing",
-      "Analytics & Attribution",
-    ],
-    tags: ["Meta Ads", "Google Ads", "SEO", "Analytics", "Content"],
-  },
-];
+const getIcon = (name: string): React.ComponentType<{ className?: string }> => {
+  switch (name) {
+    case "Monitor":
+      return Monitor;
+    case "Layers":
+      return Layers;
+    case "Database":
+      return Database;
+    case "Building2":
+      return Building2;
+    case "Cpu":
+      return Cpu;
+    case "Smartphone":
+      return Smartphone;
+    case "Cloud":
+      return Cloud;
+    case "TrendingUp":
+      return TrendingUp;
+    default:
+      return Sparkles;
+  }
+};
 
 export default function ServicesGrid() {
   const [activeId, setActiveId] = useState<string | null>(null);
-  const activeService = services.find((s) => s.id === activeId);
+  const activeService = servicesData.find((s) => s.id === activeId);
 
   return (
     <section
@@ -154,8 +74,7 @@ export default function ServicesGrid() {
             Complete tech stack support.
           </h2>
           <p className="text-[#A3A3A3] text-base md:text-lg max-w-[55ch] mx-auto font-light leading-relaxed">
-            From SaaS platforms to custom enterprise software — we engineer,
-            design, and scale your entire digital presence.
+            From web applications and SaaS to bespoke CRMs, ERPs, AI automation, and cloud infrastructure — we engineer and scale your entire digital presence.
           </p>
         </motion.div>
 
@@ -168,13 +87,13 @@ export default function ServicesGrid() {
             hidden: { opacity: 0 },
             visible: {
               opacity: 1,
-              transition: { staggerChildren: 0.08, delayChildren: 0.2 },
+              transition: { staggerChildren: 0.06, delayChildren: 0.15 },
             },
           }}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 mt-16"
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 mt-16"
         >
-          {services.map((service) => {
-            const Icon = service.icon;
+          {servicesData.map((service) => {
+            const Icon = getIcon(service.iconName);
             const isActive = activeId === service.id;
 
             return (
@@ -188,15 +107,14 @@ export default function ServicesGrid() {
                     transition: { duration: 0.7, ease: easeOutQuint },
                   },
                 }}
-                onClick={() => setActiveId(isActive ? null : service.id)}
-                className="group relative flex flex-col p-8 rounded-2xl cursor-pointer transition-all duration-500 ease-out"
+                className="group relative flex flex-col justify-between p-7 rounded-2xl transition-all duration-500 ease-out"
                 style={{
                   background: isActive
-                    ? "rgba(255,255,255,0.05)"
+                    ? "rgba(255,255,255,0.06)"
                     : "rgba(255,255,255,0.02)",
                   backdropFilter: "blur(12px)",
                   border: isActive
-                    ? "1px solid rgba(255,255,255,0.15)"
+                    ? "1px solid rgba(255,255,255,0.18)"
                     : "1px solid rgba(255,255,255,0.06)",
                   boxShadow: isActive
                     ? "0 20px 60px rgba(0,0,0,0.8)"
@@ -207,7 +125,7 @@ export default function ServicesGrid() {
               >
                 {/* Hover glow */}
                 <div
-                  className={`absolute inset-0 rounded-2xl bg-gradient-to-br from-white/[0.04] to-transparent transition-opacity duration-700 ${
+                  className={`absolute inset-0 rounded-2xl bg-gradient-to-br from-white/[0.04] to-transparent transition-opacity duration-700 pointer-events-none ${
                     isActive
                       ? "opacity-100"
                       : "opacity-0 group-hover:opacity-100"
@@ -215,39 +133,49 @@ export default function ServicesGrid() {
                 />
 
                 <div className="relative z-10">
-                  <div
-                    className={`w-12 h-12 rounded-xl flex items-center justify-center mb-6 transition-all duration-500 border ${
-                      isActive
-                        ? "bg-white/[0.1] border-white/[0.15] shadow-[0_0_20px_rgba(255,255,255,0.1)]"
-                        : "bg-[#1A1A1A] border-white/[0.08] group-hover:bg-[#222] group-hover:border-white/[0.12]"
-                    }`}
-                  >
-                    <Icon className="w-5 h-5 text-white/80" />
+                  <div className="flex items-center justify-between mb-6">
+                    <div
+                      className={`w-12 h-12 rounded-xl flex items-center justify-center transition-all duration-500 border ${
+                        isActive
+                          ? "bg-white text-black shadow-[0_0_20px_rgba(255,255,255,0.2)]"
+                          : "bg-[#181818] border-white/[0.08] text-white/80 group-hover:bg-white group-hover:text-black group-hover:border-white"
+                      }`}
+                    >
+                      <Icon className="w-5 h-5" />
+                    </div>
+                    <span className="text-[10px] font-bold uppercase tracking-widest text-[#777]">
+                      {service.categoryLabel}
+                    </span>
                   </div>
 
                   <h3 className="text-lg font-bold text-white mb-2 tracking-tight">
-                    {service.label}
+                    {service.shortTitle}
                   </h3>
-                  <p className="text-sm text-[#A3A3A3] leading-relaxed font-light">
-                    {service.brief}
+                  <p className="text-xs text-[#A3A3A3] leading-relaxed font-light mb-6">
+                    {service.tagline}
                   </p>
+                </div>
 
-                  {/* Expand indicator */}
-                  <div
-                    className={`mt-5 flex items-center gap-2 text-[10px] uppercase font-bold tracking-[0.15em] transition-colors duration-300 ${
-                      isActive
-                        ? "text-white"
-                        : "text-[#666] group-hover:text-[#999]"
-                    }`}
+                <div className="relative z-10 pt-4 border-t border-white/[0.05] space-y-2">
+                  <Link
+                    to={`/services/${service.slug}`}
+                    className="flex items-center justify-between w-full py-2 px-3 rounded-lg bg-white/[0.04] hover:bg-white text-xs font-semibold text-white hover:text-black transition-all group/btn"
                   >
-                    {isActive ? "Close" : "Learn More"}
-                    <motion.div
-                      animate={{ rotate: isActive ? 180 : 0 }}
-                      transition={{ duration: 0.3 }}
-                    >
-                      <ChevronDown className="w-3 h-3" />
-                    </motion.div>
-                  </div>
+                    <span>Deep Dive</span>
+                    <ArrowRight className="w-3.5 h-3.5 group-hover/btn:translate-x-0.5 transition-transform" />
+                  </Link>
+
+                  <button
+                    onClick={() => setActiveId(isActive ? null : service.id)}
+                    className="w-full flex items-center justify-center gap-1 text-[10px] uppercase font-bold tracking-wider text-[#666] hover:text-[#AAA] transition-colors py-1"
+                  >
+                    {isActive ? "Close Preview" : "Preview Scope"}
+                    <ChevronDown
+                      className={`w-3 h-3 transition-transform duration-300 ${
+                        isActive ? "rotate-180" : ""
+                      }`}
+                    />
+                  </button>
                 </div>
               </motion.div>
             );
@@ -260,17 +188,17 @@ export default function ServicesGrid() {
             <motion.div
               key={activeService.id}
               initial={{ opacity: 0, height: 0, marginTop: 0 }}
-              animate={{ opacity: 1, height: "auto", marginTop: 20 }}
+              animate={{ opacity: 1, height: "auto", marginTop: 24 }}
               exit={{ opacity: 0, height: 0, marginTop: 0 }}
               transition={{ duration: 0.5, ease: easeOutQuint }}
               className="overflow-hidden"
             >
               <div
-                className="relative p-10 md:p-14 rounded-3xl"
+                className="relative p-8 md:p-12 rounded-3xl"
                 style={{
                   background: "rgba(255,255,255,0.03)",
                   backdropFilter: "blur(16px)",
-                  border: "1px solid rgba(255,255,255,0.1)",
+                  border: "1px solid rgba(255,255,255,0.12)",
                   boxShadow: "0 20px 60px rgba(0,0,0,0.7)",
                 }}
               >
@@ -282,67 +210,70 @@ export default function ServicesGrid() {
                   <X className="w-4 h-4" />
                 </button>
 
-                {/* Ambient glow inside panel */}
-                <div className="pointer-events-none absolute -top-20 -left-20 w-64 h-64 bg-white/[0.03] rounded-full blur-[80px]" />
-
                 <div className="relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-12">
                   {/* Left: Description */}
                   <div>
                     <div className="flex items-center gap-4 mb-6">
                       <div className="w-12 h-12 rounded-xl bg-white/[0.08] border border-white/[0.12] flex items-center justify-center">
-                        <activeService.icon className="w-5 h-5 text-white/90" />
+                        {(() => {
+                          const ExpIcon = getIcon(activeService.iconName);
+                          return <ExpIcon className="w-5 h-5 text-white" />;
+                        })()}
                       </div>
-                      <h3 className="text-2xl font-bold text-white tracking-tight">
-                        {activeService.label}
-                      </h3>
+                      <div>
+                        <span className="text-[10px] uppercase font-bold tracking-widest text-[#888]">
+                          {activeService.categoryLabel}
+                        </span>
+                        <h3 className="text-2xl font-bold text-white tracking-tight">
+                          {activeService.title}
+                        </h3>
+                      </div>
                     </div>
-                    <p className="text-[#A3A3A3] leading-relaxed text-base font-light mb-8">
+                    <p className="text-[#A3A3A3] leading-relaxed text-sm font-light mb-8">
                       {activeService.description}
                     </p>
-                    <div className="flex flex-wrap gap-2.5">
-                      {activeService.tags.map((tag) => (
-                        <span
-                          key={tag}
-                          className="text-[11px] uppercase font-semibold tracking-wider px-3.5 py-1.5 rounded-full bg-[#1A1A1A] border border-white/[0.08] text-[#D4D4D4] shadow-inner"
-                        >
-                          {tag}
-                        </span>
-                      ))}
+                    <div className="flex items-center gap-4">
+                      <Link
+                        to={`/services/${activeService.slug}`}
+                        className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-white text-black text-xs font-bold hover:bg-[#E5E5E5] transition-all"
+                      >
+                        View Full Service Page
+                        <ArrowRight className="w-3.5 h-3.5" />
+                      </Link>
+                      <Link
+                        to={`/contact?service=${activeService.slug}`}
+                        className="text-xs font-semibold text-[#888] hover:text-white transition-colors"
+                      >
+                        Start Project &rarr;
+                      </Link>
                     </div>
                   </div>
 
                   {/* Right: Deliverables */}
                   <div>
                     <h4 className="text-[11px] uppercase font-bold tracking-[0.15em] text-[#A3A3A3] mb-5">
-                      Key Deliverables
+                      Key Deliverables Included
                     </h4>
                     <ul className="space-y-3">
-                      {activeService.deliverables.map((item, i) => (
+                      {activeService.deliverables.slice(0, 5).map((item, i) => (
                         <motion.li
                           key={item}
                           initial={{ opacity: 0, x: 10 }}
                           animate={{ opacity: 1, x: 0 }}
                           transition={{
                             duration: 0.4,
-                            delay: i * 0.08,
+                            delay: i * 0.06,
                             ease: easeOutQuint,
                           }}
                           className="flex items-start gap-3"
                         >
-                          <CheckCircle2 className="w-4 h-4 text-white/40 mt-0.5 shrink-0" />
-                          <span className="text-[#D4D4D4] text-sm font-medium">
+                          <CheckCircle2 className="w-4 h-4 text-emerald-400 mt-0.5 shrink-0" />
+                          <span className="text-[#D4D4D4] text-xs sm:text-sm font-medium">
                             {item}
                           </span>
                         </motion.li>
                       ))}
                     </ul>
-                    <a
-                      href="#contact"
-                      className="mt-8 inline-flex items-center gap-2 text-sm font-semibold text-white hover:text-[#D4D4D4] transition-colors group/cta"
-                    >
-                      Discuss this service
-                      <ArrowUpRight className="w-4 h-4 group-hover/cta:translate-x-0.5 group-hover/cta:-translate-y-0.5 transition-transform" />
-                    </a>
                   </div>
                 </div>
               </div>

@@ -68,11 +68,25 @@ body::-webkit-scrollbar {
     transform: translateY(8px) translateX(-8px) scale(1.03);
   }
 }
+@keyframes marquee {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
 .animate-float-slow {
   animation: float-slow 14s ease-in-out infinite;
 }
 .animate-float-slower {
   animation: float-slower 18s ease-in-out infinite;
+}
+.animate-marquee {
+  animation: marquee 35s linear infinite;
+}
+.animate-marquee:hover {
+  animation-play-state: paused;
 }
 
 /* Fade-up on load */

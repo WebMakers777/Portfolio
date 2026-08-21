@@ -36,7 +36,7 @@ const steps = [
 
 export default function HowWeWork() {
   return (
-    <section className="relative z-10 py-32 px-6 md:px-12 bg-gradient-to-b from-[#111111] to-[#0A0A0A]">
+    <section id="process" className="relative z-10 py-32 px-6 md:px-12 bg-gradient-to-b from-[#111111] to-[#0A0A0A]">
       <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-white/[0.06] to-transparent" />
 
       <div className="mx-auto max-w-[1280px]">
@@ -90,8 +90,8 @@ export default function HowWeWork() {
                 >
                   {/* Step Number + Icon */}
                   <div className="relative mb-8 w-[120px] h-[120px] flex items-center justify-center">
-                    {/* Large faded number */}
-                    <span className="absolute text-[80px] font-black bg-gradient-to-b from-white/[0.08] to-white/[0.02] bg-clip-text text-transparent select-none leading-none">
+                    {/* Large faded number — offset to peek behind top-right of icon */}
+                    <span className="absolute -top-1 left-[58%] text-[80px] font-black bg-gradient-to-b from-white/[0.06] to-transparent bg-clip-text text-transparent select-none leading-none">
                       {step.number}
                     </span>
                     {/* Icon circle overlay */}
