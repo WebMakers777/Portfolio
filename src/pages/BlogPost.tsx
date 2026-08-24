@@ -1,290 +1,357 @@
+// src/pages/BlogPost.tsx
 import { useState, useEffect } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
-import { motion } from "framer-motion";
-import { ArrowLeft, Calendar, User, Share2 } from "lucide-react";
-import DOMPurify from "dompurify";
+import { motion, useScroll, useSpring } from "framer-motion";
+import {
+  ArrowLeft,
+  Calendar,
+  Clock,
+  Share2,
+  Check,
+  BookOpen,
+  ArrowRight,
+  User,
+  Compass,
+} from "lucide-react";
+import { blogStorage, BlogPost as BlogPostType } from "@/lib/blogStorage";
+import BlogContentRenderer from "@/components/blog/BlogContentRenderer";
+import Navbar from "@/components/gateway/Navbar";
+import Footer from "@/components/gateway/Footer";
+import { toast } from "sonner";
 
-interface BlogPostDetail {
-  _id: string;
-  slug: string;
-  title: string;
-  sanitizedHtml: string;
-  author: string;
-  publishedAt?: string;
-  createdAt: string;
-  updatedAt?: string;
-  views: number;
-  images?: string[];
-  published: boolean;
-  html?: string;
-}
+const easeOutQuint = [0.22, 1, 0.36, 1] as const;
 
 export default function BlogPost() {
-  const params = useParams();
-  const slugParam = (params as any).postSlug || (params as any).slug;
+  const { slug, postSlug } = useParams();
+  const activeSlug = slug || postSlug || "";
   const navigate = useNavigate();
-  const [post, setPost] = useState<BlogPostDetail | null>(null);
+
+  const [post, setPost] = useState<BlogPostType | null>(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const [copied, setCopied] = useState(false);
+  const [recentPosts, setRecentPosts] = useState<BlogPostType[]>([]);
+
+  // Top Reading Progress Bar
+  const { scrollYProgress } = useScroll();
+  const scaleX = useSpring(scrollYProgress, {
+    stiffness: 100,
+    damping: 30,
+    restDelta: 0.001,
+  });
 
   useEffect(() => {
-    if (!slugParam) return;
-    fetchPost();
-  }, [slugParam]);
-
-  const fetchPost = async () => {
+    if (!activeSlug) return;
+    setLoading(true);
     try {
-      setLoading(true);
-      const API_BASE =
-        import.meta.env.VITE_API_BASE ||
-        "https://admin-panel-portofolio.onrender.com";
-      if (!slugParam) throw new Error("Invalid post slug");
-      const url = `${API_BASE}/api/posts/slug/${encodeURIComponent(slugParam)}`;
-      const response = await fetch(url);
-      if (!response.ok) throw new Error("Post not found");
-      const data = await response.json();
-      let payload: any = null;
-      if (data == null) {
-        throw new Error("Empty response from server");
-      }
-      if (data.post) payload = data.post;
-      else if (data.data && data.data.post) payload = data.data.post;
-      else if (
-        data.posts &&
-        Array.isArray(data.posts) &&
-        data.posts.length === 1
-      )
-        payload = data.posts[0];
-      else if (data.posts && Array.isArray(data.posts) && data.posts.length > 1)
-        payload = data.posts[0];
-      else payload = data;
+      const found = blogStorage.getPostBySlug(activeSlug);
+      if (found) {
+        setPost(found);
+        blogStorage.incrementViews(found._id);
 
-      if (!payload || typeof payload !== "object") {
-        throw new Error("Post data not found in response");
+        const all = blogStorage.getPublishedPosts();
+        setRecentPosts(all.filter((p) => p._id !== found._id).slice(0, 3));
+      } else {
+        setPost(null);
       }
-
-      const rawHtml = payload.sanitizedHtml || payload.html || "";
-      if (!payload.sanitizedHtml && rawHtml) {
-        payload.sanitizedHtml = DOMPurify.sanitize(rawHtml);
-      }
-
-      setPost(payload as BlogPostDetail);
-      setError(null);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to load post");
+      console.error("Failed to load article", err);
       setPost(null);
     } finally {
       setLoading(false);
     }
-  };
+    window.scrollTo({ top: 0, left: 0, behavior: "instant" as ScrollBehavior });
+  }, [activeSlug]);
 
-  const sanitizedHTML = post ? post.sanitizedHtml || post.html || "" : "";
-
-  const getDisplayDate = (p?: BlogPostDetail | null) => {
-    if (!p) return "Unknown Date";
-    const dateStr = p.publishedAt || p.createdAt || p.updatedAt || "";
-    const parsed = Date.parse(dateStr);
-    if (isNaN(parsed)) return "Unknown Date";
-    return new Date(parsed).toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    });
+  const handleShare = () => {
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(window.location.href);
+      setCopied(true);
+      toast.success("Article link copied to clipboard");
+      setTimeout(() => setCopied(false), 2000);
+    }
   };
 
   return (
-    <main className="relative min-h-screen w-full bg-[#0B1120] text-white overflow-hidden pt-20">
-      {/* Background */}
-      <div className="pointer-events-none absolute inset-0 opacity-[0.075] grid-noise" />
-      <div className="pointer-events-none absolute -top-24 -left-24 h-[42rem] w-[42rem] rounded-full blur-3xl bg-gradient-to-br from-cyan-400/20 via-blue-500/10 to-transparent" />
+    <div className="min-h-screen w-full bg-[#0A0A0A] text-white flex flex-col font-sans selection:bg-white/20 selection:text-white">
+      {/* Reading Progress Indicator */}
+      <motion.div
+        className="fixed top-0 left-0 right-0 h-[2.5px] bg-white z-50 origin-left"
+        style={{ scaleX }}
+      />
 
-      <div className="relative z-10 mx-auto max-w-4xl px-6 py-12">
-        {/* Back Button */}
-        <button
-          onClick={() => navigate("/blog")}
-          className="flex items-center gap-2 text-white/70 hover:text-white transition mb-8"
-        >
-          <ArrowLeft className="w-4 h-4" />
-          Back to Blog
-        </button>
+      <Navbar />
 
-        {loading && (
-          <div className="text-center py-20">
-            <div className="inline-block animate-spin">
-              <div className="h-8 w-8 border-4 border-cyan-400 border-t-transparent rounded-full" />
-            </div>
-          </div>
-        )}
+      <main className="relative flex-1 w-full bg-[#0A0A0A] text-white overflow-hidden pt-28 sm:pt-32 pb-20 sm:pb-24">
+        {/* Ambient Top Glow */}
+        <div className="pointer-events-none absolute top-0 left-1/2 -translate-x-1/2 w-[850px] h-[380px] bg-white/[0.02] blur-[140px] rounded-full" />
 
-        {error && (
-          <div className="text-center py-20">
-            <p className="text-red-400 mb-4">{error}</p>
-            <Link to="/blog" className="text-cyan-400 hover:text-cyan-300">
-              Return to Blog
-            </Link>
-          </div>
-        )}
-
-        {post && (
-          <motion.article
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-          >
-            {/* Header */}
-            <header className="mb-12">
-              <motion.h1
-                className="text-4xl md:text-5xl lg:text-6xl font-semibold mb-6 leading-tight"
-                initial={{ opacity: 0, y: -20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.1 }}
-              >
-                {post.title}
-              </motion.h1>
-
-              {/* Meta */}
-              <motion.div
-                className="flex flex-wrap items-center gap-6 text-white/60 mb-6"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.2 }}
-              >
-                <div className="flex items-center gap-2">
-                  <User className="w-4 h-4" />
-                  {post.author}
-                </div>
-                <div className="flex items-center gap-2">
-                  <Calendar className="w-4 h-4" />
-                  {new Date(
-                    post.publishedAt || post.createdAt
-                  ).toLocaleDateString("en-US", {
-                    year: "numeric",
-                    month: "long",
-                    day: "numeric",
-                  })}
-                </div>
-                <div className="flex items-center gap-2">
-                  👁️ {post.views} views
-                </div>
-              </motion.div>
-
-              <motion.div
-                className="h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"
-                initial={{ scaleX: 0 }}
-                animate={{ scaleX: 1 }}
-                transition={{ delay: 0.4, duration: 0.8 }}
-                style={{ originX: 0 }}
-              />
-            </header>
-
-            {/* Content */}
-            <motion.div
-              className="prose prose-invert max-w-none mb-12"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.5 }}
+        {/* Responsive Container: Fills wide monitors pleasantly, stacks cleanly on mobile */}
+        <div className="relative z-10 mx-auto max-w-[1240px] px-4 sm:px-6 md:px-10 lg:px-12">
+          {/* Top Return & Share Bar */}
+          <div className="flex items-center justify-between mb-6 sm:mb-8 pb-4 border-b border-white/[0.08]">
+            <button
+              onClick={() => navigate("/blog")}
+              className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.18em] text-[#94A3B8] hover:text-white transition group font-mono"
             >
-              <div className="text-white/80 leading-relaxed space-y-6">
-                <div
-                  dangerouslySetInnerHTML={{ __html: sanitizedHTML }}
-                  className="prose-style"
-                />
+              <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
+              <span>All Dispatches</span>
+            </button>
+
+            <button
+              onClick={handleShare}
+              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl border border-white/[0.08] bg-white/[0.03] hover:bg-white/[0.08] text-xs font-medium text-[#E2E8F0] transition font-mono"
+            >
+              {copied ? (
+                <>
+                  <Check className="w-3.5 h-3.5 text-emerald-400" /> Copied
+                </>
+              ) : (
+                <>
+                  <Share2 className="w-3.5 h-3.5 text-white/70" /> Share Dispatch
+                </>
+              )}
+            </button>
+          </div>
+
+          {/* Loading */}
+          {loading && (
+            <div className="text-center py-28">
+              <div className="inline-block animate-spin">
+                <div className="h-7 w-7 border-2 border-white/60 border-t-transparent rounded-full" />
               </div>
-            </motion.div>
+              <p className="mt-4 text-xs uppercase tracking-widest text-[#94A3B8] font-mono">
+                Opening Dispatch...
+              </p>
+            </div>
+          )}
 
-            {/* Share */}
-            <motion.div
-              className="flex items-center gap-4 py-6 border-t border-white/10"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.6 }}
-            >
-              <span className="text-white/60">Share this post:</span>
-              <button
-                onClick={() => {
-                  navigator.clipboard.writeText(window.location.href);
-                  alert("Link copied!");
-                }}
-                className="p-2 rounded-lg border border-white/10 hover:bg-white/[0.05] transition"
-                title="Copy link"
+          {/* Error / Not Found */}
+          {!loading && !post && (
+            <div className="text-center py-20 rounded-3xl border border-white/[0.08] bg-[#0D0D0D] max-w-xl mx-auto">
+              <BookOpen className="w-10 h-10 mx-auto text-white/30 mb-3" />
+              <h2 className="text-lg font-bold text-white mb-2 font-serif">
+                Article Not Found
+              </h2>
+              <p className="text-xs text-[#94A3B8] font-light mb-6">
+                The requested article does not exist or has been relocated.
+              </p>
+              <Link
+                to="/blog"
+                className="px-5 py-2.5 rounded-xl bg-white text-black font-semibold text-xs uppercase tracking-wider hover:opacity-90 transition font-mono"
               >
-                <Share2 className="w-4 h-4" />
-              </button>
-            </motion.div>
-          </motion.article>
-        )}
-      </div>
+                Return to Articles
+              </Link>
+            </div>
+          )}
 
-      {/* CSS for prose styling */}
-      <style>{`
-        .prose-style p {
-          margin-bottom: 1.25rem;
-          line-height: 1.75;
-        }
-        .prose-style h2 {
-          font-size: 1.875rem;
-          font-weight: 600;
-          margin-top: 2rem;
-          margin-bottom: 1rem;
-        }
-        .prose-style h3 {
-          font-size: 1.5rem;
-          font-weight: 600;
-          margin-top: 1.5rem;
-          margin-bottom: 0.75rem;
-        }
-        .prose-style ul,
-        .prose-style ol {
-          margin-left: 1.5rem;
-          margin-bottom: 1.25rem;
-        }
-        .prose-style li {
-          margin-bottom: 0.5rem;
-        }
-        .prose-style strong {
-          font-weight: 600;
-          color: #06b6d4;
-        }
-        .prose-style em {
-          font-style: italic;
-          color: #e879f9;
-        }
-        .prose-style a {
-          color: #06b6d4;
-          text-decoration: underline;
-          transition: color 0.2s;
-        }
-        .prose-style a:hover {
-          color: #22d3ee;
-        }
-        .prose-style blockquote {
-          border-left: 4px solid #06b6d4;
-          padding-left: 1rem;
-          margin: 1.5rem 0;
-          color: #a1a1aa;
-          font-style: italic;
-        }
-        .prose-style code {
-          background: rgba(255, 255, 255, 0.1);
-          padding: 0.2em 0.4em;
-          border-radius: 0.25rem;
-          font-size: 0.875em;
-          color: #86e1a0;
-        }
-        .prose-style pre {
-          background: rgba(0, 0, 0, 0.3);
-          padding: 1rem;
-          border-radius: 0.5rem;
-          overflow-x: auto;
-          margin-bottom: 1.25rem;
-        }
-        .prose-style img {
-          max-width: 100%;
-          height: auto;
-          border-radius: 0.5rem;
-          margin: 1.5rem 0;
-        }
-      `}</style>
-    </main>
+          {/* Article View */}
+          {!loading && post && (
+            <motion.article
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, ease: easeOutQuint }}
+            >
+              {/* Newspaper Masthead Banner */}
+              <div className="border-t border-b border-white/[0.18] py-2 sm:py-2.5 mb-6 sm:mb-8 flex flex-wrap items-center justify-between gap-2 text-[10px] sm:text-[11px] font-mono tracking-[0.16em] sm:tracking-[0.2em] text-[#94A3B8] uppercase">
+                <span className="font-semibold text-white/90">
+                  The Vincie Journal
+                </span>
+                <span className="hidden sm:inline">•</span>
+                <span>{post.category || "Engineering"}</span>
+                <span className="hidden sm:inline">•</span>
+                <span>
+                  {new Date(post.createdAt).toLocaleDateString("en-US", {
+                    month: "short",
+                    day: "numeric",
+                    year: "numeric",
+                  })}
+                </span>
+                {post.readTime && (
+                  <>
+                    <span className="hidden sm:inline">•</span>
+                    <span className="flex items-center gap-1">
+                      <Clock className="w-3 h-3 text-white/40" />
+                      {post.readTime}
+                    </span>
+                  </>
+                )}
+              </div>
+
+              {/* Main Headline */}
+              <header className="mb-8 sm:mb-12">
+                <h1 className="text-2xl sm:text-4xl md:text-5xl lg:text-[54px] font-bold font-sans tracking-tight bg-gradient-to-r from-white via-[#FAFAFA] to-[#94A3B8] bg-clip-text text-transparent mb-5 sm:mb-6 leading-[1.14]">
+                  {post.title}
+                </h1>
+
+                {/* Subtitle / Lead Deck */}
+                {post.excerpt && (
+                  <p className="text-base sm:text-lg md:text-xl font-sans text-[#CBD5E1] font-light leading-relaxed mb-6 sm:mb-8 border-l-2 border-white/30 pl-4 py-1">
+                    {post.excerpt}
+                  </p>
+                )}
+
+                {/* Byline Bar */}
+                <div className="flex flex-wrap items-center justify-between gap-3 py-3 sm:py-4 border-t border-b border-white/[0.08] text-xs font-mono tracking-wider text-[#94A3B8] uppercase">
+                  <div className="flex items-center gap-2">
+                    <span className="w-2 h-2 rounded-full bg-white/60"></span>
+                    <span>By {post.author || "Vincie Studios Editorial"}</span>
+                  </div>
+
+                  <div className="flex items-center gap-1.5 font-light">
+                    <Calendar className="w-3.5 h-3.5 text-white/40" />
+                    <span>
+                      {new Date(post.createdAt).toLocaleDateString("en-US", {
+                        month: "long",
+                        day: "numeric",
+                        year: "numeric",
+                      })}
+                    </span>
+                  </div>
+                </div>
+              </header>
+
+              {/* 2-Column Desktop Grid to Balance Left/Right Screen Space */}
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
+                {/* Left Sticky Editorial Meta Sidebar (Visible on Desktop) */}
+                <aside className="hidden lg:block lg:col-span-3 sticky top-28 space-y-6">
+                  {/* Author Card */}
+                  <div className="p-5 rounded-2xl border border-white/[0.08] bg-[#0D0D0D]">
+                    <div className="flex items-center gap-3 mb-3">
+                      <div className="w-10 h-10 rounded-xl bg-[#181818] border border-white/[0.1] flex items-center justify-center font-bold text-white text-sm">
+                        {post.author ? post.author.charAt(0) : "V"}
+                      </div>
+                      <div>
+                        <h4 className="text-xs font-bold text-white font-sans">
+                          {post.author || "Vincie Studios"}
+                        </h4>
+                        <span className="text-[10px] text-[#94A3B8] font-mono block">
+                          Editorial Team
+                        </span>
+                      </div>
+                    </div>
+                    <p className="text-[11px] text-[#94A3B8] font-light leading-relaxed">
+                      Engineering insights, distributed architectures, and product strategies.
+                    </p>
+                  </div>
+
+                  {/* Dispatch Meta */}
+                  <div className="p-5 rounded-2xl border border-white/[0.08] bg-[#0D0D0D] space-y-3.5 text-xs font-mono">
+                    <div>
+                      <span className="text-[10px] text-[#64748B] uppercase tracking-wider block mb-1">
+                        Topic Area
+                      </span>
+                      <span className="text-white/90 font-medium">
+                        {post.category || "Engineering"}
+                      </span>
+                    </div>
+
+                    <div className="pt-3 border-t border-white/[0.06]">
+                      <span className="text-[10px] text-[#64748B] uppercase tracking-wider block mb-1">
+                        Estimated Read
+                      </span>
+                      <span className="text-white/90 font-medium flex items-center gap-1">
+                        <Clock className="w-3 h-3 text-white/40" />
+                        {post.readTime || "5 min"}
+                      </span>
+                    </div>
+
+                    <div className="pt-3 border-t border-white/[0.06]">
+                      <span className="text-[10px] text-[#64748B] uppercase tracking-wider block mb-1">
+                        Format
+                      </span>
+                      <span className="text-white/90 font-medium">
+                        Interactive Dispatch
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Share Action Button */}
+                  <button
+                    onClick={handleShare}
+                    className="w-full py-2.5 px-4 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] border border-white/[0.08] text-xs font-mono font-semibold text-white transition flex items-center justify-center gap-2"
+                  >
+                    <Share2 className="w-3.5 h-3.5" />
+                    Share Dispatch
+                  </button>
+                </aside>
+
+                {/* Main Article Content Column */}
+                <div className="lg:col-span-9 w-full">
+                  <div className="article-newspaper-content w-full mb-16">
+                    <BlogContentRenderer content={post.content} />
+                  </div>
+
+                  {/* Editorial Sign-off Box */}
+                  <div className="my-10 sm:my-14 p-6 sm:p-8 rounded-3xl border border-white/[0.08] bg-[#0D0D0D] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-5">
+                    <div className="flex items-center gap-4">
+                      <div className="w-11 h-11 rounded-2xl bg-[#181818] border border-white/[0.1] flex items-center justify-center font-bold text-white text-base flex-shrink-0">
+                        {post.author ? post.author.charAt(0) : "V"}
+                      </div>
+                      <div>
+                        <h4 className="text-sm font-bold font-sans text-white">
+                          Dispatched by {post.author || "Vincie Studios Team"}
+                        </h4>
+                        <p className="text-xs text-[#94A3B8] font-light">
+                          Published on Vincie Studios Knowledge Base & Case Dispatches
+                        </p>
+                      </div>
+                    </div>
+
+                    <button
+                      onClick={handleShare}
+                      className="px-4 py-2 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] border border-white/[0.08] text-xs font-mono font-semibold text-white transition flex items-center gap-1.5 flex-shrink-0"
+                    >
+                      <Share2 className="w-3.5 h-3.5" />
+                      Share Article
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              {/* Recommended Dispatches */}
+              {recentPosts.length > 0 && (
+                <div className="mt-14 sm:mt-20 pt-10 sm:pt-12 border-t border-white/[0.1]">
+                  <div className="flex items-center justify-between mb-8">
+                    <h3 className="text-lg sm:text-xl font-bold font-sans text-white">
+                      Further Reading & Related Dispatches
+                    </h3>
+                    <Link
+                      to="/blog"
+                      className="text-xs font-mono uppercase tracking-wider text-[#94A3B8] hover:text-white transition flex items-center gap-1"
+                    >
+                      View all <ArrowRight className="w-3 h-3" />
+                    </Link>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+                    {recentPosts.map((rec) => (
+                      <Link
+                        key={rec._id}
+                        to={`/blog/${rec.slug}`}
+                        className="p-5 sm:p-6 rounded-2xl border border-white/[0.08] bg-[#0D0D0D] hover:bg-[#121212] hover:border-white/[0.2] transition-all flex flex-col justify-between group shadow-lg"
+                      >
+                        <div>
+                          <span className="text-[10px] font-mono uppercase tracking-[0.16em] text-[#94A3B8]">
+                            {rec.category}
+                          </span>
+                          <h4 className="text-sm font-semibold font-sans text-[#F8FAFC] mt-2 group-hover:text-white transition line-clamp-2 leading-snug">
+                            {rec.title}
+                          </h4>
+                        </div>
+                        <span className="text-xs text-[#64748B] font-mono mt-4 block">
+                          {rec.readTime}
+                        </span>
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </motion.article>
+          )}
+        </div>
+      </main>
+
+      <Footer />
+    </div>
   );
 }

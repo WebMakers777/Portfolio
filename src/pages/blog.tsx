@@ -1,286 +1,369 @@
+// src/pages/blog.tsx
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { ChevronLeft, ChevronRight, Calendar, User } from "lucide-react";
+import {
+  ChevronLeft,
+  ChevronRight,
+  Calendar,
+  Clock,
+  Search,
+  ArrowRight,
+  BookOpen,
+} from "lucide-react";
+import { blogStorage, BlogPost } from "@/lib/blogStorage";
+import Navbar from "@/components/gateway/Navbar";
+import Footer from "@/components/gateway/Footer";
 
-interface BlogPost {
-  _id: string;
-  slug: string;
-  title: string;
-  author: string;
-  publishedAt?: string;
-  createdAt: string;
-  views: number;
-  published: boolean;
-  sanitizedHtml: string;
-  html?: string;
-}
-
-interface ApiResponse {
-  success: boolean;
-  total: number;
-  posts: BlogPost[];
-}
-
-const POSTS_PER_PAGE = 6;
+const easeOutQuint = [0.22, 1, 0.36, 1] as const;
+const POSTS_PER_PAGE = 7;
 
 export default function Blog() {
   const [posts, setPosts] = useState<BlogPost[]>([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("All");
   const [currentPage, setCurrentPage] = useState(1);
-  const [totalPosts, setTotalPosts] = useState(0);
-  const API_BASE =
-    (import.meta as any).env?.VITE_API_BASE ??
-    "https://admin-panel-portofolio.onrender.com";
 
   useEffect(() => {
-    fetchPosts(currentPage);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentPage]);
+    loadBlogPosts();
+  }, []);
 
-  const fetchPosts = async (page: number) => {
+  const loadBlogPosts = () => {
+    setLoading(true);
     try {
-      setLoading(true);
-      const skip = (page - 1) * POSTS_PER_PAGE;
-      const url = `${API_BASE}/api/posts/published?skip=${skip}&limit=${POSTS_PER_PAGE}`;
-      const response = await fetch(url);
-
-      if (!response.ok) {
-        throw new Error(`API Error: ${response.status} ${response.statusText}`);
-      }
-
-      const data = await response.json();
-
-      // Normalize response shapes: { success, total, posts }, { posts: [...] }, or plain array
-      let postsPayload: any[] = [];
-      let total = 0;
-      if (data == null) {
-        postsPayload = [];
-      } else if (Array.isArray(data)) {
-        postsPayload = data;
-        total = data.length;
-      } else if (data.posts && Array.isArray(data.posts)) {
-        postsPayload = data.posts;
-        total = data.total || data.posts.length;
-      } else if (data.success && data.posts && Array.isArray(data.posts)) {
-        postsPayload = data.posts;
-        total = data.total || data.posts.length;
-      } else if (data.post && !Array.isArray(data.post)) {
-        postsPayload = [data.post];
-        total = 1;
-      } else if (data.post && Array.isArray(data.post)) {
-        postsPayload = data.post;
-        total = data.post.length;
-      } else {
-        // if object contains fields of a post, treat it as single post
-        const keys = ["_id", "slug", "title"].every((k) => k in data);
-        if (keys) {
-          postsPayload = [data];
-          total = 1;
-        } else {
-          postsPayload = [];
-        }
-      }
-
-      // Ensure each post has sanitizedHtml fallback
-      postsPayload = postsPayload.map((p: any) => {
-        const rawHtml = p.sanitizedHtml || p.html || "";
-        if (!p.sanitizedHtml && rawHtml)
-          p.sanitizedHtml = rawHtml.replace(
-            /<script[\s\S]*?>[\s\S]*?<\/script>/gi,
-            ""
-          );
-        return p;
-      });
-
-      setPosts(postsPayload);
-      setTotalPosts(total || postsPayload.length);
-      setError(null);
-    } catch (err) {
-      const message =
-        err instanceof Error ? err.message : "Failed to load posts";
-      setError(message);
-      setPosts([]);
+      const stored = blogStorage.getPublishedPosts();
+      setPosts(stored);
+    } catch (e) {
+      console.error("Error loading articles", e);
     } finally {
       setLoading(false);
     }
   };
 
-  const totalPages = Math.ceil(totalPosts / POSTS_PER_PAGE);
+  const categories = [
+    "All",
+    ...Array.from(new Set(posts.map((p) => p.category).filter(Boolean))),
+  ];
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: { staggerChildren: 0.1 },
-    },
-  };
+  const filteredPosts = posts.filter((post) => {
+    const query = searchQuery.toLowerCase();
+    const matchesSearch =
+      post.title.toLowerCase().includes(query) ||
+      post.excerpt.toLowerCase().includes(query) ||
+      post.author.toLowerCase().includes(query);
+    const matchesCategory =
+      selectedCategory === "All" || post.category === selectedCategory;
+    return matchesSearch && matchesCategory;
+  });
 
-  const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.6 } },
-  };
+  const featuredPost =
+    filteredPosts.length > 0 &&
+    currentPage === 1 &&
+    !searchQuery &&
+    selectedCategory === "All"
+      ? filteredPosts[0]
+      : null;
 
-  const getExcerpt = (html: string, maxLength = 120) => {
-    const plain = html.replace(/<[^>]*>/g, "").trim();
-    return plain.length > maxLength
-      ? plain.substring(0, maxLength) + "..."
-      : plain;
-  };
+  const gridPosts = featuredPost
+    ? filteredPosts.slice(1, POSTS_PER_PAGE)
+    : filteredPosts.slice(
+        (currentPage - 1) * POSTS_PER_PAGE,
+        currentPage * POSTS_PER_PAGE
+      );
+
+  const totalPages = Math.ceil(filteredPosts.length / POSTS_PER_PAGE);
 
   return (
-    <main className="relative min-h-screen w-full bg-[#0B1120] text-white overflow-hidden pt-20">
-      {/* Background */}
-      <div className="pointer-events-none absolute inset-0 opacity-[0.075] grid-noise" />
-      <div className="pointer-events-none absolute -top-24 -left-24 h-[42rem] w-[42rem] rounded-full blur-3xl bg-gradient-to-br from-cyan-400/20 via-blue-500/10 to-transparent" />
+    <div className="min-h-screen w-full bg-[#0A0A0A] text-white flex flex-col font-sans selection:bg-white/20 selection:text-white">
+      <Navbar />
 
-      <div className="relative z-10 mx-auto max-w-6xl px-6 py-12">
-        {/* Header */}
-        <motion.header
-          className="text-center mb-16"
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-        >
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-semibold mb-4">
-            Engineering & Growth Insights
-          </h1>
-          <p className="text-white/70 text-lg max-w-2xl mx-auto">
-            Deep dives into product development, digital marketing, and scaling
-            strategies.
-          </p>
-        </motion.header>
+      <main className="relative flex-1 w-full bg-[#0A0A0A] text-white overflow-hidden pt-32 pb-24">
+        {/* Ambient Top Glow */}
+        <div className="pointer-events-none absolute top-0 left-1/2 -translate-x-1/2 w-[850px] h-[380px] bg-white/[0.02] blur-[140px] rounded-full" />
 
-        {loading && (
-          <div className="text-center py-12">
-            <div className="inline-block animate-spin">
-              <div className="h-8 w-8 border-4 border-cyan-400 border-t-transparent rounded-full" />
+        <div className="relative z-10 mx-auto max-w-[1240px] px-6 md:px-12">
+          {/* Header */}
+          <motion.header
+            className="text-center mb-14 max-w-3xl mx-auto"
+            initial={{ opacity: 0, y: 25 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, ease: easeOutQuint }}
+          >
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/[0.04] border border-white/[0.08] text-[#94A3B8] text-[11px] font-mono font-semibold uppercase tracking-[0.2em] mb-5">
+              The Vincie Journal • Dispatches & Case Studies
             </div>
-            <p className="mt-4 text-white/60">Loading posts...</p>
-          </div>
-        )}
+            <h1 className="text-4xl sm:text-6xl font-bold font-sans tracking-tight bg-gradient-to-r from-white via-[#EEEEEE] to-[#999999] bg-clip-text text-transparent mb-5">
+              Engineering, Architecture & Strategy
+            </h1>
+            <p className="text-base sm:text-lg text-[#94A3B8] font-light max-w-[55ch] mx-auto leading-relaxed">
+              In-depth essays on distributed systems, enterprise product architecture, high-converting digital growth, and interactive technical breakdowns.
+            </p>
+          </motion.header>
 
-        {error && (
-          <div className="text-center py-12">
-            <div className="max-w-2xl mx-auto">
-              <p className="text-red-400 mb-2">⚠️ Error loading posts:</p>
-              <p className="text-white/60 text-sm mb-4 bg-red-500/10 border border-red-500/30 rounded-lg p-4">
-                {error}
-              </p>
-              <p className="text-white/60 text-sm mb-6">
-                The blog API endpoint ({`/api/posts`}) is not configured yet.
-                Please set up your backend to return JSON data.
-              </p>
-              <button
-                onClick={() => fetchPosts(currentPage)}
-                className="px-4 py-2 bg-cyan-400 text-black rounded-lg font-medium hover:bg-cyan-300 transition"
-              >
-                Try Again
-              </button>
-            </div>
-          </div>
-        )}
-
-        {!loading && posts.length === 0 && (
-          <div className="text-center py-12">
-            <p className="text-white/60">No posts found.</p>
-          </div>
-        )}
-
-        {!loading && posts.length > 0 && (
-          <>
-            {/* Posts Grid */}
-            <motion.div
-              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12"
-              variants={containerVariants}
-              initial="hidden"
-              animate="visible"
-            >
-              {posts.map((post) => (
-                <motion.div
-                  key={post._id}
-                  variants={itemVariants}
-                  className="group"
-                >
-                  <Link
-                    to={`/blog/${post.slug}`}
-                    className="h-full rounded-2xl border border-white/10 bg-white/[0.04] hover:bg-white/[0.06] transition p-6 flex flex-col"
-                  >
-                    <h2 className="text-xl font-semibold mb-3 group-hover:text-cyan-300 transition line-clamp-2">
-                      {post.title}
-                    </h2>
-                    <p className="text-white/60 text-sm mb-4 flex-grow line-clamp-3">
-                      {getExcerpt(post.sanitizedHtml || post.html || "")}
-                    </p>
-                    <div className="flex items-center gap-4 text-xs text-white/50 border-t border-white/10 pt-4">
-                      <div className="flex items-center gap-1">
-                        <User className="w-3 h-3" />
-                        {post.author}
-                      </div>
-                      <div className="flex items-center gap-1">
-                        <Calendar className="w-3 h-3" />
-                        {new Date(post.createdAt).toLocaleDateString()}
-                      </div>
-                      <div className="flex items-center gap-1 ml-auto">
-                        👁️ {post.views}
-                      </div>
-                    </div>
-                  </Link>
-                </motion.div>
-              ))}
-            </motion.div>
-
-            {/* Pagination */}
-            {totalPages > 1 && (
-              <motion.div
-                className="flex items-center justify-center gap-4"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.3 }}
-              >
+          {/* Search & Category Filter Bar */}
+          <div className="mb-14 flex flex-col md:flex-row items-center justify-between gap-4 p-2.5 rounded-2xl bg-[#0D0D0D] border border-white/[0.08]">
+            {/* Category Pills */}
+            <div className="flex flex-wrap items-center gap-1.5 w-full md:w-auto">
+              {categories.map((cat) => (
                 <button
-                  onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
-                  disabled={currentPage === 1}
-                  className="flex items-center gap-2 px-4 py-2 rounded-lg border border-white/10 bg-white/[0.04] hover:bg-white/[0.06] transition disabled:opacity-50 disabled:cursor-not-allowed"
+                  key={cat}
+                  onClick={() => {
+                    setSelectedCategory(cat);
+                    setCurrentPage(1);
+                  }}
+                  className={`px-4 py-2 rounded-xl text-xs uppercase font-mono tracking-wider transition-all ${
+                    selectedCategory === cat
+                      ? "bg-white text-black font-bold shadow-[0_0_15px_rgba(255,255,255,0.15)]"
+                      : "text-[#94A3B8] hover:text-white hover:bg-white/[0.04]"
+                  }`}
                 >
-                  <ChevronLeft className="w-4 h-4" />
-                  Previous
+                  {cat}
                 </button>
+              ))}
+            </div>
 
-                <div className="flex gap-2">
-                  {Array.from({ length: totalPages }, (_, i) => i + 1).map(
-                    (page) => (
-                      <button
-                        key={page}
-                        onClick={() => setCurrentPage(page)}
-                        className={`w-10 h-10 rounded-lg transition ${
-                          currentPage === page
-                            ? "bg-cyan-400 text-black font-medium"
-                            : "border border-white/10 bg-white/[0.04] hover:bg-white/[0.06]"
-                        }`}
-                      >
-                        {page}
-                      </button>
-                    )
+            {/* Search Input */}
+            <div className="relative w-full md:w-80">
+              <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-white/30" />
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={(e) => {
+                  setSearchQuery(e.target.value);
+                  setCurrentPage(1);
+                }}
+                placeholder="Search articles & topics..."
+                className="w-full rounded-xl bg-white/[0.03] border border-white/[0.08] pl-10 pr-4 py-2 text-xs md:text-sm text-white placeholder-white/30 focus:border-white/40 focus:outline-none transition"
+              />
+            </div>
+          </div>
+
+          {/* Loading */}
+          {loading && (
+            <div className="text-center py-28">
+              <div className="inline-block animate-spin">
+                <div className="h-7 w-7 border-2 border-white/60 border-t-transparent rounded-full" />
+              </div>
+              <p className="mt-4 text-xs uppercase tracking-widest text-[#94A3B8] font-mono">
+                Loading Articles...
+              </p>
+            </div>
+          )}
+
+          {/* Empty State */}
+          {!loading && filteredPosts.length === 0 && (
+            <div className="text-center py-20 rounded-3xl border border-white/[0.08] bg-[#0D0D0D]">
+              <BookOpen className="w-10 h-10 mx-auto text-white/30 mb-3" />
+              <h3 className="text-base font-bold text-white mb-1 font-sans">
+                No matching articles
+              </h3>
+              <p className="text-xs text-[#94A3B8] font-light">
+                {searchQuery
+                  ? `No posts matched "${searchQuery}".`
+                  : "No published posts yet."}
+              </p>
+            </div>
+          )}
+
+          {/* Featured Hero Post */}
+          {!loading && featuredPost && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, ease: easeOutQuint }}
+              className="mb-14"
+            >
+              <Link
+                to={`/blog/${featuredPost.slug}`}
+                className="group block rounded-3xl border border-white/[0.08] bg-[#0D0D0D] hover:bg-[#111111] hover:border-white/[0.2] transition-all duration-300 p-6 sm:p-10 shadow-2xl"
+              >
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+                  <div className="lg:col-span-7 flex flex-col justify-between">
+                    <div>
+                      <div className="flex items-center gap-3 mb-4">
+                        <span className="px-3 py-1 rounded-full bg-white/[0.06] text-white border border-white/[0.1] text-[10px] font-mono font-bold uppercase tracking-[0.2em]">
+                          Lead Editorial
+                        </span>
+                        <span className="text-xs text-[#94A3B8] font-mono uppercase tracking-wider">
+                          {featuredPost.category}
+                        </span>
+                      </div>
+
+                      <h2 className="text-2xl sm:text-4xl font-bold font-sans bg-gradient-to-r from-white via-white/95 to-[#999999] bg-clip-text text-transparent group-hover:from-white group-hover:to-white transition-all mb-4 leading-tight">
+                        {featuredPost.title}
+                      </h2>
+
+                      <p className="text-[#94A3B8] text-sm sm:text-base font-light leading-relaxed mb-6 line-clamp-3">
+                        {featuredPost.excerpt}
+                      </p>
+                    </div>
+
+                    <div className="flex items-center justify-between pt-5 border-t border-white/[0.06] text-xs text-[#64748B] font-mono">
+                      <div className="flex items-center gap-4">
+                        <span className="flex items-center gap-1.5">
+                          <Calendar className="w-3.5 h-3.5 text-white/40" />
+                          {new Date(featuredPost.createdAt).toLocaleDateString(
+                            "en-US",
+                            {
+                              month: "short",
+                              day: "numeric",
+                              year: "numeric",
+                            }
+                          )}
+                        </span>
+                        {featuredPost.readTime && (
+                          <span className="flex items-center gap-1.5">
+                            <Clock className="w-3.5 h-3.5 text-white/40" />
+                            {featuredPost.readTime}
+                          </span>
+                        )}
+                      </div>
+
+                      <span className="text-xs font-semibold text-white flex items-center gap-1.5 group-hover:translate-x-1.5 transition-transform uppercase tracking-wider">
+                        Read Dispatch <ArrowRight className="w-3.5 h-3.5" />
+                      </span>
+                    </div>
+                  </div>
+
+                  {featuredPost.coverImage && (
+                    <div className="lg:col-span-5 h-64 sm:h-80 rounded-2xl overflow-hidden bg-black/40 border border-white/[0.08]">
+                      <img
+                        src={featuredPost.coverImage}
+                        alt={featuredPost.title}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                      />
+                    </div>
                   )}
                 </div>
+              </Link>
+            </motion.div>
+          )}
 
-                <button
-                  onClick={() =>
-                    setCurrentPage((p) => Math.min(totalPages, p + 1))
-                  }
-                  disabled={currentPage === totalPages}
-                  className="flex items-center gap-2 px-4 py-2 rounded-lg border border-white/10 bg-white/[0.04] hover:bg-white/[0.06] transition disabled:opacity-50 disabled:cursor-not-allowed"
-                >
-                  Next
-                  <ChevronRight className="w-4 h-4" />
-                </button>
-              </motion.div>
-            )}
-          </>
-        )}
-      </div>
-    </main>
+          {/* Grid of Remaining Posts */}
+          {!loading && gridPosts.length > 0 && (
+            <>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
+                {gridPosts.map((post) => (
+                  <motion.div
+                    key={post._id}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.6, ease: easeOutQuint }}
+                    className="flex"
+                  >
+                    <Link
+                      to={`/blog/${post.slug}`}
+                      className="w-full rounded-3xl border border-white/[0.08] bg-[#0D0D0D] hover:bg-[#121212] hover:border-white/[0.2] transition-all duration-300 p-6 flex flex-col justify-between shadow-xl group hover:-translate-y-1"
+                    >
+                      <div>
+                        {post.coverImage && (
+                          <div className="w-full h-48 rounded-2xl overflow-hidden mb-5 bg-black/40 border border-white/[0.06] relative">
+                            <img
+                              src={post.coverImage}
+                              alt={post.title}
+                              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                              loading="lazy"
+                            />
+                            <div className="absolute top-3 left-3 px-3 py-1 rounded-full bg-black/70 backdrop-blur-md border border-white/[0.1] text-white text-[10px] font-mono font-semibold uppercase tracking-wider">
+                              {post.category}
+                            </div>
+                          </div>
+                        )}
+
+                        {!post.coverImage && (
+                          <div className="mb-4">
+                            <span className="text-[10px] font-mono font-semibold uppercase tracking-wider px-3 py-1 rounded-full bg-white/[0.04] border border-white/[0.08] text-white/80">
+                              {post.category}
+                            </span>
+                          </div>
+                        )}
+
+                        <h2 className="text-xl font-bold font-sans mb-3 bg-gradient-to-r from-white via-[#F5F5F5] to-[#A1A1AA] bg-clip-text text-transparent group-hover:from-white group-hover:to-white transition-all line-clamp-2 leading-snug">
+                          {post.title}
+                        </h2>
+                        <p className="text-[#94A3B8] text-xs sm:text-sm mb-6 line-clamp-3 leading-relaxed font-light">
+                          {post.excerpt}
+                        </p>
+                      </div>
+
+                      <div className="pt-4 border-t border-white/[0.06] flex items-center justify-between text-xs text-[#64748B] font-mono">
+                        <div className="flex items-center gap-3">
+                          <span className="flex items-center gap-1 font-light">
+                            <Calendar className="w-3.5 h-3.5 text-white/40" />
+                            {new Date(post.createdAt).toLocaleDateString(
+                              "en-US",
+                              {
+                                month: "short",
+                                day: "numeric",
+                                year: "numeric",
+                              }
+                            )}
+                          </span>
+                          {post.readTime && (
+                            <span className="flex items-center gap-1 font-light">
+                              <Clock className="w-3.5 h-3.5 text-white/40" />
+                              {post.readTime}
+                            </span>
+                          )}
+                        </div>
+
+                        <span className="text-xs font-semibold text-white flex items-center gap-1 group-hover:translate-x-1 transition-transform uppercase tracking-wider">
+                          Read <ArrowRight className="w-3.5 h-3.5" />
+                        </span>
+                      </div>
+                    </Link>
+                  </motion.div>
+                ))}
+              </div>
+
+              {/* Pagination */}
+              {totalPages > 1 && (
+                <div className="flex items-center justify-center gap-3 font-mono">
+                  <button
+                    onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+                    disabled={currentPage === 1}
+                    className="flex items-center gap-1.5 px-4 py-2 rounded-xl border border-white/[0.08] bg-white/[0.02] hover:bg-white/[0.06] text-xs uppercase tracking-wider font-medium transition disabled:opacity-30 disabled:cursor-not-allowed"
+                  >
+                    <ChevronLeft className="w-4 h-4" /> Prev
+                  </button>
+
+                  <div className="flex gap-1.5">
+                    {Array.from({ length: totalPages }, (_, i) => i + 1).map(
+                      (page) => (
+                        <button
+                          key={page}
+                          onClick={() => setCurrentPage(page)}
+                          className={`w-9 h-9 rounded-xl text-xs font-semibold transition ${
+                            currentPage === page
+                              ? "bg-white text-black font-bold"
+                              : "border border-white/[0.08] bg-white/[0.02] hover:bg-white/[0.06] text-[#94A3B8]"
+                          }`}
+                        >
+                          {page}
+                        </button>
+                      )
+                    )}
+                  </div>
+
+                  <button
+                    onClick={() =>
+                      setCurrentPage((p) => Math.min(totalPages, p + 1))
+                    }
+                    disabled={currentPage === totalPages}
+                    className="flex items-center gap-1.5 px-4 py-2 rounded-xl border border-white/[0.08] bg-white/[0.02] hover:bg-white/[0.06] text-xs uppercase tracking-wider font-medium transition disabled:opacity-30 disabled:cursor-not-allowed"
+                  >
+                    Next <ChevronRight className="w-4 h-4" />
+                  </button>
+                </div>
+              )}
+            </>
+          )}
+        </div>
+      </main>
+
+      <Footer />
+    </div>
   );
 }

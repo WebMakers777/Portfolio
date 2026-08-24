@@ -522,34 +522,35 @@ export default function Process() {
                       {/* Header row */}
                       <div className="flex items-center justify-between mb-4">
                         <div className="flex items-center gap-3">
-                          <div className="w-9 h-9 rounded-xl bg-white/[0.06] border border-white/[0.1] flex items-center justify-center text-white group-hover:bg-white group-hover:text-black transition-all duration-500">
+                          <div className="w-10 h-10 rounded-xl bg-white/[0.08] border border-white/[0.15] flex items-center justify-center text-white group-hover:bg-white group-hover:text-black transition-all duration-500 shadow-sm">
                             <Icon className="w-4 h-4" />
                           </div>
                           <div>
-                            <div className="text-[9px] font-bold text-[#777] uppercase tracking-[0.15em]">
-                              Phase {step.number}
+                            <div className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-white/[0.12] border border-white/[0.18] text-[10px] font-mono font-bold text-white tracking-wider mb-1">
+                              <span>PHASE</span>
+                              <span className="text-white font-extrabold">{step.number}</span>
                             </div>
                             <h3 className="text-sm font-bold text-white tracking-tight leading-tight">
                               {step.title}
                             </h3>
                           </div>
                         </div>
-                        <span className="text-[9px] font-semibold text-[#777] bg-white/[0.04] px-2 py-0.5 rounded-full border border-white/[0.06] shrink-0">
+                        <span className="text-[10px] font-semibold text-white/90 bg-white/[0.08] px-2.5 py-0.5 rounded-full border border-white/[0.12] shrink-0 font-mono">
                           {step.timeframe}
                         </span>
                       </div>
 
                       {/* Description */}
-                      <p className="text-[12px] text-[#999] leading-relaxed font-light mb-5">
+                      <p className="text-[12px] text-[#A1A1AA] leading-relaxed font-light mb-5">
                         {step.description}
                       </p>
 
                       {/* Deliverables */}
-                      <div className="space-y-2 pt-4 border-t border-white/[0.06]">
+                      <div className="space-y-2 pt-4 border-t border-white/[0.08]">
                         {step.details.map((detail) => (
                           <div key={detail} className="flex items-start gap-2">
-                            <CheckCircle2 className="w-3 h-3 text-white/50 mt-0.5 shrink-0" />
-                            <span className="text-[11px] text-[#CCC] font-medium leading-tight">
+                            <CheckCircle2 className="w-3 h-3 text-white/70 mt-0.5 shrink-0" />
+                            <span className="text-[11px] text-[#E4E4E7] font-medium leading-tight">
                               {detail}
                             </span>
                           </div>
@@ -628,12 +629,12 @@ function StepCard({
   const opacity = useTransform(
     progress,
     [threshold - 0.06, threshold - 0.02, threshold, threshold + 0.03],
-    [0.2, 0.45, 1, 1]
+    [0.35, 0.6, 1, 1]
   );
   const scale = useTransform(
     progress,
     [threshold - 0.04, threshold, threshold + 0.05],
-    [0.92, 1.04, 1]
+    [0.94, 1.04, 1]
   );
 
   // Subtle upward float
@@ -647,7 +648,7 @@ function StepCard({
   const numberScale = useTransform(
     progress,
     [threshold - 0.04, threshold, threshold + 0.06],
-    [1, 1.2, 1.08]
+    [1, 1.15, 1.05]
   );
 
   return (
@@ -657,27 +658,27 @@ function StepCard({
     >
       {/* Node area */}
       <div className="relative mb-6 flex items-center justify-center" style={{ width: 140, height: 130 }}>
-        {/* Big faded step number — scales up, no highlight */}
+        {/* Subtle step number — peek behind icon with slightly increased visibility */}
         <motion.span
           style={{ scale: numberScale }}
-          className="absolute -top-2 left-[50%] text-[100px] font-black bg-gradient-to-b from-white/[0.06] to-transparent bg-clip-text text-transparent select-none leading-none pointer-events-none will-change-transform origin-center"
+          className="absolute -top-2 left-[50%] -translate-x-1/2 text-[96px] font-black bg-gradient-to-b from-white/[0.15] via-white/[0.07] to-transparent bg-clip-text text-transparent select-none leading-none pointer-events-none will-change-transform origin-center"
         >
           {step.number}
         </motion.span>
 
-        {/* Circular icon container — matches reference */}
-        <div className="relative w-12 h-12 rounded-full bg-[#1A1A1A] border border-white/[0.12] flex items-center justify-center shadow-[0_4px_20px_rgba(0,0,0,0.5)] group-hover:border-white/[0.25] group-hover:scale-105 transition-all duration-400">
-          <Icon className="w-[18px] h-[18px] text-white/90" />
+        {/* Circular icon container */}
+        <div className="relative w-13 h-13 rounded-2xl bg-[#151515] border border-white/[0.12] flex items-center justify-center shadow-[0_8px_24px_rgba(0,0,0,0.6)] group-hover:border-white/[0.25] group-hover:bg-[#1A1A1A] group-hover:scale-105 transition-all duration-400 z-10 p-3">
+          <Icon className="w-5 h-5 text-white/90" />
         </div>
       </div>
 
       {/* Title — bold, clean */}
-      <h3 className="text-base font-bold text-white mb-3 tracking-tight">
+      <h3 className="text-base font-bold text-white mb-2 tracking-tight">
         {step.title}
       </h3>
 
       {/* Description */}
-      <p className="text-[13px] text-[#999] leading-relaxed font-light max-w-[24ch]">
+      <p className="text-[13px] text-[#A3A3A3] leading-relaxed font-light max-w-[24ch]">
         {step.description}
       </p>
     </motion.div>

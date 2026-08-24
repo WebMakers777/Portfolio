@@ -29,6 +29,9 @@ import {
   Globe2,
   Terminal,
   Activity,
+  Maximize2,
+  Eye,
+  X,
 } from "lucide-react";
 import Navbar from "@/components/gateway/Navbar";
 import Footer from "@/components/gateway/Footer";
@@ -82,6 +85,7 @@ const getIcon = (name: string): React.ComponentType<{ className?: string }> => {
 export default function ServiceDetail() {
   const { slug } = useParams<{ slug: string }>();
   const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(0);
+  const [isSnapshotModalOpen, setIsSnapshotModalOpen] = useState(false);
 
   const serviceIndex = useMemo(() => {
     return servicesData.findIndex((s) => s.slug === slug);
@@ -326,43 +330,127 @@ export default function ServiceDetail() {
       </section>
 
       {/* ──────────────── 4. SECONDARY SOFTWARE VISUAL SHOWCASE ──────────────── */}
-      <section className="relative z-10 py-12 px-6 md:px-12">
+      <section className="relative z-10 py-16 px-6 md:px-12">
         <div className="mx-auto max-w-[1280px]">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center rounded-3xl bg-white/[0.02] border border-white/[0.08] p-8 sm:p-12 backdrop-blur-2xl">
-            <div className="lg:col-span-5">
-              <span className="text-[10px] uppercase font-bold tracking-[0.2em] text-[#AAA] mb-3 block">
-                Full-Stack Precision
-              </span>
-              <h3 className="text-2xl sm:text-3xl font-bold text-white mb-4 tracking-tight">
-                Designed for Mission-Critical Production
-              </h3>
-              <p className="text-sm text-[#A3A3A3] font-light leading-relaxed mb-6">
-                Our architectures are built for zero downtime, resilient failovers, and complete end-to-end data security. Every workflow is audited to ensure compliance with enterprise SOC2 and ISO standards.
-              </p>
-              <div className="flex flex-wrap gap-2">
-                {service.techStack.flatMap((ts) => ts.technologies).slice(0, 6).map((tech) => (
-                  <span
-                    key={tech}
-                    className="text-xs px-3 py-1 rounded-lg bg-[#181818] border border-white/[0.08] text-[#D4D4D4]"
-                  >
-                    {tech}
-                  </span>
-                ))}
+          {/* Ambient subtle glow */}
+          <div className="pointer-events-none absolute -top-10 right-1/4 w-[600px] h-[350px] bg-[radial-gradient(ellipse_at_center,_rgba(255,255,255,0.03)_0%,_transparent_70%)] blur-[100px]" />
+
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center rounded-3xl bg-gradient-to-b from-white/[0.03] to-white/[0.01] border border-white/[0.08] p-8 sm:p-12 backdrop-blur-2xl shadow-[0_20px_60px_rgba(0,0,0,0.6)]">
+            <div className="lg:col-span-5 flex flex-col justify-between">
+              <div>
+                <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/[0.06] border border-white/[0.12] text-[10px] uppercase font-bold tracking-widest text-[#D4D4D4] mb-5 backdrop-blur-md">
+                  <Monitor className="w-3.5 h-3.5 text-white" />
+                  <span>Software Snapshot & Architecture</span>
+                </div>
+
+                <h3 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white mb-4 tracking-tight leading-snug">
+                  Engineered for Mission-Critical Production
+                </h3>
+
+                <p className="text-sm text-[#A3A3A3] font-light leading-relaxed mb-6">
+                  {service.imageCaption} — custom-built with sub-second response times, immutable audit trails, and high-availability topologies.
+                </p>
+
+                <div className="space-y-3 mb-8">
+                  <div className="flex items-center gap-3 text-xs text-[#E5E5E5]">
+                    <div className="w-5 h-5 rounded-full bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center shrink-0">
+                      <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
+                    </div>
+                    <span>Sub-100ms latency & optimistic caching</span>
+                  </div>
+                  <div className="flex items-center gap-3 text-xs text-[#E5E5E5]">
+                    <div className="w-5 h-5 rounded-full bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center shrink-0">
+                      <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
+                    </div>
+                    <span>Enterprise SOC2, ISO & role-based data isolation</span>
+                  </div>
+                  <div className="flex items-center gap-3 text-xs text-[#E5E5E5]">
+                    <div className="w-5 h-5 rounded-full bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center shrink-0">
+                      <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
+                    </div>
+                    <span>Automated CI/CD pipelines & zero-downtime rollouts</span>
+                  </div>
+                </div>
+              </div>
+
+              <div>
+                <span className="text-[11px] uppercase font-bold tracking-widest text-[#777] block mb-3">
+                  Production Tech Stack
+                </span>
+                <div className="flex flex-wrap gap-2">
+                  {service.techStack.flatMap((ts) => ts.technologies).slice(0, 6).map((tech) => (
+                    <span
+                      key={tech}
+                      className="text-xs px-3 py-1.5 rounded-lg bg-[#141414] border border-white/[0.08] text-[#D4D4D4] hover:border-white/[0.2] transition-colors"
+                    >
+                      {tech}
+                    </span>
+                  ))}
+                </div>
               </div>
             </div>
 
+            {/* Right side: High fidelity interactive Snapshot Window */}
             <div className="lg:col-span-7">
-              <div className="relative rounded-2xl overflow-hidden border border-white/[0.1] shadow-2xl">
-                <img
-                  src={service.secondaryImage}
-                  alt={`${service.title} Workflow`}
-                  className="w-full h-72 sm:h-80 object-cover grayscale contrast-125 opacity-80 hover:scale-105 transition-transform duration-700"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#0A0A0A]/90 via-transparent to-transparent" />
-                <div className="absolute bottom-4 left-4 text-xs font-mono text-[#AAA]">
-                  vincie-os :: module-spec :: {service.slug}
+              <motion.div
+                initial={{ opacity: 0, scale: 0.96 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.8, ease: easeOutQuint }}
+                className="group relative rounded-2xl overflow-hidden border border-white/[0.14] bg-[#000000] shadow-[0_25px_70px_rgba(0,0,0,0.9)]"
+              >
+                {/* Window Chrome Header */}
+                <div className="flex items-center justify-between px-4 py-3 bg-[#111111] border-b border-white/[0.08]">
+                  <div className="flex items-center gap-2">
+                    <span className="w-3 h-3 rounded-full bg-[#FF5F56]/80 border border-[#E0443E]" />
+                    <span className="w-3 h-3 rounded-full bg-[#FFBD2E]/80 border border-[#DEA123]" />
+                    <span className="w-3 h-3 rounded-full bg-[#27C93F]/80 border border-[#1AAB29]" />
+                  </div>
+
+                  <div className="flex items-center gap-2 px-3 py-1 rounded-md bg-[#000000]/60 border border-white/[0.06] text-[11px] font-mono text-[#888]">
+                    <Lock className="w-3 h-3 text-emerald-400" />
+                    <span>app.vincie.com/systems/{service.slug}</span>
+                  </div>
+
+                  <div className="flex items-center gap-1.5 text-[10px] uppercase font-bold tracking-wider text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-full border border-emerald-500/20">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                    <span>Live</span>
+                  </div>
                 </div>
-              </div>
+
+                {/* Main Full-Color Screenshot */}
+                <div
+                  className="relative aspect-[16/10] w-full overflow-hidden bg-[#0A0A0A] cursor-pointer"
+                  onClick={() => setIsSnapshotModalOpen(true)}
+                >
+                  <img
+                    src={service.secondaryImage}
+                    alt={`${service.title} Software Interface Snapshot`}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
+                  />
+
+                  {/* Subtle vignette gradient */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#000000]/70 via-transparent to-transparent pointer-events-none" />
+
+                  {/* Hover expand overlay button */}
+                  <div className="absolute inset-0 bg-[#000000]/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center pointer-events-none">
+                    <div className="px-4 py-2 rounded-xl bg-white/90 text-black text-xs font-bold flex items-center gap-2 shadow-2xl backdrop-blur-md">
+                      <Maximize2 className="w-3.5 h-3.5" />
+                      <span>View Fullscreen Snapshot</span>
+                    </div>
+                  </div>
+
+                  {/* Bottom Caption Pill */}
+                  <div className="absolute bottom-3 left-3 right-3 flex items-center justify-between pointer-events-none">
+                    <span className="text-[11px] font-mono px-3 py-1.5 rounded-lg bg-[#000000]/80 backdrop-blur-md text-[#E0E0E0] border border-white/[0.1] shadow-md truncate max-w-[85%]">
+                      {service.imageCaption}
+                    </span>
+                    <span className="text-[10px] font-mono px-2 py-1 rounded bg-white/10 text-white backdrop-blur-md">
+                      HD
+                    </span>
+                  </div>
+                </div>
+              </motion.div>
             </div>
           </div>
         </div>
@@ -772,6 +860,64 @@ export default function ServiceDetail() {
           </div>
         </div>
       </section>
+
+      {/* ──────────────── SNAPSHOT FULLSCREEN MODAL ──────────────── */}
+      <AnimatePresence>
+        {isSnapshotModalOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-8 bg-black/90 backdrop-blur-xl"
+            onClick={() => setIsSnapshotModalOpen(false)}
+          >
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              transition={{ duration: 0.3, ease: easeOutQuint }}
+              className="relative max-w-6xl w-full rounded-2xl overflow-hidden border border-white/20 bg-[#0A0A0A] shadow-[0_25px_100px_rgba(0,0,0,0.95)]"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {/* Modal Header */}
+              <div className="flex items-center justify-between px-6 py-4 bg-[#141414] border-b border-white/10">
+                <div className="flex items-center gap-3">
+                  <div className="flex items-center gap-2">
+                    <span className="w-3 h-3 rounded-full bg-[#FF5F56]" />
+                    <span className="w-3 h-3 rounded-full bg-[#FFBD2E]" />
+                    <span className="w-3 h-3 rounded-full bg-[#27C93F]" />
+                  </div>
+                  <span className="text-xs font-mono text-[#AAA]">
+                    {service.title} — Software Production Snapshot
+                  </span>
+                </div>
+
+                <button
+                  onClick={() => setIsSnapshotModalOpen(false)}
+                  className="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition-colors"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+              </div>
+
+              {/* Modal Image Body */}
+              <div className="relative max-h-[80vh] overflow-auto bg-black p-2">
+                <img
+                  src={service.secondaryImage}
+                  alt={`${service.title} High Resolution Snapshot`}
+                  className="w-full h-auto object-contain rounded-lg"
+                />
+              </div>
+
+              {/* Modal Footer */}
+              <div className="px-6 py-3 bg-[#111111] border-t border-white/10 flex flex-wrap items-center justify-between gap-4 text-xs text-[#888]">
+                <span>{service.imageCaption}</span>
+                <span className="font-mono text-white">100% Bespoke Codebase</span>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       <Footer />
       <WhatsAppFloat />

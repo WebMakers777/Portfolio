@@ -78,6 +78,12 @@ export function Navigation() {
               >
                 About Us
               </button>
+              <Link
+                to="/blog"
+                className="nav-link"
+              >
+                Blog
+              </Link>
             </div>
           </div>
 
@@ -124,6 +130,12 @@ export function Navigation() {
               >
                 About Us
               </button>
+              <Link
+                to="/blog"
+                className="block px-3 py-2 text-base font-medium nav-link w-full text-left"
+              >
+                Blog
+              </Link>
             </div>
           </div>
         )}

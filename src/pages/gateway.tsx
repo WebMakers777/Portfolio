@@ -18,6 +18,7 @@ import {
   X,
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { contactService } from "@/lib/contactService";
 import WhatsAppFloat from "@/components/WhatsappFloat";
 import TechStackShowcase from "@/components/gateway/TechStackShowcase";
 import HowWeWork from "@/components/gateway/HowWeWork";
@@ -552,24 +553,14 @@ const ContactSection = () => {
     e.preventDefault();
     setIsSubmitting(true);
     try {
-      const payload = {
+      await contactService.submitInquiry({
         name: formData.name,
         email: formData.email,
         message: formData.message,
         source: "gateway",
-      };
-      const resp = await fetch("/api/contact", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
       });
-      let data = await resp.json().catch(() => ({ success: resp.ok }));
-      if (data?.success) {
-        toast({ title: "Inquiry received.", description: "We will reach out shortly." });
-        setFormData({ name: "", email: "", message: "" });
-      } else {
-        throw new Error(data?.error || "Failed");
-      }
+      toast({ title: "Inquiry received.", description: "We will reach out shortly." });
+      setFormData({ name: "", email: "", message: "" });
     } catch (err) {
       toast({ title: "Error", description: "Submission failed. Please try again." });
     } finally {

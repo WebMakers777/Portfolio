@@ -12,6 +12,9 @@ import Services from "./pages/Services";
 import ServiceDetail from "./pages/ServiceDetail";
 import Process from "./pages/Process";
 import Contact from "./pages/Contact";
+import Blog from "./pages/blog";
+import BlogPost from "./pages/BlogPost";
+import AdminDashboard from "./pages/admin/AdminDashboard";
 import ScrollToTop from "./components/ScrollToTop";
 import CustomCursor from "./components/CustomCursor";
 
@@ -35,6 +38,11 @@ const App = () => (
           <Route path="/services/:slug" element={<ServiceDetail />} />
           <Route path="/process" element={<Process />} />
           <Route path="/contact" element={<Contact />} />
+
+          {/* Blog & Admin Pages */}
+          <Route path="/blog" element={<Blog />} />
+          <Route path="/blog/:slug" element={<BlogPost />} />
+          <Route path="/admin" element={<AdminDashboard />} />
 
           {/* Catch-all */}
           <Route path="*" element={<NotFound />} />

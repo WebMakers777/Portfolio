@@ -13,6 +13,7 @@ import Navbar from "@/components/gateway/Navbar";
 import Footer from "@/components/gateway/Footer";
 import WhatsAppFloat from "@/components/WhatsappFloat";
 import { useToast } from "@/hooks/use-toast";
+import { contactService } from "@/lib/contactService";
 
 const easeOutQuint = [0.22, 1, 0.36, 1] as const;
 
@@ -61,42 +62,31 @@ export default function Contact() {
     e.preventDefault();
     setIsSubmitting(true);
     try {
-      const payload = {
-        ...formData,
+      await contactService.submitInquiry({
+        name: formData.name,
+        email: formData.email,
+        budget: formData.budget,
+        service: formData.service,
+        message: formData.message,
         source: "contact-page",
-      };
-      const resp = await fetch("/api/contact", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
       });
-      let data = await resp.json().catch(() => ({ success: resp.ok }));
-      if (data?.success || resp.ok) {
-        toast({
-          title: "Inquiry received.",
-          description: "Our technical team will reach out within 24 hours.",
-        });
-        setFormData({
-          name: "",
-          email: "",
-          budget: "$10k - $25k",
-          service: "SaaS Platform",
-          message: "",
-        });
-      } else {
-        throw new Error(data?.error || "Failed");
-      }
-    } catch (err) {
+
       toast({
         title: "Inquiry received.",
-        description: "Thank you for reaching out. We will connect shortly.",
+        description: "Our technical team will reach out within 24 hours.",
       });
+
       setFormData({
         name: "",
         email: "",
         budget: "$10k - $25k",
         service: "SaaS Platform",
         message: "",
+      });
+    } catch (err) {
+      toast({
+        title: "Inquiry received.",
+        description: "Thank you for reaching out. We will connect shortly.",
       });
     } finally {
       setIsSubmitting(false);

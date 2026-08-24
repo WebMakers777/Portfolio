@@ -1,3 +1,4 @@
+// src/components/gateway/Navbar.tsx
 import { useState, useEffect, useRef } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
@@ -63,12 +64,16 @@ export default function Navbar() {
   };
 
   const isServicesActive = location.pathname.startsWith("/services");
+  const isBlogActive = location.pathname.startsWith("/blog");
+  const isAboutActive = location.pathname === "/about";
+  const isProcessActive = location.pathname === "/process";
+  const isContactActive = location.pathname === "/contact";
 
   return (
     <motion.nav
       className={`fixed top-0 inset-x-0 z-50 transition-all duration-500 ${
         scrolled
-          ? "bg-[#0A0A0A]/50 backdrop-blur-2xl backdrop-saturate-[180%] py-4 shadow-[0_20px_50px_rgba(0,0,0,0.4)]"
+          ? "bg-[#0A0A0A]/60 backdrop-blur-2xl backdrop-saturate-[180%] py-4 shadow-[0_20px_50px_rgba(0,0,0,0.4)]"
           : "bg-transparent py-5"
       }`}
       initial={{ opacity: 0, y: -20 }}
@@ -88,20 +93,25 @@ export default function Navbar() {
           </span>
         </Link>
 
-        {/* Desktop Nav Links */}
+        {/* Desktop Nav Links (Clean Unboxed Layout with Smooth Sliding Underline) */}
         <div className="hidden md:flex items-center gap-8">
           <Link
             to="/about"
-            className={`relative text-[13px] font-medium tracking-wide uppercase transition-colors duration-300 ${
-              location.pathname === "/about" ? "text-white font-semibold" : "text-[#888888] hover:text-white"
+            className={`relative py-1 text-[13px] font-medium tracking-wide uppercase transition-colors duration-300 ${
+              isAboutActive ? "text-white font-semibold" : "text-[#888888] hover:text-white"
             }`}
           >
             About
-            {location.pathname === "/about" && (
+            {isAboutActive && (
               <motion.div
                 layoutId="activeNavUnderline"
-                className="absolute -bottom-1 left-0 right-0 h-[1.5px] bg-white rounded-full shadow-[0_0_8px_white]"
-                transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                className="absolute -bottom-1.5 left-0 right-0 h-[2px] bg-white rounded-full shadow-[0_0_10px_rgba(255,255,255,0.8)]"
+                transition={{
+                  type: "spring",
+                  stiffness: 400,
+                  damping: 30,
+                  mass: 0.8,
+                }}
               />
             )}
           </Link>
@@ -128,8 +138,13 @@ export default function Navbar() {
                 {isServicesActive && (
                   <motion.div
                     layoutId="activeNavUnderline"
-                    className="absolute -bottom-1 left-0 right-0 h-[1.5px] bg-white rounded-full shadow-[0_0_8px_white]"
-                    transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                    className="absolute -bottom-1.5 left-0 right-0 h-[2px] bg-white rounded-full shadow-[0_0_10px_rgba(255,255,255,0.8)]"
+                    transition={{
+                      type: "spring",
+                      stiffness: 400,
+                      damping: 30,
+                      mass: 0.8,
+                    }}
                   />
                 )}
               </Link>
@@ -220,32 +235,63 @@ export default function Navbar() {
 
           <Link
             to="/process"
-            className={`relative text-[13px] font-medium tracking-wide uppercase transition-colors duration-300 ${
-              location.pathname === "/process" ? "text-white font-semibold" : "text-[#888888] hover:text-white"
+            className={`relative py-1 text-[13px] font-medium tracking-wide uppercase transition-colors duration-300 ${
+              isProcessActive ? "text-white font-semibold" : "text-[#888888] hover:text-white"
             }`}
           >
             Process
-            {location.pathname === "/process" && (
+            {isProcessActive && (
               <motion.div
                 layoutId="activeNavUnderline"
-                className="absolute -bottom-1 left-0 right-0 h-[1.5px] bg-white rounded-full shadow-[0_0_8px_white]"
-                transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                className="absolute -bottom-1.5 left-0 right-0 h-[2px] bg-white rounded-full shadow-[0_0_10px_rgba(255,255,255,0.8)]"
+                transition={{
+                  type: "spring",
+                  stiffness: 400,
+                  damping: 30,
+                  mass: 0.8,
+                }}
+              />
+            )}
+          </Link>
+
+          <Link
+            to="/blog"
+            className={`relative py-1 text-[13px] font-medium tracking-wide uppercase transition-colors duration-300 ${
+              isBlogActive ? "text-white font-semibold" : "text-[#888888] hover:text-white"
+            }`}
+          >
+            Blog
+            {isBlogActive && (
+              <motion.div
+                layoutId="activeNavUnderline"
+                className="absolute -bottom-1.5 left-0 right-0 h-[2px] bg-white rounded-full shadow-[0_0_10px_rgba(255,255,255,0.8)]"
+                transition={{
+                  type: "spring",
+                  stiffness: 400,
+                  damping: 30,
+                  mass: 0.8,
+                }}
               />
             )}
           </Link>
 
           <Link
             to="/contact"
-            className={`relative text-[13px] font-medium tracking-wide uppercase transition-colors duration-300 ${
-              location.pathname === "/contact" ? "text-white font-semibold" : "text-[#888888] hover:text-white"
+            className={`relative py-1 text-[13px] font-medium tracking-wide uppercase transition-colors duration-300 ${
+              isContactActive ? "text-white font-semibold" : "text-[#888888] hover:text-white"
             }`}
           >
             Contact
-            {location.pathname === "/contact" && (
+            {isContactActive && (
               <motion.div
                 layoutId="activeNavUnderline"
-                className="absolute -bottom-1 left-0 right-0 h-[1.5px] bg-white rounded-full shadow-[0_0_8px_white]"
-                transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                className="absolute -bottom-1.5 left-0 right-0 h-[2px] bg-white rounded-full shadow-[0_0_10px_rgba(255,255,255,0.8)]"
+                transition={{
+                  type: "spring",
+                  stiffness: 400,
+                  damping: 30,
+                  mass: 0.8,
+                }}
               />
             )}
           </Link>
@@ -308,7 +354,7 @@ export default function Navbar() {
                 to="/about"
                 onClick={() => setMobileMenuOpen(false)}
                 className={`block text-sm font-medium py-3 border-b border-white/[0.04] tracking-wide uppercase transition-colors ${
-                  location.pathname === "/about" ? "text-white font-semibold" : "text-[#A3A3A3] hover:text-white"
+                  isAboutActive ? "text-white font-semibold" : "text-[#A3A3A3] hover:text-white"
                 }`}
               >
                 About
@@ -358,7 +404,8 @@ export default function Navbar() {
                       </Link>
                       {servicesData.map((service) => {
                         const Icon = serviceIconMap[service.slug] || Monitor;
-                        const isCurrent = location.pathname === `/services/${service.slug}`;
+                        const isCurrent =
+                          location.pathname === `/services/${service.slug}`;
                         return (
                           <Link
                             key={service.slug}
@@ -384,17 +431,27 @@ export default function Navbar() {
                 to="/process"
                 onClick={() => setMobileMenuOpen(false)}
                 className={`block text-sm font-medium py-3 border-b border-white/[0.04] tracking-wide uppercase transition-colors ${
-                  location.pathname === "/process" ? "text-white font-semibold" : "text-[#A3A3A3] hover:text-white"
+                  isProcessActive ? "text-white font-semibold" : "text-[#A3A3A3] hover:text-white"
                 }`}
               >
                 Process
               </Link>
 
               <Link
+                to="/blog"
+                onClick={() => setMobileMenuOpen(false)}
+                className={`block text-sm font-medium py-3 border-b border-white/[0.04] tracking-wide uppercase transition-colors ${
+                  isBlogActive ? "text-white font-semibold" : "text-[#A3A3A3] hover:text-white"
+                }`}
+              >
+                Blog
+              </Link>
+
+              <Link
                 to="/contact"
                 onClick={() => setMobileMenuOpen(false)}
                 className={`block text-sm font-medium py-3 border-b border-white/[0.04] last:border-0 tracking-wide uppercase transition-colors ${
-                  location.pathname === "/contact" ? "text-white font-semibold" : "text-[#A3A3A3] hover:text-white"
+                  isContactActive ? "text-white font-semibold" : "text-[#A3A3A3] hover:text-white"
                 }`}
               >
                 Contact

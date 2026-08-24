@@ -37,6 +37,9 @@ export default function Footer() {
                 <Link to="/process" className="hover:text-white transition-colors">Process & Lifecycle</Link>
               </li>
               <li>
+                <Link to="/blog" className="hover:text-white transition-colors">Blog & Insights</Link>
+              </li>
+              <li>
                 <Link to="/contact" className="hover:text-white transition-colors">Contact</Link>
               </li>
             </ul>

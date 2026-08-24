@@ -2,12 +2,54 @@
 @tailwind components;
 @tailwind utilities;
 
-@media (pointer: fine) {
-  body.hide-cursor, body.hide-cursor * {
-    cursor: none !important;
-  }
+/* -------------------------------------------------------------
+   Cursor Normalization:
+   - Default arrow cursor across all text, headings, and sections
+   - Pointer hand cursor for links, buttons, and interactive elements
+   - Text I-beam cursor strictly restricted to input fields & textareas
+------------------------------------------------------------- */
+body,
+body * {
+  cursor: default;
 }
-@tailwind utilities;
+
+a,
+a *,
+button,
+button *,
+[role="button"],
+[role="button"] *,
+select,
+input[type="submit"],
+input[type="button"],
+input[type="checkbox"],
+input[type="radio"],
+label[for],
+.cursor-pointer,
+.cursor-pointer * {
+  cursor: pointer !important;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="number"],
+input[type="search"],
+input[type="url"],
+input[type="tel"],
+input:not([type]),
+textarea,
+[contenteditable="true"] {
+  cursor: text !important;
+}
+
+input:disabled,
+button:disabled,
+textarea:disabled,
+.disabled,
+.cursor-not-allowed {
+  cursor: not-allowed !important;
+}
 
 /* Hide scrollbars globally while keeping scroll functionality */
 html {
@@ -389,13 +431,11 @@ body::-webkit-scrollbar {
 
   body {
     @apply bg-background text-foreground;
-    scroll-behavior: smooth;
-    /* Use your preferred font here if configured in Tailwind */
-    /* font-family: var(--font-sans); */
   }
 
   html {
-    scroll-behavior: smooth;
+    /* Instant scroll restoration on page navigation */
+    scroll-behavior: auto;
   }
 }
 
@@ -1171,6 +1211,4 @@ All colors MUST be HSL.
     @apply bg-background text-foreground;
   }
 }
-html {
-  scroll-behavior: smooth;
-}
+

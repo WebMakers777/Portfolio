@@ -90,13 +90,13 @@ export default function HowWeWork() {
                 >
                   {/* Step Number + Icon */}
                   <div className="relative mb-8 w-[120px] h-[120px] flex items-center justify-center">
-                    {/* Large faded number — offset to peek behind top-right of icon */}
-                    <span className="absolute -top-1 left-[58%] text-[80px] font-black bg-gradient-to-b from-white/[0.06] to-transparent bg-clip-text text-transparent select-none leading-none">
+                    {/* Large subtle number — offset to peek behind top-right of icon */}
+                    <span className="absolute -top-1 left-[58%] text-[80px] font-black bg-gradient-to-b from-white/[0.15] via-white/[0.07] to-transparent bg-clip-text text-transparent select-none leading-none pointer-events-none">
                       {step.number}
                     </span>
                     {/* Icon circle overlay */}
-                    <div className="relative w-14 h-14 rounded-2xl bg-[#151515] border border-white/[0.1] flex items-center justify-center shadow-[0_8px_24px_rgba(0,0,0,0.6)] group-hover:border-white/[0.2] group-hover:bg-[#1A1A1A] group-hover:shadow-[0_8px_30px_rgba(0,0,0,0.8),0_0_20px_rgba(255,255,255,0.05)] transition-all duration-500">
-                      <Icon className="w-5 h-5 text-white/80" />
+                    <div className="relative w-14 h-14 rounded-2xl bg-[#151515] border border-white/[0.12] flex items-center justify-center shadow-[0_8px_24px_rgba(0,0,0,0.6)] group-hover:border-white/[0.25] group-hover:bg-[#1A1A1A] transition-all duration-500">
+                      <Icon className="w-5 h-5 text-white/85" />
                     </div>
                   </div>
 
