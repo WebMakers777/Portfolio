@@ -1,4 +1,4 @@
-import { Github, Linkedin, Twitter, Mail, Phone, MapPin } from "lucide-react";
+import { Github, Linkedin, Twitter, Mail, Phone, MapPin, Instagram } from "lucide-react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 
 const Footer = () => {
@@ -43,22 +43,22 @@ const Footer = () => {
             </p>
             <div className="flex gap-4">
               <a
-                href="#"
-                className="w-8 h-8 bg-secondary rounded-lg flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-colors duration-300"
-              >
-                <Github className="w-4 h-4" />
-              </a>
-              <a
-                href="#"
+                href="https://www.linkedin.com/company/111233207"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="LinkedIn"
                 className="w-8 h-8 bg-secondary rounded-lg flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-colors duration-300"
               >
                 <Linkedin className="w-4 h-4" />
               </a>
               <a
-                href="#"
+                href="https://www.instagram.com/studiovincie"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Instagram"
                 className="w-8 h-8 bg-secondary rounded-lg flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-colors duration-300"
               >
-                <Twitter className="w-4 h-4" />
+                <Instagram className="w-4 h-4" />
               </a>
             </div>
           </div>
@@ -116,11 +116,11 @@ const Footer = () => {
             <div className="space-y-3">
               <div className="flex items-center gap-3 text-muted-foreground">
                 <Mail className="w-4 h-4 text-primary" />
-                <span className="text-sm">web.makers777@gmail.com</span>
+                <span className="text-sm">hello@vinciestudios.com</span>
               </div>
               <div className="flex items-center gap-3 text-muted-foreground">
                 <Phone className="w-4 h-4 text-primary" />
-                <span className="text-sm">+91 93581 01310</span>
+                <span className="text-sm">+91 73750 38069</span>
               </div>
             </div>
           </div>

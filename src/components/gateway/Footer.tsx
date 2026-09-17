@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { Linkedin, Instagram } from "lucide-react";
 
 export default function Footer() {
   return (
@@ -6,19 +7,39 @@ export default function Footer() {
       <div className="mx-auto max-w-[1280px]">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
           <div className="md:col-span-1">
-            <Link to="/" className="flex items-center gap-3 mb-4 group" aria-label="Home">
+            <Link to="/" className="flex items-center gap-3.5 mb-5 group" aria-label="Home">
               <img
                 src="/vinciestudio.png"
                 alt="Vincie Studios Logo"
-                className="h-8 w-auto object-contain transition-transform duration-500 group-hover:scale-105"
+                className="h-9 sm:h-[38px] md:h-10 w-auto object-contain transition-transform duration-500 group-hover:scale-105"
               />
-              <span className="text-base font-semibold tracking-wide text-[#F5F5F5]">
+              <span className="text-lg sm:text-xl font-bold tracking-tight text-[#F5F5F5]">
                 Vincie Studios
               </span>
             </Link>
             <p className="text-sm text-[#888888] font-light max-w-[40ch] leading-relaxed mb-6">
               Obsessive product engineering combined with elite digital strategy to build market-leading software and scale ambitious brands.
             </p>
+            <div className="flex items-center gap-3">
+              <a
+                href="https://www.linkedin.com/company/111233207"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-8 h-8 rounded-lg bg-white/[0.04] border border-white/[0.08] flex items-center justify-center text-[#888888] hover:text-white hover:bg-white/[0.1] hover:border-white/[0.2] transition-colors"
+                aria-label="LinkedIn"
+              >
+                <Linkedin className="w-4 h-4" />
+              </a>
+              <a
+                href="https://www.instagram.com/studiovincie"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-8 h-8 rounded-lg bg-white/[0.04] border border-white/[0.08] flex items-center justify-center text-[#888888] hover:text-white hover:bg-white/[0.1] hover:border-white/[0.2] transition-colors"
+                aria-label="Instagram"
+              >
+                <Instagram className="w-4 h-4" />
+              </a>
+            </div>
           </div>
 
           <div>
@@ -73,8 +94,8 @@ export default function Footer() {
             <h4 className="text-xs font-bold text-white uppercase tracking-widest mb-4">Get in Touch</h4>
             <ul className="space-y-2.5 text-sm text-[#888888]">
               <li>
-                <a href="mailto:vinciestudios@gmail.com" className="hover:text-white transition-colors">
-                  vinciestudios@gmail.com
+                <a href="mailto:hello@vinciestudios.com" className="hover:text-white transition-colors">
+                  hello@vinciestudios.com
                 </a>
               </li>
               <li>
@@ -97,6 +118,24 @@ export default function Footer() {
         <div className="pt-8 border-t border-white/[0.04] flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-medium text-[#666666]">
           <span>© {new Date().getFullYear()} Vincie Studios. All rights reserved.</span>
           <div className="flex items-center gap-6">
+            <a
+              href="https://www.linkedin.com/company/111233207"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-white transition-colors flex items-center gap-1.5"
+            >
+              <Linkedin className="w-3.5 h-3.5" />
+              <span>LinkedIn</span>
+            </a>
+            <a
+              href="https://www.instagram.com/studiovincie"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-white transition-colors flex items-center gap-1.5"
+            >
+              <Instagram className="w-3.5 h-3.5" />
+              <span>Instagram</span>
+            </a>
             <Link to="/about" className="hover:text-white transition-colors">About Us</Link>
             <Link to="/services" className="hover:text-white transition-colors">Services</Link>
             <Link to="/contact" className="hover:text-white transition-colors">Contact</Link>

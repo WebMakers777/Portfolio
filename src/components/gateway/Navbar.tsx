@@ -82,13 +82,13 @@ export default function Navbar() {
     >
       <div className="mx-auto max-w-[1280px] flex items-center justify-between px-6 md:px-12">
         {/* Brand Logo */}
-        <Link to="/" className="flex items-center gap-3 group" aria-label="Home">
+        <Link to="/" className="flex items-center gap-3.5 group" aria-label="Home">
           <img
             src="/vinciestudio.png"
             alt="Vincie Studios Logo"
-            className="h-8 w-auto object-contain transition-transform duration-500 group-hover:scale-105"
+            className="h-9 sm:h-[38px] md:h-10 w-auto object-contain transition-transform duration-500 group-hover:scale-105"
           />
-          <span className="text-base font-semibold tracking-wide text-[#F5F5F5] hidden sm:inline-block">
+          <span className="text-lg sm:text-xl font-bold tracking-tight text-[#F5F5F5] hidden sm:inline-block">
             Vincie Studios
           </span>
         </Link>

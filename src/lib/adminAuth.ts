@@ -1,11 +1,11 @@
 // src/lib/adminAuth.ts
 
 const SESSION_KEY = "vincie_admin_session_auth";
-const CREDS_KEY = "vincie_admin_credentials_v1";
+const CREDS_KEY = "vincie_admin_credentials_v2";
 
 const DEFAULT_CREDENTIALS = {
-  adminId: "admin",
-  password: "admin",
+  adminId: "vinciestudios@gmail.com",
+  password: "VincieA@23992",
 };
 
 export interface AdminCredentials {
@@ -16,11 +16,19 @@ export interface AdminCredentials {
 export const adminAuth = {
   getCredentials: (): AdminCredentials => {
     try {
+      // Clean up legacy v1 credentials if present
+      localStorage.removeItem("vincie_admin_credentials_v1");
+
       const stored = localStorage.getItem(CREDS_KEY);
       if (!stored) {
         return DEFAULT_CREDENTIALS;
       }
-      return JSON.parse(stored);
+      const parsed = JSON.parse(stored);
+      if (!parsed.adminId || parsed.adminId === "admin") {
+        localStorage.setItem(CREDS_KEY, JSON.stringify(DEFAULT_CREDENTIALS));
+        return DEFAULT_CREDENTIALS;
+      }
+      return parsed;
     } catch {
       return DEFAULT_CREDENTIALS;
     }
@@ -40,7 +48,10 @@ export const adminAuth = {
 
   login: (id: string, pass: string): boolean => {
     const creds = adminAuth.getCredentials();
-    if (id.trim() === creds.adminId && pass === creds.password) {
+    const normalizedInputId = id.trim().toLowerCase();
+    const normalizedStoredId = creds.adminId.trim().toLowerCase();
+
+    if (normalizedInputId === normalizedStoredId && pass === creds.password) {
       const sessionData = {
         authenticated: true,
         loginTime: new Date().toISOString(),

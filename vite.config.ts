@@ -30,7 +30,7 @@ export default defineConfig(({ mode }) => {
       proxy: {
         "/api/contact": {
           target:
-            "https://script.google.com/macros/s/AKfycbxCaEQWft1iItNEauWhgqTTCOCRJ7ZdtY9j-ETE0tt2gESRjzFxVDGTqMzryiQiimus/exec",
+            "https://script.google.com/macros/s/AKfycbxkLWWtp_6iDSGlA8ncs1FM67Ihrvc7EM1IH9XY00-7PFIt1Xt0Y7Q9VfRqKpyLsvHf/exec",
           changeOrigin: true,
           secure: true,
           rewrite: (path) => path.replace(/^\/api\/contact/, ""),

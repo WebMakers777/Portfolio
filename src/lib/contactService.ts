@@ -17,13 +17,17 @@ const SHEET_CONFIG_KEY = "vincie_sheet_webhook_url";
 
 export const DEFAULT_SHEET_WEBHOOK_URL =
   import.meta.env.VITE_CONTACT_SHEET_URL ||
-  "https://script.google.com/macros/s/AKfycbwy2sLXQabMqpdaHudrewxRmxLdzlqPTH5qr0BML77ymvnxzl32CNA931pUt72VFU9C/exec";
+  "https://script.google.com/macros/s/AKfycbxkLWWtp_6iDSGlA8ncs1FM67Ihrvc7EM1IH9XY00-7PFIt1Xt0Y7Q9VfRqKpyLsvHf/exec";
 
 export const contactService = {
   getSheetWebhookUrl: (): string => {
     try {
       const customUrl = localStorage.getItem(SHEET_CONFIG_KEY);
-      if (customUrl && customUrl.trim()) {
+      if (
+        customUrl &&
+        customUrl.trim() &&
+        !customUrl.includes("AKfycbwy2sLXQabMqpdaHudrewxRmxLdzlqPTH5qr0BML77ymvnxzl32CNA931pUt72VFU9C")
+      ) {
         return customUrl.trim();
       }
     } catch (e) {
@@ -120,9 +124,24 @@ export const contactService = {
     // 1. Always back up locally in Admin leads inbox
     const localRecord = contactService.saveLeadLocally(payload);
 
+    let synced = false;
+
+    // Try Vercel / serverless API route /api/contact if available
+    try {
+      const apiRes = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      if (apiRes.ok) {
+        synced = true;
+      }
+    } catch {
+      // Local/offline fallback continues below
+    }
+
     // 2. Transmit to Google Drive / Excel Sheet via Webhook
     const webhookUrl = contactService.getSheetWebhookUrl();
-    let synced = false;
 
     if (webhookUrl) {
       // Channel 1: URL Query Params via GET (Immune to all CORS preflights on localhost)

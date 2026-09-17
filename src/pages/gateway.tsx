@@ -5,6 +5,9 @@ import {
   Mail,
   Phone,
   Send,
+  Linkedin,
+  Instagram,
+  CheckCircle2,
   ArrowUpRight,
   Zap,
   Gem,
@@ -24,6 +27,7 @@ import TechStackShowcase from "@/components/gateway/TechStackShowcase";
 import HowWeWork from "@/components/gateway/HowWeWork";
 import Navbar from "@/components/gateway/Navbar";
 import Footer from "@/components/gateway/Footer";
+import ContactFormSection from "@/components/gateway/ContactFormSection";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // MOTION PRESETS (Refined cinematic timings)
@@ -336,7 +340,7 @@ const LoadingScreen = () => {
         transition={{ duration: 0.8, ease: easeOutQuint }}
         className="flex flex-col items-center gap-8"
       >
-        <img src="/vinciestudio.png" alt="Vincie Studios" className="h-10 md:h-12 w-auto object-contain" />
+        <img src="/vinciestudio.png" alt="Vincie Studios" className="h-12 md:h-14 w-auto object-contain" />
         <div className="w-48 md:w-64 h-[2px] bg-white/[0.05] rounded-full overflow-hidden relative shadow-inner">
           <motion.div
             className="h-full bg-gradient-to-r from-transparent via-[#FFF] to-[#FFF]"
@@ -524,138 +528,16 @@ export default function Gateway() {
       </section>
 
       {/* ──────────────── CONTACT FORM ──────────────── */}
-      <ContactSection />
+      <ContactFormSection
+        source="gateway"
+        title="Connect with us."
+        subtitle="Have an enterprise requirement or a new project idea? Send us the details."
+      />
 
       {/* ──────────────── FOOTER ──────────────── */}
       <Footer />
 
       <WhatsAppFloat />
     </main>
-  );
-}
-
-/* ─────────────────────────────────────────────────────────────────────────────
-   CONTACT SECTION (Refined Depth)
-───────────────────────────────────────────────────────────────────────────── */
-const ContactSection = () => {
-  const { toast } = useToast();
-  const [formData, setFormData] = useState({ name: "", email: "", message: "" });
-  const [isSubmitting, setIsSubmitting] = useState(false);
-
-  const handleInputChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-    try {
-      await contactService.submitInquiry({
-        name: formData.name,
-        email: formData.email,
-        message: formData.message,
-        source: "gateway",
-      });
-      toast({ title: "Inquiry received.", description: "We will reach out shortly." });
-      setFormData({ name: "", email: "", message: "" });
-    } catch (err) {
-      toast({ title: "Error", description: "Submission failed. Please try again." });
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
-
-  return (
-    <section id="contact" className="relative z-10 py-32 px-6 md:px-12 bg-[#0A0A0A]">
-      <div className="mx-auto max-w-[1280px]">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 md:gap-24 items-start">
-          
-          <motion.div 
-            initial={{ opacity: 0, x: -30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
-          >
-            <h2 className="text-4xl md:text-5xl font-bold tracking-tight text-white mb-6">Connect with us.</h2>
-            <p className="text-[#A3A3A3] font-light max-w-[40ch] mb-14 leading-relaxed text-lg">
-              Have an enterprise requirement or a new project idea? Send us the details.
-            </p>
-
-            <div className="flex flex-col gap-10">
-              <div className="flex items-center gap-6 group">
-                <div className="w-12 h-12 flex items-center justify-center rounded-xl bg-[#111111] border border-white/[0.08] shadow-[0_4px_12px_rgba(0,0,0,0.5)] group-hover:scale-105 transition-transform">
-                  <Mail className="w-5 h-5 text-white/80" />
-                </div>
-                <a href="mailto:vinciestudios@gmail.com" className="text-lg font-medium text-white hover:text-[#A3A3A3] transition-colors">vinciestudios@gmail.com</a>
-              </div>
-              <div className="flex items-center gap-6 group">
-                <div className="w-12 h-12 flex items-center justify-center rounded-xl bg-[#111111] border border-white/[0.08] shadow-[0_4px_12px_rgba(0,0,0,0.5)] group-hover:scale-105 transition-transform">
-                  <Phone className="w-5 h-5 text-white/80" />
-                </div>
-                <a href="tel:+917375038069" className="text-lg font-medium text-white hover:text-[#A3A3A3] transition-colors">+91 73750 38069</a>
-              </div>
-            </div>
-          </motion.div>
-
-          <motion.form 
-            onSubmit={handleSubmit}
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 1, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
-            className="flex flex-col gap-6 p-10 md:p-14 rounded-3xl overflow-hidden relative"
-            style={{
-              background: "rgba(255,255,255,0.02)",
-              backdropFilter: "blur(12px)",
-              border: "1px solid rgba(255,255,255,0.06)",
-              boxShadow: "0 20px 60px rgba(0,0,0,0.5)",
-            }}
-          >
-            {/* Ambient light for form */}
-            <div className="absolute -top-32 -right-32 w-64 h-64 bg-white/[0.03] rounded-full blur-[80px] pointer-events-none" />
-
-            <div className="flex flex-col gap-2 relative z-10">
-              <label htmlFor="name" className="text-[10px] font-bold text-[#A3A3A3] tracking-[0.15em] uppercase">Full Name</label>
-              <input
-                id="name" name="name" type="text" required
-                value={formData.name} onChange={handleInputChange}
-                className="w-full bg-[#0A0A0A]/50 border border-white/[0.08] rounded-xl px-4 py-4 text-white focus:outline-none focus:border-white/[0.2] transition-colors text-base shadow-inner"
-              />
-            </div>
-            
-            <div className="flex flex-col gap-2 relative z-10">
-              <label htmlFor="email" className="text-[10px] font-bold text-[#A3A3A3] tracking-[0.15em] uppercase">Email Address</label>
-              <input
-                id="email" name="email" type="email" required
-                value={formData.email} onChange={handleInputChange}
-                className="w-full bg-[#0A0A0A]/50 border border-white/[0.08] rounded-xl px-4 py-4 text-white focus:outline-none focus:border-white/[0.2] transition-colors text-base shadow-inner"
-              />
-            </div>
-
-            <div className="flex flex-col gap-2 mb-6 relative z-10">
-              <label htmlFor="message" className="text-[10px] font-bold text-[#A3A3A3] tracking-[0.15em] uppercase">Project Details</label>
-              <textarea
-                id="message" name="message" rows={4} required
-                value={formData.message} onChange={handleInputChange}
-                className="w-full bg-[#0A0A0A]/50 border border-white/[0.08] rounded-xl px-4 py-4 text-white focus:outline-none focus:border-white/[0.2] transition-colors resize-none text-base shadow-inner"
-              />
-            </div>
-
-            <button
-              type="submit"
-              disabled={isSubmitting}
-              className="group relative z-10 flex items-center justify-center gap-2 bg-gradient-to-b from-[#FFFFFF] to-[#E5E5E5] text-[#0A0A0A] rounded-xl py-4 font-bold shadow-[0_0_20px_rgba(255,255,255,0.1)] hover:shadow-[0_0_30px_rgba(255,255,255,0.2)] hover:-translate-y-0.5 active:scale-[0.98] transition-all disabled:opacity-50"
-            >
-              {isSubmitting ? "Sending..." : "Submit Inquiry"}
-              {!isSubmitting && <Send className="w-4 h-4 ml-1 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />}
-            </button>
-          </motion.form>
-
-        </div>
-      </div>
-    </section>
   );
 }

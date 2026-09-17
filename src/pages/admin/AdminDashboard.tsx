@@ -388,10 +388,7 @@ export default function AdminDashboard() {
   };
 
   const copyGoogleScript = () => {
-    const scriptCode = `// Your exact Google Sheet ID
-var SPREADSHEET_ID = "1OzMvPZJcFy5k3UvZ4ADaYZv2h-wAX9OGIZxHxB3vU8g";
-
-function doGet(e) {
+    const scriptCode = `function doGet(e) {
   return handleRequest(e);
 }
 
@@ -401,7 +398,8 @@ function doPost(e) {
 
 function handleRequest(e) {
   try {
-    var spreadsheet = SpreadsheetApp.openById(SPREADSHEET_ID);
+    // Automatically connects to the current Google Sheet
+    var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
     var sheet = spreadsheet.getActiveSheet() || spreadsheet.getSheets()[0];
     var data = {};
     
@@ -489,7 +487,7 @@ function handleRequest(e) {
             <img
               src="/vinciestudio.png"
               alt="Vincie Studios"
-              className="h-7 w-auto object-contain"
+              className="h-8 w-auto object-contain"
             />
             <div className="flex items-center gap-2">
               <span className="font-semibold text-sm text-white tracking-tight hidden sm:inline-block">

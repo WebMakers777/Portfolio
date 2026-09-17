@@ -17,7 +17,7 @@ export default async function handler(req, res) {
   try {
     console.log("Forwarding to Apps Script...");
     const appScriptUrl =
-      "https://script.google.com/macros/s/AKfycbwy2sLXQabMqpdaHudrewxRmxLdzlqPTH5qr0BML77ymvnxzl32CNA931pUt72VFU9C/exec";
+      "https://script.google.com/macros/s/AKfycbxkLWWtp_6iDSGlA8ncs1FM67Ihrvc7EM1IH9XY00-7PFIt1Xt0Y7Q9VfRqKpyLsvHf/exec";
 
     const response = await fetch(appScriptUrl, {
       method: "POST",

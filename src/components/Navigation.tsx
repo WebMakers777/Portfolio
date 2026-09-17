@@ -43,7 +43,7 @@ export function Navigation() {
               <img
                 src={logo}
                 alt="Vincie Studios Logo"
-                className="h-8 w-auto sm:h-10 md:h-12 lg:h-14"
+                className="h-9 sm:h-10 md:h-11 lg:h-12 w-auto"
               />
               <h1 className="text-lg sm:text-xl lg:text-2xl font-bold text-gradient">
                 Vincie Studios

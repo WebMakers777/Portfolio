@@ -1,7 +1,7 @@
 // src/pages/admin/AdminLogin.tsx
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Lock, User, Eye, EyeOff, ArrowRight, ShieldCheck } from "lucide-react";
+import { Lock, User, Eye, EyeOff, ArrowRight } from "lucide-react";
 import { adminAuth } from "@/lib/adminAuth";
 import { toast } from "sonner";
 
@@ -41,12 +41,6 @@ export default function AdminLogin({ onLoginSuccess }: AdminLoginProps) {
     }, 300);
   };
 
-  const handleQuickDemoFill = () => {
-    setAdminId("admin");
-    setPassword("admin");
-    toast.info("Filled default credentials (admin / admin)");
-  };
-
   return (
     <div className="relative min-h-screen w-full bg-[#09090B] text-[#FAFAFA] flex items-center justify-center p-4 sm:p-6 font-sans selection:bg-white/20">
       {/* Background Subtle Gradient */}
@@ -65,7 +59,7 @@ export default function AdminLogin({ onLoginSuccess }: AdminLoginProps) {
               <img
                 src="/vinciestudio.png"
                 alt="Vincie Studios"
-                className="h-8 w-auto object-contain"
+                className="h-10 w-auto object-contain"
               />
             </div>
             <h1 className="text-xl font-semibold tracking-tight text-white">
@@ -95,7 +89,7 @@ export default function AdminLogin({ onLoginSuccess }: AdminLoginProps) {
                   type="text"
                   value={adminId}
                   onChange={(e) => setAdminId(e.target.value)}
-                  placeholder="admin"
+                  placeholder="vinciestudios@gmail.com"
                   className="w-full rounded-lg bg-[#18181B] border border-[#27272A] pl-10 pr-4 py-2.5 text-sm text-white placeholder-[#71717A] focus:border-white/40 focus:bg-[#1E1E22] focus:outline-none transition"
                   autoComplete="username"
                   autoFocus
@@ -145,20 +139,6 @@ export default function AdminLogin({ onLoginSuccess }: AdminLoginProps) {
               )}
             </button>
           </form>
-
-          {/* Helper */}
-          <div className="mt-6 pt-5 border-t border-[#27272A] flex items-center justify-between text-xs text-[#71717A]">
-            <span className="flex items-center gap-1.5">
-              <ShieldCheck className="w-3.5 h-3.5 text-[#A1A1AA]" /> Default: admin / admin
-            </span>
-            <button
-              type="button"
-              onClick={handleQuickDemoFill}
-              className="text-[#A1A1AA] hover:text-white transition underline underline-offset-2"
-            >
-              Auto-fill
-            </button>
-          </div>
         </div>
       </motion.div>
     </div>

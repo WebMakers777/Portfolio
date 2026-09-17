@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Mail, Phone, MapPin, Send, Github, Linkedin, Twitter } from 'lucide-react';
+import { Mail, Phone, MapPin, Send, Github, Linkedin, Twitter, Instagram } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { contactService } from '@/lib/contactService';
 
@@ -81,7 +81,7 @@ const ContactSection = () => {
                 </div>
                 <div>
                   <p className="font-medium">Email Us</p>
-                  <a href="mailto:web.makers777@gmail.com" className="text-muted-foreground">web.makers777@gmail.com</a>
+                  <a href="mailto:hello@vinciestudios.com" className="text-muted-foreground">hello@vinciestudios.com</a>
                 </div>
               </div>
 
@@ -91,7 +91,7 @@ const ContactSection = () => {
                 </div>
                 <div>
                   <p className="font-medium">Call Us</p>
-                  <a href='tel:+919358101310' className="text-muted-foreground">+91 93581 01310</a>
+                  <a href='tel:+917375038069' className="text-muted-foreground">+91 73750 38069</a>
                 </div>
               </div>
 
@@ -101,7 +101,7 @@ const ContactSection = () => {
                 </div>
                 <div>
                   <p className="font-medium">Visit Us</p>
-                  <p className="text-muted-foreground">Jaipur, Rajasthan,302031</p>
+                  <p className="text-muted-foreground">Jaipur, Rajasthan, 302031</p>
                 </div>
               </div>
             </div>
@@ -111,22 +111,22 @@ const ContactSection = () => {
               <p className="font-medium mb-4">Follow Us</p>
               <div data-splash className="flex gap-4">
                 <a
-                  href="#"
-                  className="w-10 h-10 bg-card border border-border rounded-lg flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-colors duration-300"
-                >
-                  <Github className="w-5 h-5" />
-                </a>
-                <a
-                  href="#"
+                  href="https://www.linkedin.com/company/111233207"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="LinkedIn"
                   className="w-10 h-10 bg-card border border-border rounded-lg flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-colors duration-300"
                 >
                   <Linkedin className="w-5 h-5" />
                 </a>
                 <a
-                  href="#"
+                  href="https://www.instagram.com/studiovincie"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Instagram"
                   className="w-10 h-10 bg-card border border-border rounded-lg flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-colors duration-300"
                 >
-                  <Twitter className="w-5 h-5" />
+                  <Instagram className="w-5 h-5" />
                 </a>
               </div>
             </div>
