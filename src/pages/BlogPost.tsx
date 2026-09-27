@@ -41,24 +41,40 @@ export default function BlogPost() {
 
   useEffect(() => {
     if (!activeSlug) return;
-    setLoading(true);
-    try {
+
+    const loadPost = async () => {
+      // 1. Check local cache first (0ms)
       const found = blogStorage.getPostBySlug(activeSlug);
       if (found) {
         setPost(found);
+        setLoading(false);
         blogStorage.incrementViews(found._id);
-
         const all = blogStorage.getPublishedPosts();
         setRecentPosts(all.filter((p) => p._id !== found._id).slice(0, 3));
       } else {
-        setPost(null);
+        setLoading(true);
       }
-    } catch (err) {
-      console.error("Failed to load article", err);
-      setPost(null);
-    } finally {
-      setLoading(false);
-    }
+
+      // 2. Fetch fresh from cloud database
+      try {
+        const cloudPosts = await blogStorage.fetchCloudPosts();
+        const cloudFound = cloudPosts.find((p) => p.slug === activeSlug);
+        if (cloudFound) {
+          setPost(cloudFound);
+          const all = cloudPosts.filter((p) => p.published);
+          setRecentPosts(all.filter((p) => p._id !== cloudFound._id).slice(0, 3));
+        } else if (!found) {
+          setPost(null);
+        }
+      } catch (err) {
+        console.error("Failed to load article from cloud", err);
+        if (!found) setPost(null);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadPost();
     window.scrollTo({ top: 0, left: 0, behavior: "instant" as ScrollBehavior });
   }, [activeSlug]);
 

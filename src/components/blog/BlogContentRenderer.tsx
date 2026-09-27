@@ -194,13 +194,13 @@ function formatNewspaperMarkdown(markdown: string, hasDropCap?: boolean): string
     /!\[(.*?)(?:\|(wide|left|right|center))?\]\((.*?)(?:\s+"(.*?)")?\)/g,
     (_match, altText, align, url, caption) => {
       const alignment = align || "center";
-      const captionText = caption || altText;
+      const captionText = caption ? caption.trim() : "";
 
       if (alignment === "wide") {
         return `
         <figure class="my-8 sm:my-12 w-full clear-both">
           <div class="overflow-hidden rounded-2xl sm:rounded-3xl border border-white/[0.08] bg-[#0D0D0D] shadow-2xl">
-            <img src="${url}" alt="${altText}" class="w-full h-auto max-h-[580px] object-cover" loading="lazy" />
+            <img src="${url}" alt="${altText || 'Graphic'}" class="w-full h-auto max-h-[580px] object-cover" loading="lazy" />
           </div>
           ${
             captionText
@@ -215,7 +215,7 @@ function formatNewspaperMarkdown(markdown: string, hasDropCap?: boolean): string
         return `
         <figure class="my-6 w-full sm:float-left sm:w-[46%] sm:mr-6 sm:mb-4 clear-left">
           <div class="overflow-hidden rounded-2xl border border-white/[0.08] bg-[#0D0D0D] shadow-xl">
-            <img src="${url}" alt="${altText}" class="w-full h-auto max-h-[360px] object-cover" loading="lazy" />
+            <img src="${url}" alt="${altText || 'Graphic'}" class="w-full h-auto max-h-[360px] object-cover" loading="lazy" />
           </div>
           ${
             captionText
@@ -230,7 +230,7 @@ function formatNewspaperMarkdown(markdown: string, hasDropCap?: boolean): string
         return `
         <figure class="my-6 w-full sm:float-right sm:w-[46%] sm:ml-6 sm:mb-4 clear-right">
           <div class="overflow-hidden rounded-2xl border border-white/[0.08] bg-[#0D0D0D] shadow-xl">
-            <img src="${url}" alt="${altText}" class="w-full h-auto max-h-[360px] object-cover" loading="lazy" />
+            <img src="${url}" alt="${altText || 'Graphic'}" class="w-full h-auto max-h-[360px] object-cover" loading="lazy" />
           </div>
           ${
             captionText
@@ -245,7 +245,7 @@ function formatNewspaperMarkdown(markdown: string, hasDropCap?: boolean): string
       return `
       <figure class="my-8 sm:my-10 w-full clear-both">
         <div class="overflow-hidden rounded-2xl border border-white/[0.08] bg-[#0D0D0D] shadow-xl">
-          <img src="${url}" alt="${altText}" class="w-full h-auto max-h-[480px] object-cover mx-auto" loading="lazy" />
+          <img src="${url}" alt="${altText || 'Graphic'}" class="w-full h-auto max-h-[480px] object-cover mx-auto" loading="lazy" />
         </div>
         ${
           captionText
@@ -275,6 +275,38 @@ function formatNewspaperMarkdown(markdown: string, hasDropCap?: boolean): string
     '<h1 class="text-2xl sm:text-4xl md:text-5xl font-extrabold font-sans bg-gradient-to-r from-white via-[#FAFAFA] to-[#94A3B8] bg-clip-text text-transparent mt-10 mb-5 tracking-tight leading-[1.15] clear-both">$1</h1>'
   );
 
+  // 2.5 Callout Alert Boxes: > [!NOTE], > [!TIP], > [!WARNING], > [!IMPORTANT], > [!CAUTION]
+  output = output.replace(
+    /^> \[!(NOTE|TIP|WARNING|IMPORTANT|CAUTION)\]\s*\n((?:> .*(?:\n|$))*)/gim,
+    (_match, type, content) => {
+      const cleanContent = content
+        .split("\n")
+        .map((l: string) => l.replace(/^> ?/, ""))
+        .join(" ")
+        .trim();
+      const upper = type.toUpperCase();
+      const styleMap: Record<string, { bg: string; border: string; text: string; icon: string; title: string }> = {
+        NOTE: { bg: "bg-blue-500/10", border: "border-blue-500/30", text: "text-blue-300", icon: "ℹ️", title: "Note" },
+        TIP: { bg: "bg-emerald-500/10", border: "border-emerald-500/30", text: "text-emerald-300", icon: "💡", title: "Tip" },
+        WARNING: { bg: "bg-amber-500/10", border: "border-amber-500/30", text: "text-amber-300", icon: "⚠️", title: "Warning" },
+        IMPORTANT: { bg: "bg-purple-500/10", border: "border-purple-500/30", text: "text-purple-300", icon: "✦", title: "Important" },
+        CAUTION: { bg: "bg-rose-500/10", border: "border-rose-500/30", text: "text-rose-300", icon: "🚨", title: "Caution" },
+      };
+      const s = styleMap[upper] || styleMap.NOTE;
+      return `
+      <div class="my-6 p-4 sm:p-5 rounded-2xl ${s.bg} border ${s.border} clear-both shadow-lg">
+        <div class="flex items-center gap-2 font-semibold text-sm ${s.text} mb-1">
+          <span>${s.icon}</span>
+          <span class="tracking-wide uppercase text-xs font-mono">${s.title}</span>
+        </div>
+        <div class="text-[15px] sm:text-[16px] leading-[1.7] text-[#E4E4E7] font-sans font-light">
+          ${cleanContent}
+        </div>
+      </div>
+      `;
+    }
+  );
+
   // 3. Editorial Pull Quotes & Blockquotes
   output = output.replace(
     /^> (.*$)/gim,
@@ -296,6 +328,10 @@ function formatNewspaperMarkdown(markdown: string, hasDropCap?: boolean): string
 
   // 5. Inline formatting
   output = output.replace(
+    /==(.*?)==/g,
+    '<mark class="bg-amber-400/20 text-amber-200 px-1.5 py-0.5 rounded border border-amber-400/30 font-medium">$1</mark>'
+  );
+  output = output.replace(
     /`([^`]+)`/g,
     '<code class="px-1.5 py-0.5 rounded bg-white/[0.06] border border-white/[0.08] text-[#E2E8F0] font-mono text-xs sm:text-sm">$1</code>'
   );
@@ -316,14 +352,35 @@ function formatNewspaperMarkdown(markdown: string, hasDropCap?: boolean): string
     '<a href="$2" target="_blank" rel="noopener noreferrer" class="text-white hover:text-white/70 underline underline-offset-4 decoration-white/40 transition-colors">$1</a>'
   );
 
-  // 6. Unordered Lists
-  output = output.replace(/(?:^[ \t]*[-*][ \t]+(.*?)(?:\n|$))+/gm, (match) => {
+  // 6. Unordered Lists & Symbol Bullets (bullet points, checkmarks, stars, arrows, lightning)
+  output = output.replace(/(?:^[ \t]*[-*✓✦★→⚡][ \t]+(.*?)(?:\n|$))+/gm, (match) => {
     const items = match
       .trim()
       .split("\n")
       .map((line) => {
-        const itemText = line.replace(/^[ \t]*[-*][ \t]+/, "");
-        return `<li class="flex items-start gap-3 my-2 text-[#D1D5DB] text-[15px] sm:text-[16px] md:text-[17px] leading-[1.75] font-sans"><span class="w-1.5 h-1.5 rounded-full bg-white/70 mt-2.5 flex-shrink-0"></span><span>${itemText}</span></li>`;
+        let bulletHtml = '<span class="w-1.5 h-1.5 rounded-full bg-white/70 mt-2.5 flex-shrink-0"></span>';
+        let itemText = line.trim();
+
+        if (itemText.startsWith("✓ ")) {
+          bulletHtml = '<span class="w-5 h-5 rounded-md bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 font-bold text-xs flex items-center justify-center flex-shrink-0 mt-0.5">✓</span>';
+          itemText = itemText.slice(2);
+        } else if (itemText.startsWith("✦ ")) {
+          bulletHtml = '<span class="w-5 h-5 rounded-md bg-purple-500/15 border border-purple-500/30 text-purple-300 font-bold text-xs flex items-center justify-center flex-shrink-0 mt-0.5">✦</span>';
+          itemText = itemText.slice(2);
+        } else if (itemText.startsWith("★ ")) {
+          bulletHtml = '<span class="w-5 h-5 rounded-md bg-amber-500/15 border border-amber-500/30 text-amber-300 font-bold text-xs flex items-center justify-center flex-shrink-0 mt-0.5">★</span>';
+          itemText = itemText.slice(2);
+        } else if (itemText.startsWith("→ ")) {
+          bulletHtml = '<span class="w-5 h-5 rounded-md bg-white/[0.08] border border-white/[0.12] text-white font-bold text-xs flex items-center justify-center flex-shrink-0 mt-0.5">→</span>';
+          itemText = itemText.slice(2);
+        } else if (itemText.startsWith("⚡ ")) {
+          bulletHtml = '<span class="w-5 h-5 rounded-md bg-amber-500/15 border border-amber-500/30 text-amber-400 font-bold text-xs flex items-center justify-center flex-shrink-0 mt-0.5">⚡</span>';
+          itemText = itemText.slice(2);
+        } else {
+          itemText = itemText.replace(/^[ \t]*[-*][ \t]+/, "");
+        }
+
+        return `<li class="flex items-start gap-3 my-2 text-[#D1D5DB] text-[15px] sm:text-[16px] md:text-[17px] leading-[1.75] font-sans">${bulletHtml}<span>${itemText}</span></li>`;
       })
       .join("");
     return `<ul class="my-5 space-y-1 pl-1 clear-both">${items}</ul>`;

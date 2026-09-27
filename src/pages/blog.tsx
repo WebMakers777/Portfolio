@@ -29,13 +29,24 @@ export default function Blog() {
     loadBlogPosts();
   }, []);
 
-  const loadBlogPosts = () => {
-    setLoading(true);
+  const loadBlogPosts = async () => {
+    // 1. Instant load from local cache (0ms)
+    const cached = blogStorage.getPublishedPosts();
+    if (cached.length > 0) {
+      setPosts(cached);
+      setLoading(false);
+    } else {
+      setLoading(true);
+    }
+
+    // 2. Sync fresh posts from Cloud Database
     try {
-      const stored = blogStorage.getPublishedPosts();
-      setPosts(stored);
+      const cloudPosts = await blogStorage.fetchCloudPosts();
+      if (cloudPosts && cloudPosts.length > 0) {
+        setPosts(cloudPosts.filter((p) => p.published));
+      }
     } catch (e) {
-      console.error("Error loading articles", e);
+      console.error("Error syncing articles from cloud", e);
     } finally {
       setLoading(false);
     }

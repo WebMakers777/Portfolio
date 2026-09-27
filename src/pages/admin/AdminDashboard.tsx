@@ -44,13 +44,17 @@ import {
   Settings,
   PenTool,
   Sparkles,
+  Cloud,
+  Server,
+  Globe,
 } from "lucide-react";
 import { adminAuth } from "@/lib/adminAuth";
-import { blogStorage, BlogPost } from "@/lib/blogStorage";
+import { blogStorage, BlogPost, CloudDbConfig } from "@/lib/blogStorage";
 import { contactService, ContactInquiry } from "@/lib/contactService";
 import AdminLogin from "./AdminLogin";
 import QuizBuilderModal from "./QuizBuilderModal";
 import ImageUploadModal from "./ImageUploadModal";
+import RichBlockEditor, { type RichBlockEditorRef } from "./RichBlockEditor";
 import BlogContentRenderer from "@/components/blog/BlogContentRenderer";
 import { toast } from "sonner";
 
@@ -77,6 +81,7 @@ export default function AdminDashboard() {
   const [content, setContent] = useState("");
   const [published, setPublished] = useState(true);
 
+  const [editorMode, setEditorMode] = useState<"visual" | "markdown">("visual");
   const [editorView, setEditorView] = useState<EditorViewMode>("split");
   const [isQuizModalOpen, setIsQuizModalOpen] = useState(false);
   const [isImageModalOpen, setIsImageModalOpen] = useState(false);
@@ -89,8 +94,39 @@ export default function AdminDashboard() {
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
+  // Cloud Database (Blogs) Configuration State
+  const [cloudConfig, setCloudConfig] = useState<CloudDbConfig>(blogStorage.getCloudConfig());
+  const [isTestingCloud, setIsTestingCloud] = useState(false);
+  const [isSyncingCloud, setIsSyncingCloud] = useState(false);
+  const [copiedSql, setCopiedSql] = useState(false);
+
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const blockEditorRef = useRef<RichBlockEditorRef>(null);
   const fileImportRef = useRef<HTMLInputElement>(null);
+  const thumbnailFileInputRef = useRef<HTMLInputElement>(null);
+
+  const handleThumbnailUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (!file.type.startsWith("image/")) {
+      toast.error("Please select an image file (PNG, JPG, WebP, SVG).");
+      return;
+    }
+
+    if (file.size > 5 * 1024 * 1024) {
+      toast.error("Thumbnail file size should be under 5MB.");
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const result = event.target?.result as string;
+      setCoverImage(result);
+      toast.success("Thumbnail uploaded successfully!");
+    };
+    reader.readAsDataURL(file);
+  };
 
   useEffect(() => {
     const isAuth = adminAuth.isAuthenticated();
@@ -99,12 +135,90 @@ export default function AdminDashboard() {
       loadPosts();
       loadLeads();
       setSheetWebhookUrl(contactService.getSheetWebhookUrl());
+      setCloudConfig(blogStorage.getCloudConfig());
     }
   }, []);
 
-  const loadPosts = () => {
+  const loadPosts = async () => {
     const data = blogStorage.getPosts();
     setPosts(data);
+
+    try {
+      const cloud = await blogStorage.fetchCloudPosts();
+      if (cloud && cloud.length > 0) {
+        setPosts(cloud);
+      }
+    } catch {
+      // ignore
+    }
+  };
+
+  const handleSaveCloudConfig = (e: React.FormEvent) => {
+    e.preventDefault();
+    blogStorage.saveCloudConfig(cloudConfig);
+    toast.success("Cloud database configuration saved!");
+  };
+
+  const handleTestCloud = async () => {
+    setIsTestingCloud(true);
+    try {
+      const res = await blogStorage.testCloudConnection();
+      if (res.success) {
+        toast.success(res.message);
+      } else {
+        toast.error(res.message);
+      }
+    } catch (e: any) {
+      toast.error(e?.message || "Failed to connect to cloud database.");
+    } finally {
+      setIsTestingCloud(false);
+    }
+  };
+
+  const handleSyncAllToCloud = async () => {
+    setIsSyncingCloud(true);
+    try {
+      const res = await blogStorage.syncAllToCloud();
+      if (res.success) {
+        toast.success(`Successfully pushed ${res.count} articles to the cloud database!`);
+      } else {
+        toast.error(res.error || "Failed to sync articles. Check database connection.");
+      }
+    } catch (e: any) {
+      toast.error(e?.message || "Sync failed. Check database connection.");
+    } finally {
+      setIsSyncingCloud(false);
+    }
+  };
+
+  const copySupabaseSql = () => {
+    const sql = `CREATE TABLE IF NOT EXISTS blogs (
+  _id TEXT PRIMARY KEY,
+  slug TEXT UNIQUE NOT NULL,
+  title TEXT NOT NULL,
+  excerpt TEXT,
+  author TEXT,
+  category TEXT,
+  read_time TEXT,
+  cover_image TEXT,
+  content TEXT,
+  published BOOLEAN DEFAULT true,
+  views INTEGER DEFAULT 0,
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- Enable public read access so all visitors worldwide can read published blogs:
+ALTER TABLE blogs ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "Public Read Access" ON blogs FOR SELECT USING (true);
+CREATE POLICY "Admin Full Access" ON blogs FOR ALL USING (true);`;
+
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(sql);
+      setCopiedSql(true);
+      toast.success("SQL table setup script copied to clipboard!");
+      setTimeout(() => setCopiedSql(false), 2500);
+    }
   };
 
   const loadLeads = () => {
@@ -471,13 +585,25 @@ function handleRequest(e) {
       <QuizBuilderModal
         isOpen={isQuizModalOpen}
         onClose={() => setIsQuizModalOpen(false)}
-        onInsert={(quizMarkdown) => insertTextAtCursor(quizMarkdown)}
+        onInsert={(quizMarkdown) => {
+          if (editorMode === "visual" && blockEditorRef.current) {
+            blockEditorRef.current.insertMarkdownAtEnd(quizMarkdown);
+          } else {
+            insertTextAtCursor(quizMarkdown);
+          }
+        }}
       />
 
       <ImageUploadModal
         isOpen={isImageModalOpen}
         onClose={() => setIsImageModalOpen(false)}
-        onInsert={(imageMarkdown) => insertTextAtCursor(imageMarkdown)}
+        onInsert={(imageMarkdown) => {
+          if (editorMode === "visual" && blockEditorRef.current) {
+            blockEditorRef.current.insertMarkdownAtEnd(imageMarkdown);
+          } else {
+            insertTextAtCursor(imageMarkdown);
+          }
+        }}
       />
 
       {/* Top Header Bar */}
@@ -779,58 +905,94 @@ function handleRequest(e) {
             {/* Top Action Bar */}
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-[#27272A]">
               <div>
-                <h2 className="text-base font-semibold text-white">
-                  {editingPostId ? "Edit Article Dispatch" : "Compose Article Dispatch"}
+                <h2 className="text-base font-semibold text-white flex items-center gap-2">
+                  <PenTool className="w-4 h-4 text-white" />
+                  <span>{editingPostId ? "Edit Article Dispatch" : "Compose Article Dispatch"}</span>
                 </h2>
                 <p className="text-xs text-[#A1A1AA] mt-0.5">
-                  Write in Markdown with custom headings, in-between visuals, and interactive quizzes
+                  Visual block authoring with in-line graphics, symbols, and rich typography
                 </p>
               </div>
 
-              <div className="flex items-center gap-2">
+              <div className="flex flex-wrap items-center gap-2">
+                {/* Editor Mode: Visual Blocks vs Raw Markdown */}
+                <div className="bg-[#18181B] p-0.5 rounded-lg border border-[#27272A] flex items-center">
+                  <button
+                    onClick={() => setEditorMode("visual")}
+                    className={`px-3 py-1 rounded-md text-xs font-medium transition flex items-center gap-1.5 cursor-pointer ${
+                      editorMode === "visual"
+                        ? "bg-white text-black font-semibold shadow-sm"
+                        : "text-[#A1A1AA] hover:text-white"
+                    }`}
+                    title="Visual block-based editor"
+                  >
+                    <PenTool className="w-3.5 h-3.5" />
+                    <span>Visual Blocks</span>
+                  </button>
+                  <button
+                    onClick={() => setEditorMode("markdown")}
+                    className={`px-3 py-1 rounded-md text-xs font-medium transition flex items-center gap-1.5 cursor-pointer ${
+                      editorMode === "markdown"
+                        ? "bg-white text-black font-semibold shadow-sm"
+                        : "text-[#A1A1AA] hover:text-white"
+                    }`}
+                    title="Raw Markdown source text"
+                  >
+                    <Code className="w-3.5 h-3.5" />
+                    <span>Raw Markdown</span>
+                  </button>
+                </div>
+
+                {/* View Mode: Editor | Split | Preview */}
                 <div className="bg-[#18181B] p-0.5 rounded-lg border border-[#27272A] flex items-center">
                   <button
                     onClick={() => setEditorView("editor")}
-                    className={`px-2.5 py-1 rounded-md text-xs font-medium transition flex items-center gap-1 ${
+                    className={`px-2.5 py-1 rounded-md text-xs font-medium transition flex items-center gap-1 cursor-pointer ${
                       editorView === "editor"
                         ? "bg-[#27272A] text-white"
                         : "text-[#71717A] hover:text-white"
                     }`}
+                    title="Editor only"
                   >
-                    <Layers className="w-3 h-3" /> Code
+                    <Layers className="w-3 h-3" />
+                    <span className="hidden sm:inline">Editor</span>
                   </button>
                   <button
                     onClick={() => setEditorView("split")}
-                    className={`px-2.5 py-1 rounded-md text-xs font-medium transition flex items-center gap-1 ${
+                    className={`px-2.5 py-1 rounded-md text-xs font-medium transition flex items-center gap-1 cursor-pointer ${
                       editorView === "split"
                         ? "bg-[#27272A] text-white"
                         : "text-[#71717A] hover:text-white"
                     }`}
+                    title="Side-by-side split screen"
                   >
-                    <Columns className="w-3 h-3" /> Split
+                    <Columns className="w-3 h-3" />
+                    <span className="hidden sm:inline">Split</span>
                   </button>
                   <button
                     onClick={() => setEditorView("preview")}
-                    className={`px-2.5 py-1 rounded-md text-xs font-medium transition flex items-center gap-1 ${
+                    className={`px-2.5 py-1 rounded-md text-xs font-medium transition flex items-center gap-1 cursor-pointer ${
                       editorView === "preview"
                         ? "bg-[#27272A] text-white"
                         : "text-[#71717A] hover:text-white"
                     }`}
+                    title="Reader preview only"
                   >
-                    <Eye className="w-3 h-3" /> Preview
+                    <Eye className="w-3 h-3" />
+                    <span className="hidden sm:inline">Preview</span>
                   </button>
                 </div>
 
                 <button
                   onClick={() => handleSavePost(false)}
-                  className="px-3 py-1.5 rounded-lg border border-[#27272A] bg-[#18181B] hover:bg-[#27272A] text-white text-xs font-medium transition flex items-center gap-1.5"
+                  className="px-3 py-1.5 rounded-lg border border-[#27272A] bg-[#18181B] hover:bg-[#27272A] text-white text-xs font-medium transition flex items-center gap-1.5 cursor-pointer"
                 >
                   <Save className="w-3.5 h-3.5" /> Save Draft
                 </button>
 
                 <button
                   onClick={() => handleSavePost(true)}
-                  className="px-3.5 py-1.5 rounded-lg bg-white text-black font-medium text-xs hover:bg-[#E4E4E7] transition flex items-center gap-1.5 shadow-sm"
+                  className="px-3.5 py-1.5 rounded-lg bg-white text-black font-semibold text-xs hover:bg-[#E4E4E7] transition flex items-center gap-1.5 shadow-sm cursor-pointer"
                 >
                   <CheckCircle2 className="w-3.5 h-3.5" /> Publish
                 </button>
@@ -838,7 +1000,7 @@ function handleRequest(e) {
             </div>
 
             {/* Metadata Fields */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5 p-4 sm:p-5 rounded-xl bg-[#121214] border border-[#27272A]">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5 p-4 sm:p-5 rounded-2xl bg-[#121214] border border-[#27272A]">
               <div className="sm:col-span-2">
                 <label className="block text-xs font-medium text-[#A1A1AA] mb-1">
                   Article Title <span className="text-rose-400">*</span>
@@ -848,7 +1010,7 @@ function handleRequest(e) {
                   value={title}
                   onChange={(e) => handleTitleChange(e.target.value)}
                   placeholder="e.g. Distributed State & Edge Runtimes at Scale"
-                  className="w-full rounded-lg bg-[#18181B] border border-[#27272A] px-3 py-2 text-sm text-white placeholder-[#71717A] focus:border-white/40 focus:outline-none transition font-medium"
+                  className="w-full rounded-lg bg-[#18181B] border border-[#27272A] px-3.5 py-2 text-sm text-white placeholder-[#71717A] focus:border-white/40 focus:outline-none transition font-medium"
                 />
               </div>
 
@@ -906,178 +1068,247 @@ function handleRequest(e) {
 
               <div className="sm:col-span-2 lg:col-span-3">
                 <label className="block text-xs font-medium text-[#A1A1AA] mb-1">
-                  Card Thumbnail Image URL (Optional)
+                  Card Thumbnail Image (Upload Your Own File or Paste Web Link)
                 </label>
-                <div className="flex gap-2">
+                <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
                   <input
-                    type="url"
-                    value={coverImage}
-                    onChange={(e) => setCoverImage(e.target.value)}
-                    placeholder="https://images.unsplash.com/..."
-                    className="flex-1 rounded-lg bg-[#18181B] border border-[#27272A] px-3 py-2 text-xs sm:text-sm text-white placeholder-[#71717A] focus:border-white/40 focus:outline-none transition"
+                    type="file"
+                    ref={thumbnailFileInputRef}
+                    onChange={handleThumbnailUpload}
+                    accept="image/*"
+                    className="hidden"
                   />
-                  {coverImage && (
+                  
+                  <div className="flex-1 flex gap-2">
                     <button
                       type="button"
-                      onClick={() => setCoverImage("")}
-                      className="px-2.5 py-1.5 rounded-lg bg-[#18181B] border border-[#27272A] text-xs text-[#A1A1AA] hover:text-white transition"
+                      onClick={() => thumbnailFileInputRef.current?.click()}
+                      className="px-3.5 py-2 rounded-lg bg-white text-black font-semibold text-xs hover:bg-[#E4E4E7] transition flex items-center gap-1.5 cursor-pointer flex-shrink-0 shadow-sm"
+                      title="Upload an image file directly from your computer"
                     >
-                      Clear
+                      <Upload className="w-3.5 h-3.5" />
+                      <span>Upload My Thumbnail</span>
                     </button>
+
+                    <input
+                      type="text"
+                      value={coverImage}
+                      onChange={(e) => setCoverImage(e.target.value)}
+                      placeholder="Or paste an image web link (https://...)"
+                      className="flex-1 rounded-lg bg-[#18181B] border border-[#27272A] px-3 py-2 text-xs sm:text-sm text-white placeholder-[#71717A] focus:border-white/40 focus:outline-none transition font-mono"
+                    />
+
+                    {coverImage && (
+                      <button
+                        type="button"
+                        onClick={() => setCoverImage("")}
+                        className="px-2.5 py-1.5 rounded-lg bg-[#18181B] border border-[#27272A] text-xs text-[#A1A1AA] hover:text-white transition cursor-pointer"
+                      >
+                        Clear
+                      </button>
+                    )}
+                  </div>
+
+                  {coverImage && (
+                    <div className="w-16 h-12 rounded-xl overflow-hidden border border-[#27272A] bg-black/40 flex-shrink-0 shadow-md">
+                      <img
+                        src={coverImage}
+                        alt="Thumbnail"
+                        className="w-full h-full object-cover"
+                        onError={(e) => {
+                          (e.target as HTMLElement).style.display = "none";
+                        }}
+                      />
+                    </div>
                   )}
                 </div>
               </div>
             </div>
 
-            {/* Toolbar */}
-            <div className="p-1.5 rounded-xl bg-[#121214] border border-[#27272A] flex flex-wrap items-center gap-1 sticky top-14 z-30 shadow-md">
-              <div className="flex items-center gap-0.5 pr-1.5 border-r border-[#27272A]">
-                <button
-                  type="button"
-                  onClick={() => wrapSelectedText("# ", "", "Main Headline")}
-                  className="p-1.5 rounded-md text-[#A1A1AA] hover:text-white hover:bg-[#18181B] transition"
-                  title="H1 Heading"
-                >
-                  <Heading1 className="w-3.5 h-3.5" />
-                </button>
-                <button
-                  type="button"
-                  onClick={() => wrapSelectedText("## ", "", "Section Heading")}
-                  className="p-1.5 rounded-md text-[#A1A1AA] hover:text-white hover:bg-[#18181B] transition"
-                  title="H2 Heading"
-                >
-                  <Heading2 className="w-3.5 h-3.5" />
-                </button>
-                <button
-                  type="button"
-                  onClick={() => wrapSelectedText("### ", "", "Sub Heading")}
-                  className="p-1.5 rounded-md text-[#A1A1AA] hover:text-white hover:bg-[#18181B] transition"
-                  title="H3 Heading"
-                >
-                  <Heading3 className="w-3.5 h-3.5" />
-                </button>
-              </div>
-
-              <div className="flex items-center gap-0.5 pr-1.5 border-r border-[#27272A]">
-                <button
-                  type="button"
-                  onClick={() => wrapSelectedText("**", "**", "bold text")}
-                  className="p-1.5 rounded-md text-[#A1A1AA] hover:text-white hover:bg-[#18181B] transition"
-                  title="Bold"
-                >
-                  <Bold className="w-3.5 h-3.5" />
-                </button>
-                <button
-                  type="button"
-                  onClick={() => wrapSelectedText("*", "*", "italic text")}
-                  className="p-1.5 rounded-md text-[#A1A1AA] hover:text-white hover:bg-[#18181B] transition"
-                  title="Italic"
-                >
-                  <Italic className="w-3.5 h-3.5" />
-                </button>
-                <button
-                  type="button"
-                  onClick={() => wrapSelectedText("> ", "", "Editorial pullquote")}
-                  className="p-1.5 rounded-md text-[#A1A1AA] hover:text-white hover:bg-[#18181B] transition"
-                  title="Quote"
-                >
-                  <Quote className="w-3.5 h-3.5" />
-                </button>
-                <button
-                  type="button"
-                  onClick={() =>
-                    wrapSelectedText("```typescript\n", "\n```", "// Code snippet")
-                  }
-                  className="p-1.5 rounded-md text-[#A1A1AA] hover:text-white hover:bg-[#18181B] transition"
-                  title="Code Block"
-                >
-                  <Code className="w-3.5 h-3.5" />
-                </button>
-              </div>
-
-              <div className="flex items-center gap-0.5 pr-1.5 border-r border-[#27272A]">
-                <button
-                  type="button"
-                  onClick={() => insertTextAtCursor("\n- First point\n- Second point\n")}
-                  className="p-1.5 rounded-md text-[#A1A1AA] hover:text-white hover:bg-[#18181B] transition"
-                  title="Bullet List"
-                >
-                  <List className="w-3.5 h-3.5" />
-                </button>
-                <button
-                  type="button"
-                  onClick={() => insertTextAtCursor("\n1. Step one\n2. Step two\n")}
-                  className="p-1.5 rounded-md text-[#A1A1AA] hover:text-white hover:bg-[#18181B] transition"
-                  title="Numbered List"
-                >
-                  <ListOrdered className="w-3.5 h-3.5" />
-                </button>
-                <button
-                  type="button"
-                  onClick={() =>
-                    wrapSelectedText("[", "](https://example.com)", "link title")
-                  }
-                  className="p-1.5 rounded-md text-[#A1A1AA] hover:text-white hover:bg-[#18181B] transition"
-                  title="Link"
-                >
-                  <LinkIcon className="w-3.5 h-3.5" />
-                </button>
-              </div>
-
-              {/* In-Between Media & In-Between Quiz Embed Buttons */}
-              <div className="flex items-center gap-1.5 ml-auto">
-                <button
-                  type="button"
-                  onClick={() => setIsImageModalOpen(true)}
-                  className="px-2.5 py-1 rounded-md bg-[#18181B] hover:bg-[#27272A] text-[#A1A1AA] hover:text-white text-xs font-medium flex items-center gap-1.5 border border-[#27272A] transition"
-                >
-                  <ImageIcon className="w-3.5 h-3.5 text-white" />
-                  <span>Insert Media</span>
-                </button>
-
-                <button
-                  type="button"
-                  onClick={() => setIsQuizModalOpen(true)}
-                  className="px-2.5 py-1 rounded-md bg-[#18181B] hover:bg-[#27272A] text-[#A1A1AA] hover:text-white text-xs font-medium flex items-center gap-1.5 border border-[#27272A] transition"
-                >
-                  <HelpCircle className="w-3.5 h-3.5 text-white" />
-                  <span>Insert Quiz</span>
-                </button>
-              </div>
-            </div>
-
-            {/* Split Screen Editor View */}
+            {/* Split Screen / Full Screen Editor View */}
             <div
-              className={`grid gap-4 ${
+              className={`grid gap-5 ${
                 editorView === "split"
                   ? "grid-cols-1 lg:grid-cols-2"
                   : "grid-cols-1"
               }`}
             >
+              {/* Left Column: Visual Block Editor OR Raw Markdown */}
               {(editorView === "split" || editorView === "editor") && (
-                <div className="flex flex-col rounded-xl border border-[#27272A] bg-[#121214] overflow-hidden min-h-[500px]">
-                  <div className="flex items-center justify-between px-4 py-2 bg-[#18181B]/50 border-b border-[#27272A] text-xs text-[#71717A]">
-                    <span className="font-medium text-[#A1A1AA]">Markdown Source</span>
-                    <span>{content.length} characters</span>
-                  </div>
-                  <textarea
-                    ref={textareaRef}
-                    value={content}
-                    onChange={(e) => handleContentChange(e.target.value)}
-                    placeholder="Write article in Markdown. Use toolbar above to insert headers, in-between visuals, and in-between quizzes!"
-                    className="flex-1 w-full bg-transparent p-4 font-mono text-xs sm:text-sm leading-relaxed text-[#E4E4E7] placeholder-[#71717A] focus:outline-none resize-none min-h-[500px]"
-                  />
+                <div>
+                  {editorMode === "visual" ? (
+                    <RichBlockEditor
+                      ref={blockEditorRef}
+                      content={content}
+                      onChange={handleContentChange}
+                      onInsertImageModal={() => setIsImageModalOpen(true)}
+                      onInsertQuizModal={() => setIsQuizModalOpen(true)}
+                    />
+                  ) : (
+                    <div className="flex flex-col rounded-2xl border border-[#27272A] bg-[#121214] overflow-hidden min-h-[550px] shadow-xl">
+                      {/* Markdown Toolbar */}
+                      <div className="p-2 bg-[#18181B]/80 border-b border-[#27272A] flex flex-wrap items-center gap-1 sticky top-14 z-30 backdrop-blur-md">
+                        <div className="flex items-center gap-0.5 pr-1.5 border-r border-[#27272A]">
+                          <button
+                            type="button"
+                            onClick={() => wrapSelectedText("# ", "", "Main Headline")}
+                            className="p-1.5 rounded-md text-[#A1A1AA] hover:text-white hover:bg-[#27272A] transition"
+                            title="H1 Heading"
+                          >
+                            <Heading1 className="w-3.5 h-3.5" />
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => wrapSelectedText("## ", "", "Section Heading")}
+                            className="p-1.5 rounded-md text-[#A1A1AA] hover:text-white hover:bg-[#27272A] transition"
+                            title="H2 Heading"
+                          >
+                            <Heading2 className="w-3.5 h-3.5" />
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => wrapSelectedText("### ", "", "Sub Heading")}
+                            className="p-1.5 rounded-md text-[#A1A1AA] hover:text-white hover:bg-[#27272A] transition"
+                            title="H3 Heading"
+                          >
+                            <Heading3 className="w-3.5 h-3.5" />
+                          </button>
+                        </div>
+
+                        <div className="flex items-center gap-0.5 pr-1.5 border-r border-[#27272A]">
+                          <button
+                            type="button"
+                            onClick={() => wrapSelectedText("**", "**", "bold text")}
+                            className="p-1.5 rounded-md text-[#A1A1AA] hover:text-white hover:bg-[#27272A] transition"
+                            title="Bold"
+                          >
+                            <Bold className="w-3.5 h-3.5" />
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => wrapSelectedText("*", "*", "italic text")}
+                            className="p-1.5 rounded-md text-[#A1A1AA] hover:text-white hover:bg-[#27272A] transition"
+                            title="Italic"
+                          >
+                            <Italic className="w-3.5 h-3.5" />
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => wrapSelectedText("==", "==", "highlighted text")}
+                            className="p-1.5 rounded-md text-[#A1A1AA] hover:text-amber-300 hover:bg-[#27272A] transition"
+                            title="Highlight Text"
+                          >
+                            <Sparkles className="w-3.5 h-3.5" />
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => wrapSelectedText("> ", "", "Editorial pullquote")}
+                            className="p-1.5 rounded-md text-[#A1A1AA] hover:text-white hover:bg-[#27272A] transition"
+                            title="Quote"
+                          >
+                            <Quote className="w-3.5 h-3.5" />
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() =>
+                              wrapSelectedText("```typescript\n", "\n```", "// Code snippet")
+                            }
+                            className="p-1.5 rounded-md text-[#A1A1AA] hover:text-white hover:bg-[#27272A] transition"
+                            title="Code Block"
+                          >
+                            <Code className="w-3.5 h-3.5" />
+                          </button>
+                        </div>
+
+                        <div className="flex items-center gap-0.5 pr-1.5 border-r border-[#27272A]">
+                          <button
+                            type="button"
+                            onClick={() => insertTextAtCursor("\n- First bullet point\n- Second bullet point\n")}
+                            className="p-1.5 rounded-md text-[#A1A1AA] hover:text-white hover:bg-[#27272A] transition"
+                            title="Bullet Points"
+                          >
+                            <List className="w-3.5 h-3.5" />
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => insertTextAtCursor("\n1. Step one\n2. Step two\n")}
+                            className="p-1.5 rounded-md text-[#A1A1AA] hover:text-white hover:bg-[#27272A] transition"
+                            title="Numbered Counting List"
+                          >
+                            <ListOrdered className="w-3.5 h-3.5" />
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => insertTextAtCursor("\n> [!TIP]\n> Write pro tip here...\n")}
+                            className="p-1.5 rounded-md text-amber-300 hover:bg-[#27272A] transition"
+                            title="Callout Box"
+                          >
+                            <Lightbulb className="w-3.5 h-3.5" />
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() =>
+                              wrapSelectedText("[", "](https://example.com)", "link title")
+                            }
+                            className="p-1.5 rounded-md text-[#A1A1AA] hover:text-white hover:bg-[#27272A] transition"
+                            title="Link"
+                          >
+                            <LinkIcon className="w-3.5 h-3.5" />
+                          </button>
+                        </div>
+
+                        {/* In-Between Media & Quiz */}
+                        <div className="flex items-center gap-1.5 ml-auto">
+                          <button
+                            type="button"
+                            onClick={() => setIsImageModalOpen(true)}
+                            className="px-2.5 py-1 rounded-md bg-[#18181B] hover:bg-[#27272A] text-[#A1A1AA] hover:text-white text-xs font-medium flex items-center gap-1.5 border border-[#27272A] transition cursor-pointer"
+                          >
+                            <ImageIcon className="w-3.5 h-3.5 text-white" />
+                            <span>Insert Graphic</span>
+                          </button>
+
+                          <button
+                            type="button"
+                            onClick={() => setIsQuizModalOpen(true)}
+                            className="px-2.5 py-1 rounded-md bg-[#18181B] hover:bg-[#27272A] text-[#A1A1AA] hover:text-white text-xs font-medium flex items-center gap-1.5 border border-[#27272A] transition cursor-pointer"
+                          >
+                            <HelpCircle className="w-3.5 h-3.5 text-purple-400" />
+                            <span>Insert Quiz</span>
+                          </button>
+                        </div>
+                      </div>
+
+                      {/* Info header */}
+                      <div className="flex items-center justify-between px-4 py-2 bg-[#18181B]/50 border-b border-[#27272A] text-xs text-[#71717A]">
+                        <span className="font-medium text-[#A1A1AA]">Markdown Source Code</span>
+                        <span>{content.length} characters</span>
+                      </div>
+
+                      <textarea
+                        ref={textareaRef}
+                        value={content}
+                        onChange={(e) => handleContentChange(e.target.value)}
+                        placeholder="Write article in Markdown. Use toolbar above to insert headers, in-between visuals, and in-between quizzes!"
+                        className="flex-1 w-full bg-transparent p-5 font-mono text-xs sm:text-sm leading-relaxed text-[#E4E4E7] placeholder-[#71717A] focus:outline-none resize-none min-h-[500px]"
+                      />
+                    </div>
+                  )}
                 </div>
               )}
 
+              {/* Right Column: Live Reader Output */}
               {(editorView === "split" || editorView === "preview") && (
-                <div className="flex flex-col rounded-xl border border-[#27272A] bg-[#121214] overflow-hidden min-h-[500px]">
-                  <div className="flex items-center justify-between px-4 py-2 bg-[#18181B]/50 border-b border-[#27272A] text-xs text-[#71717A]">
-                    <span className="font-medium text-[#A1A1AA]">Live Reader Output</span>
-                    <span>Interactive View</span>
+                <div className="flex flex-col rounded-2xl border border-[#27272A] bg-[#121214] overflow-hidden min-h-[550px] shadow-xl">
+                  <div className="flex items-center justify-between px-4 py-2.5 bg-[#18181B]/60 border-b border-[#27272A] text-xs text-[#71717A]">
+                    <span className="font-medium text-[#A1A1AA] flex items-center gap-1.5">
+                      <Eye className="w-3.5 h-3.5 text-emerald-400" />
+                      Live Reader Output
+                    </span>
+                    <span className="text-[11px] font-mono text-[#71717A]">Interactive View</span>
                   </div>
 
-                  <div className="flex-1 p-6 overflow-y-auto max-h-[750px] bg-[#09090B]">
+                  <div className="flex-1 p-6 sm:p-8 overflow-y-auto max-h-[800px] bg-[#09090B]">
                     <div className="border-t border-b border-white/[0.18] py-2 mb-6 flex items-center justify-between text-[11px] font-mono tracking-wider text-[#94A3B8] uppercase">
                       <span>The Vincie Journal</span>
                       <span>•</span>
@@ -1379,6 +1610,166 @@ function handleRequest(e) {
                 >
                   Save Credentials
                 </button>
+              </form>
+            </div>
+
+            {/* Cloud Database (Blogs) */}
+            <div className="rounded-xl border border-[#27272A] bg-[#121214] p-5 sm:p-6 shadow-sm">
+              <div className="flex items-center justify-between gap-3 mb-5">
+                <div className="flex items-center gap-3">
+                  <div className="w-9 h-9 rounded-lg bg-[#18181B] border border-[#27272A] flex items-center justify-center text-emerald-400">
+                    <Cloud className="w-4 h-4" />
+                  </div>
+                  <div>
+                    <h2 className="text-sm font-semibold text-white">
+                      Live Cloud Database (Worldwide Visibility)
+                    </h2>
+                    <p className="text-xs text-[#A1A1AA]">
+                      Connect a free cloud database so all website visitors can read published articles
+                    </p>
+                  </div>
+                </div>
+
+                <button
+                  type="button"
+                  onClick={handleTestCloud}
+                  disabled={isTestingCloud}
+                  className="px-3 py-1.5 rounded-lg bg-[#18181B] hover:bg-[#27272A] border border-[#27272A] text-xs font-medium text-white transition flex items-center gap-1.5 cursor-pointer disabled:opacity-50"
+                >
+                  <RefreshCw className={`w-3 h-3 text-[#A1A1AA] ${isTestingCloud ? "animate-spin" : ""}`} />
+                  <span>{isTestingCloud ? "Testing..." : "Test Connection"}</span>
+                </button>
+              </div>
+
+              <form onSubmit={handleSaveCloudConfig} className="space-y-4">
+                <div>
+                  <label className="block text-xs font-medium text-[#A1A1AA] mb-1.5">
+                    Database Provider
+                  </label>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                    <button
+                      type="button"
+                      onClick={() => setCloudConfig({ ...cloudConfig, provider: "supabase" })}
+                      className={`p-3 rounded-lg border text-xs font-medium flex items-center justify-center gap-2 transition cursor-pointer ${
+                        cloudConfig.provider === "supabase"
+                          ? "bg-white text-black font-semibold border-white shadow-sm"
+                          : "bg-[#18181B] border-[#27272A] text-[#A1A1AA] hover:text-white"
+                      }`}
+                    >
+                      <Database className="w-3.5 h-3.5" />
+                      <span>Supabase (PostgreSQL - Fastest & Free)</span>
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => setCloudConfig({ ...cloudConfig, provider: "googlesheet" })}
+                      className={`p-3 rounded-lg border text-xs font-medium flex items-center justify-center gap-2 transition cursor-pointer ${
+                        cloudConfig.provider === "googlesheet"
+                          ? "bg-white text-black font-semibold border-white shadow-sm"
+                          : "bg-[#18181B] border-[#27272A] text-[#A1A1AA] hover:text-white"
+                      }`}
+                    >
+                      <Table className="w-3.5 h-3.5" />
+                      <span>Google Sheets (Apps Script Webhook)</span>
+                    </button>
+                  </div>
+                </div>
+
+                {cloudConfig.provider === "supabase" ? (
+                  <div className="space-y-3 pt-1">
+                    <div>
+                      <label className="block text-xs font-medium text-[#A1A1AA] mb-1">
+                        Supabase Project URL
+                      </label>
+                      <input
+                        type="url"
+                        value={cloudConfig.supabaseUrl || ""}
+                        onChange={(e) => setCloudConfig({ ...cloudConfig, supabaseUrl: e.target.value })}
+                        placeholder="https://your-project.supabase.co"
+                        className="w-full rounded-lg bg-[#18181B] border border-[#27272A] px-3 py-2 text-xs sm:text-sm text-white placeholder-[#71717A] focus:border-white/40 focus:outline-none transition font-mono"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-xs font-medium text-[#A1A1AA] mb-1">
+                        Supabase Anon Public API Key
+                      </label>
+                      <input
+                        type="password"
+                        value={cloudConfig.supabaseKey || ""}
+                        onChange={(e) => setCloudConfig({ ...cloudConfig, supabaseKey: e.target.value })}
+                        placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6..."
+                        className="w-full rounded-lg bg-[#18181B] border border-[#27272A] px-3 py-2 text-xs sm:text-sm text-white placeholder-[#71717A] focus:border-white/40 focus:outline-none transition font-mono"
+                      />
+                    </div>
+
+                    {/* Supabase 1-Minute Guide */}
+                    <div className="p-3.5 rounded-lg bg-[#18181B]/60 border border-[#27272A] space-y-2">
+                      <div className="flex items-center justify-between">
+                        <span className="text-xs font-semibold text-white flex items-center gap-1.5">
+                          <Database className="w-3.5 h-3.5 text-emerald-400" />
+                          Supabase 1-Minute Setup Guide
+                        </span>
+                        <button
+                          type="button"
+                          onClick={copySupabaseSql}
+                          className="px-2 py-0.5 rounded bg-[#27272A] hover:bg-[#3F3F46] text-[11px] font-medium text-white transition flex items-center gap-1 cursor-pointer"
+                        >
+                          {copiedSql ? (
+                            <>
+                              <Check className="w-3 h-3 text-emerald-400" />
+                              <span>Copied SQL</span>
+                            </>
+                          ) : (
+                            <>
+                              <Copy className="w-3 h-3 text-[#A1A1AA]" />
+                              <span>Copy Table SQL</span>
+                            </>
+                          )}
+                        </button>
+                      </div>
+                      <ol className="text-[11px] text-[#A1A1AA] space-y-1 list-decimal list-inside leading-relaxed font-light">
+                        <li>Create a free account at <strong>supabase.com</strong> and create a new project.</li>
+                        <li>Go to <strong>SQL Editor</strong>, click <strong>New Query</strong>, paste the copied SQL above, and click <strong>Run</strong>.</li>
+                        <li>Go to <strong>Project Settings &gt; API</strong>, copy the <strong>Project URL</strong> and <strong>anon public key</strong>, and paste them above.</li>
+                      </ol>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="space-y-3 pt-1">
+                    <div>
+                      <label className="block text-xs font-medium text-[#A1A1AA] mb-1">
+                        Google Sheet / Apps Script Webhook URL
+                      </label>
+                      <input
+                        type="url"
+                        value={cloudConfig.sheetWebhookUrl || ""}
+                        onChange={(e) => setCloudConfig({ ...cloudConfig, sheetWebhookUrl: e.target.value })}
+                        placeholder="https://script.google.com/macros/s/.../exec"
+                        className="w-full rounded-lg bg-[#18181B] border border-[#27272A] px-3 py-2 text-xs sm:text-sm text-white placeholder-[#71717A] focus:border-white/40 focus:outline-none transition font-mono"
+                      />
+                    </div>
+                  </div>
+                )}
+
+                <div className="flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-[#27272A]">
+                  <button
+                    type="submit"
+                    className="px-4 py-2 rounded-lg bg-white text-black font-semibold text-xs hover:bg-[#E4E4E7] transition shadow-sm cursor-pointer"
+                  >
+                    Save Cloud Settings
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={handleSyncAllToCloud}
+                    disabled={isSyncingCloud}
+                    className="px-3.5 py-2 rounded-lg bg-[#18181B] hover:bg-[#27272A] border border-[#27272A] text-xs font-medium text-emerald-400 transition flex items-center gap-1.5 cursor-pointer disabled:opacity-50"
+                  >
+                    <Upload className="w-3.5 h-3.5" />
+                    <span>{isSyncingCloud ? "Pushing Articles..." : "Push Local Articles to Cloud"}</span>
+                  </button>
+                </div>
               </form>
             </div>
 

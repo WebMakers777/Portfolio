@@ -24,150 +24,223 @@ export interface BlogPost {
   views: number;
 }
 
-const STORAGE_KEY = "vincie_portfolio_blogs_v1";
+export interface CloudDbConfig {
+  provider: "supabase" | "googlesheet" | "custom";
+  supabaseUrl?: string;
+  supabaseKey?: string;
+  sheetWebhookUrl?: string;
+  customApiUrl?: string;
+}
+
+const STORAGE_KEY = "vincie_portfolio_blogs_v2";
+const CLOUD_CONFIG_KEY = "vincie_cloud_db_config_v1";
 
 export const INITIAL_SAMPLE_POSTS: BlogPost[] = [
   {
-    _id: "post-1",
-    slug: "mastering-modern-web-architecture-2026",
-    title: "The Architecture of Resilience: Scaling Micro-Frontends & Distributed Edge Systems",
-    excerpt: "An architectural examination into edge execution runtimes, selective island hydration, and distributed cache invalidation for sub-50ms web applications.",
+    _id: "post_autonomous_ai_systems_2026",
+    slug: "engineering-autonomous-ai-agents-edge-systems",
+    title: "Engineering Autonomous AI Agents & Real-Time Edge Systems at Scale",
+    excerpt: "A deep architectural analysis into building production-grade autonomous agent systems, event-driven streaming pipelines, and low-latency edge architectures.",
     author: "Nikhil Mittal",
     category: "Engineering",
-    readTime: "6 min read",
-    coverImage: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=1200&q=80",
+    readTime: "7 min read",
+    coverImage: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1200&q=80",
     published: true,
-    createdAt: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(),
-    updatedAt: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(),
-    views: 842,
-    content: `Modern software engineering is confronting a fundamental shift. For years, client-side heavy single-page applications dominated the landscape, trading initial page load speed and battery efficiency for dynamic client-side interactions.
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+    views: 124,
+    content: `Modern software engineering is undergoing an epochal transformation. The paradigm has shifted from imperative code execution to orchestrating autonomous, cognitive agentic systems that perceive context, synthesize execution plans, and dynamically self-heal across distributed edge networks.
 
-![Distributed Edge Network|wide](https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=1200&q=80 "Figure 1: Global Edge nodes executing isolated V8 instances across 300+ PoPs worldwide.")
+![Modern AI Architecture|wide](https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1200&q=80)
 
-## The Paradigm of Edge Compute
+![Neural Processing Grid|wide](https://images.unsplash.com/photo-1620712943543-bcc4688e7485?auto=format&fit=crop&w=1200&q=80)
 
-Rather than routing every HTTP request back to a centralized origin server located thousands of miles away, modern platforms push execution logic to global Points of Presence (PoPs). Running lightweight JavaScript runtimes (such as Cloudflare Workers or Vercel Edge Functions) allows dynamic HTML generation within 15 milliseconds of the user.
+## 1. The Autonomous Agent Execution Paradigm
 
-> The most resilient distributed system is one where compute lives at the edge of the network and state is lazily synchronized.
+Rather than relying on brittle, static microservices, autonomous AI agents operate through continuous loop cycles of **observation**, **reflection**, **tool selection**, and **stateful verification**. 
 
-### Core Architectural Advantages:
-- **Instantaneous Time to First Byte (TTFB)**: Sub-50ms worldwide response times.
-- **Zero Cold-Start Latency**: V8 Isolates boot in less than 5 milliseconds compared to container-based serverless functions.
-- **DDoS Mitigation**: Geographically dispersed traffic dampening.
+> The ultimate frontier of modern software is not merely executing static routines, but orchestrating autonomous cognitive agents that reason, plan, and self-correct across distributed edge networks.
 
-:::quiz
-{
-  "id": "q1",
-  "question": "What is the primary architectural benefit of V8 Isolates at the Edge over traditional containerized lambdas?",
-  "options": [
-    "Near-instant boot times (<5ms) with ultra-low memory overhead per request",
-    "They eliminate the need for any frontend code",
-    "They only serve static files without executing code",
-    "They require heavy Docker virtualization"
-  ],
-  "correctIndex": 0,
-  "explanation": "Correct! V8 Isolates share a single process and spin up lightweight execution contexts in under 5ms, avoiding container cold starts."
-}
-:::
+When deploying high-throughput agent swarms in production, maintaining ==sub-50ms execution latency== and ==zero-drift state determinism== are non-negotiable requirements.
 
-## Selective Hydration and Island Topologies
+---
 
-Traditional React architectures mandate full-tree DOM hydration, freezing the main thread during critical initial page interactions. Island Architecture isolates interactive components, hydrating only what is necessary when it scrolls into the viewport.
+### Core Architectural Guardrails
 
-![Component Island Isolation|right](https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=800&q=80 "Fig. 2 — Island isolation isolating UI widgets from static HTML.")
+> [!TIP]
+> Always implement bounded retry budgets with exponential jitter backoff when orchestrating recursive multi-agent loops to prevent cascading API saturation.
 
-By rendering the main body text, headers, and images as pure static HTML on the server, the browser avoids parsing hundreds of kilobytes of unneeded JavaScript.
+> [!NOTE]
+> Edge runtimes execute within isolated V8 memory spaces, ensuring cold-start boot times remain consistently under 5 milliseconds worldwide.
+
+> [!WARNING]
+> Unconstrained tool execution without JSON-schema validation can lead to silent schema regressions and runtime desynchronization.
+
+> [!IMPORTANT]
+> Deterministic state persistence across agent steps requires event-sourcing with append-only vector write logs.
+
+---
+
+## 2. Multi-Stage Pipeline Execution
+
+Building enterprise-grade agentic platforms requires decomposing complex user intents into an orchestrated series of deterministic phases:
+
+1. Semantic Intent Parsing & Input Embeddings Generation
+2. Vector Similarity Lookup & Ephemeral Context Retrieval
+3. Tool Selection, Plan Synthesis & Dry-Run Validation
+4. Edge Action Execution & Distributed State Synchronization
+5. Post-Action Validation, Guardrail Verification & Metric Logging
+
+Each phase executes within a sandbox runtime where memory limits and CPU budgets are strictly enforced.
+
+---
+
+## 3. High-Performance Infrastructure Metrics
+
+Our distributed infrastructure benchmark measurements demonstrate the advantages of edge-native execution:
+
+✓ Automated regression self-healing pipelines with 99.98% reliability
+✦ Distributed vector clustering across 300+ edge Points of Presence
+★ Real-time cryptographic session verification and automated token rotation
+→ Direct streaming WebSocket protocol over HTTP/3 QUIC transport
+⚡ Sub-millisecond Redis cluster memory caching for hot agent execution contexts
+
+![Component Island Isolation|left](https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=800&q=80 "Figure 1: High-dimensional vector space clustering and semantic KNN indexing.")
+
+By keeping inference and orchestration geographically co-located with the end user, round-trip serialization overhead drops from hundreds of milliseconds to near-zero.
+
+---
+
+## 4. Production Orchestration Implementation
+
+Below is a reference TypeScript implementation showing how we initialize a fault-tolerant multi-agent mesh running on edge runtimes:
 
 \`\`\`typescript
-// Selective Progressive Hydration Observer
-export function observeAndHydrate(elementId: string, loader: () => Promise<void>) {
-  const target = document.getElementById(elementId);
-  if (!target) return;
+import { EdgeRuntime, AgentMesh, VectorStore } from "@vincie/agents-sdk";
 
-  const observer = new IntersectionObserver((entries) => {
-    if (entries[0].isIntersecting) {
-      loader();
-      observer.disconnect();
-    }
-  }, { rootMargin: "100px" });
+export async function orchestratePipeline(userPrompt: string) {
+  // 1. Initialize isolated edge runtime session
+  const mesh = new AgentMesh({
+    region: "auto",
+    maxConcurrency: 8,
+    timeoutMs: 4500,
+  });
 
-  observer.observe(target);
+  const session = await mesh.initiateSession({
+    strictTypes: true,
+    telemetryEnabled: true,
+  });
+
+  // 2. Stream execution plan with active tool calling
+  const stream = await session.streamExecution({
+    input: userPrompt,
+    tools: ["database_sync", "code_verifier", "metric_audit"],
+    onStep: (step) => {
+      console.log(\`[Edge Step \${step.index}]: \${step.actionName}\`);
+    },
+  });
+
+  return stream.toReadableStream();
 }
 \`\`\`
 
 ---
 
-## Architectural Synthesis
+## 5. Architectural Knowledge Verification
 
-As applications continue to scale toward millions of concurrent users, the boundary between frontend presentation and distributed backend logic will continue to blur. Designing for resilience requires picking the right execution boundary for each feature.
-
-:::quiz
-{
-  "id": "q2",
-  "question": "In an Island Architecture, what happens to the static HTML content during client page load?",
-  "options": [
-    "It remains pure HTML and skips the expensive JavaScript hydration phase",
-    "It is deleted and re-rendered entirely from scratch",
-    "It cannot display any styled typography",
-    "It requires a complete browser reboot"
-  ],
-  "correctIndex": 0,
-  "explanation": "Spot on! The static parts remain pure HTML, ensuring zero JavaScript execution overhead for non-interactive content."
-}
-:::`
-  },
-  {
-    _id: "post-2",
-    slug: "principles-of-high-converting-interface-engineering",
-    title: "The Anatomy of High-Converting Digital Interfaces: Typography, Contrast & Micro-Interactions",
-    excerpt: "A deep dive into visual ergonomics, cognitive load reduction, and the physics of tactile interface feedback for elite software products.",
-    author: "Vincie Studios Editorial",
-    category: "Design",
-    readTime: "5 min read",
-    coverImage: "https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?auto=format&fit=crop&w=1200&q=80",
-    published: true,
-    createdAt: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString(),
-    updatedAt: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString(),
-    views: 1210,
-    content: `Great digital design is not merely decorative styling—it is visual ergonomics and cognitive choreography. When a user interacts with software, every microsecond of feedback, every contrast ratio, and every typographic line height communicates brand authority.
-
-![High Contrast Design Canvas|left](https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=800&q=80 "Fig. 1 — Matte black foundation with high-contrast typography.")
-
-## The Physics of Tactile Feedback
-
-Physical objects obey laws of inertia, acceleration, and friction. When digital UI elements snap rigidly without transitional easing, the brain perceives the interface as robotic and unpolished.
-
-> Interfaces that feel natural adhere to physical spring kinetics rather than linear timing.
-
-### Essential Rules for Motion Design:
-1. **Response Time**: UI must acknowledge input within 100ms.
-2. **Animation Duration**: Micro-interactions should complete within 180ms to 260ms.
-3. **Organic Easing**: Utilize cubic bezier curves that decelerate smoothly at the terminus.
+Test your understanding of edge runtime performance and agent design:
 
 :::quiz
 {
-  "id": "q3",
-  "question": "What is the recommended duration for user interface hover and button micro-transitions?",
+  "id": "q-agents-1",
+  "question": "Which architecture delivers the lowest cold-start latency for autonomous AI agent tool execution at the edge?",
   "options": [
-    "180ms to 260ms (responsive, natural, and snappy)",
-    "2 seconds (slow cinematic transition)",
-    "0ms (instant snapping without easing)",
-    "500ms to 800ms (dramatic fade)"
+    "V8 Isolated Micro-Runtimes (<5ms startup)",
+    "Traditional Heavyweight Docker Containers (500ms - 2s startup)",
+    "Monolithic Centralized VM Clusters",
+    "Cold Java Virtual Machines"
   ],
   "correctIndex": 0,
-  "explanation": "Exactly right! Transitions between 180ms and 260ms feel instantaneous while still giving the user a subconscious sense of kinetic fluidity."
+  "explanation": "Correct! V8 Isolates spin up in less than 5ms within existing thread memory pools, completely eliminating container provisioning overhead."
 }
 :::
 
 ---
 
-## Typographic Hierarchy in Long-Form Reading
+## Architectural Synthesis
 
-Reading on backlit screens causes eye strain when line lengths exceed 80 characters or when contrast ratios are too harsh. By locking editorial column widths to a golden 65–75 character span with generous 1.8x line height, comprehension and reading retention increase significantly.`
+As AI models evolve from passive autocomplete engines to active autonomous contributors, the underlying web infrastructure must match their velocity. Combining **isolated edge runtimes**, **semantic vector caching**, and **structured schema guardrails** provides the foundation for the next decade of resilient software engineering.`
   }
 ];
 
+function normalizePostFromDb(raw: any): BlogPost {
+  return {
+    _id: raw._id || raw.id || "post_" + Math.random().toString(36).slice(2),
+    slug: raw.slug || "",
+    title: raw.title || "Untitled Article",
+    excerpt: raw.excerpt || "",
+    author: raw.author || "Vincie Studios",
+    category: raw.category || "Engineering",
+    readTime: raw.readTime || raw.read_time || "4 min read",
+    coverImage: raw.coverImage || raw.cover_image || "",
+    content: raw.content || "",
+    published: raw.published !== undefined ? Boolean(raw.published) : true,
+    createdAt: raw.createdAt || raw.created_at || new Date().toISOString(),
+    updatedAt: raw.updatedAt || raw.updated_at || new Date().toISOString(),
+    views: Number(raw.views) || 0,
+  };
+}
+
 export const blogStorage = {
+  // ─── Cloud Database Configuration ──────────────────────────
+
+  getCloudConfig: (): CloudDbConfig => {
+    const defaultUrl =
+      import.meta.env.VITE_SUPABASE_URL || "https://wwpfvdxejvzxddimnmqy.supabase.co";
+    const defaultKey =
+      import.meta.env.VITE_SUPABASE_ANON_KEY || "sb_publishable_KprphVTPbGNBaopWaiH_8w_0vlkeB3q";
+
+    try {
+      const stored = localStorage.getItem(CLOUD_CONFIG_KEY);
+      if (stored) {
+        const parsed = JSON.parse(stored);
+        let sUrl = (parsed.supabaseUrl || defaultUrl).trim();
+        // Auto-correct previous typo if missing 'x'
+        if (sUrl.includes("wwpfvdxejvzddimnmqy")) {
+          sUrl = sUrl.replace("wwpfvdxejvzddimnmqy", "wwpfvdxejvzxddimnmqy");
+        }
+        const updatedConfig: CloudDbConfig = {
+          provider: parsed.provider || "supabase",
+          supabaseUrl: sUrl,
+          supabaseKey: parsed.supabaseKey || defaultKey,
+          sheetWebhookUrl: parsed.sheetWebhookUrl || import.meta.env.VITE_CONTACT_SHEET_URL || "",
+        };
+        localStorage.setItem(CLOUD_CONFIG_KEY, JSON.stringify(updatedConfig));
+        return updatedConfig;
+      }
+    } catch {
+      // ignore
+    }
+
+    // Default configuration (configured with your Supabase credentials)
+    return {
+      provider: "supabase",
+      supabaseUrl: defaultUrl,
+      supabaseKey: defaultKey,
+      sheetWebhookUrl: import.meta.env.VITE_CONTACT_SHEET_URL || "",
+    };
+  },
+
+  saveCloudConfig: (config: CloudDbConfig): void => {
+    try {
+      localStorage.setItem(CLOUD_CONFIG_KEY, JSON.stringify(config));
+    } catch (e) {
+      console.error("Could not save cloud DB config", e);
+    }
+  },
+
+  // ─── Local Storage Cache (0ms Instant Load) ─────────────────
+
   getPosts: (): BlogPost[] => {
     try {
       const stored = localStorage.getItem(STORAGE_KEY);
@@ -176,7 +249,7 @@ export const blogStorage = {
         return INITIAL_SAMPLE_POSTS;
       }
       const parsed = JSON.parse(stored);
-      return Array.isArray(parsed) ? parsed : INITIAL_SAMPLE_POSTS;
+      return Array.isArray(parsed) && parsed.length > 0 ? parsed : INITIAL_SAMPLE_POSTS;
     } catch (e) {
       console.error("Error reading blog posts from storage", e);
       return INITIAL_SAMPLE_POSTS;
@@ -187,10 +260,7 @@ export const blogStorage = {
     const posts = blogStorage.getPosts();
     return posts
       .filter((p) => p.published)
-      .sort(
-        (a, b) =>
-          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-      );
+      .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
   },
 
   getPostBySlug: (slug: string): BlogPost | null => {
@@ -203,6 +273,8 @@ export const blogStorage = {
     return posts.find((p) => p._id === id) || null;
   },
 
+  // ─── Save Post (Optimistic Local + Async Cloud) ─────────────
+
   savePost: (
     post: Omit<BlogPost, "_id" | "createdAt" | "updatedAt" | "views"> & {
       _id?: string;
@@ -212,11 +284,12 @@ export const blogStorage = {
   ): BlogPost => {
     const posts = blogStorage.getPosts();
     const now = new Date().toISOString();
+    let saved: BlogPost;
 
     if (post._id) {
       const index = posts.findIndex((p) => p._id === post._id);
       if (index !== -1) {
-        const updated: BlogPost = {
+        saved = {
           ...posts[index],
           ...post,
           _id: post._id,
@@ -224,26 +297,37 @@ export const blogStorage = {
           views: post.views !== undefined ? post.views : posts[index].views,
           createdAt: post.createdAt || posts[index].createdAt,
         };
-        posts[index] = updated;
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(posts));
-        return updated;
+        posts[index] = saved;
+      } else {
+        saved = {
+          ...post,
+          _id: post._id,
+          views: post.views || 0,
+          createdAt: post.createdAt || now,
+          updatedAt: now,
+        };
+        posts.unshift(saved);
       }
+    } else {
+      saved = {
+        ...post,
+        _id: "post_" + Date.now() + "_" + Math.random().toString(36).substring(2, 7),
+        views: post.views || 0,
+        createdAt: now,
+        updatedAt: now,
+      };
+      posts.unshift(saved);
     }
 
-    const newPost: BlogPost = {
-      ...post,
-      _id:
-        "post_" +
-        Date.now() +
-        "_" +
-        Math.random().toString(36).substring(2, 7),
-      views: post.views || 0,
-      createdAt: now,
-      updatedAt: now,
-    };
-    posts.unshift(newPost);
+    // Save to local cache immediately
     localStorage.setItem(STORAGE_KEY, JSON.stringify(posts));
-    return newPost;
+
+    // Asynchronously save to cloud database in background
+    blogStorage.savePostToCloud(saved).catch((err) => {
+      console.warn("Background cloud save note:", err);
+    });
+
+    return saved;
   },
 
   deletePost: (id: string): boolean => {
@@ -251,6 +335,9 @@ export const blogStorage = {
     const filtered = posts.filter((p) => p._id !== id);
     if (filtered.length !== posts.length) {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(filtered));
+      blogStorage.deletePostFromCloud(id).catch((err) => {
+        console.warn("Background cloud delete note:", err);
+      });
       return true;
     }
     return false;
@@ -259,9 +346,7 @@ export const blogStorage = {
   incrementViews: (slugOrId: string): void => {
     try {
       const posts = blogStorage.getPosts();
-      const index = posts.findIndex(
-        (p) => p._id === slugOrId || p.slug === slugOrId
-      );
+      const index = posts.findIndex((p) => p._id === slugOrId || p.slug === slugOrId);
       if (index !== -1) {
         posts[index].views = (posts[index].views || 0) + 1;
         localStorage.setItem(STORAGE_KEY, JSON.stringify(posts));
@@ -270,6 +355,236 @@ export const blogStorage = {
       console.warn("Could not increment post views", e);
     }
   },
+
+  // ─── Cloud Database Operations ──────────────────────────────
+
+  fetchCloudPosts: async (): Promise<BlogPost[]> => {
+    const config = blogStorage.getCloudConfig();
+
+    try {
+      // 1. Supabase REST API (Fastest Edge PostgreSQL)
+      if (config.supabaseUrl && config.supabaseKey) {
+        const cleanUrl = config.supabaseUrl.replace(/\/+$/, "");
+        const res = await fetch(`${cleanUrl}/rest/v1/blogs?select=*&order=created_at.desc`, {
+          method: "GET",
+          headers: {
+            apikey: config.supabaseKey,
+            Authorization: `Bearer ${config.supabaseKey}`,
+          },
+        });
+
+        if (res.ok) {
+          const data = await res.json();
+          if (Array.isArray(data) && data.length > 0) {
+            const normalized = data.map(normalizePostFromDb);
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(normalized));
+            return normalized;
+          }
+        }
+      }
+
+      // 2. Google Apps Script Webhook API
+      if (config.sheetWebhookUrl) {
+        const url = new URL(config.sheetWebhookUrl);
+        url.searchParams.set("action", "getBlogs");
+        const res = await fetch(url.toString(), { method: "GET" });
+        if (res.ok) {
+          const json = await res.json();
+          if (json && Array.isArray(json.blogs) && json.blogs.length > 0) {
+            const normalized = json.blogs.map(normalizePostFromDb);
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(normalized));
+            return normalized;
+          }
+        }
+      }
+    } catch (err) {
+      console.warn("Cloud posts fetch note:", err);
+    }
+
+    // Fallback to local storage if cloud is unreachable or empty
+    return blogStorage.getPosts();
+  },
+
+  savePostToCloud: async (post: BlogPost): Promise<{ success: boolean; error?: string }> => {
+    const config = blogStorage.getCloudConfig();
+
+    try {
+      // 1. Supabase REST API
+      if (config.supabaseUrl && config.supabaseKey) {
+        const cleanUrl = config.supabaseUrl.replace(/\/+$/, "");
+        
+        // Match exact column names in Postgres blogs table
+        const payload = {
+          _id: post._id,
+          slug: post.slug,
+          title: post.title,
+          excerpt: post.excerpt || "",
+          author: post.author || "Vincie Studios",
+          category: post.category || "Engineering",
+          read_time: post.readTime || "4 min read",
+          cover_image: post.coverImage || "",
+          content: post.content || "",
+          published: post.published !== undefined ? post.published : true,
+          views: post.views || 0,
+          created_at: post.createdAt || new Date().toISOString(),
+          updated_at: post.updatedAt || new Date().toISOString(),
+        };
+
+        const res = await fetch(`${cleanUrl}/rest/v1/blogs?on_conflict=_id`, {
+          method: "POST",
+          headers: {
+            apikey: config.supabaseKey,
+            Authorization: `Bearer ${config.supabaseKey}`,
+            "Content-Type": "application/json",
+            Prefer: "resolution=merge-duplicates",
+          },
+          body: JSON.stringify(payload),
+        });
+
+        if (res.ok) {
+          return { success: true };
+        } else {
+          const errText = await res.text().catch(() => "");
+          console.warn("Supabase save returned status:", res.status, errText);
+          if (res.status === 404 || errText.includes("relation") || errText.includes("does not exist") || errText.includes("PGRST205")) {
+            return {
+              success: false,
+              error: "Table 'blogs' not found in Supabase. Please run the SQL table setup in your Supabase SQL Editor.",
+            };
+          }
+          return { success: false, error: `Supabase error (${res.status}): ${errText || res.statusText}` };
+        }
+      }
+
+      // 2. Google Apps Script Webhook API
+      if (config.sheetWebhookUrl) {
+        const res = await fetch(config.sheetWebhookUrl, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ action: "saveBlog", post }),
+        });
+        if (res.ok) return { success: true };
+        return { success: false, error: "Google Apps Script error: " + res.status };
+      }
+    } catch (err: any) {
+      console.warn("Cloud save post note:", err);
+      return { success: false, error: err?.message || "Network request failed." };
+    }
+
+    return { success: false, error: "No cloud database configured." };
+  },
+
+  deletePostFromCloud: async (id: string): Promise<boolean> => {
+    const config = blogStorage.getCloudConfig();
+
+    try {
+      // 1. Supabase REST API
+      if (config.supabaseUrl && config.supabaseKey) {
+        const cleanUrl = config.supabaseUrl.replace(/\/+$/, "");
+        const res = await fetch(`${cleanUrl}/rest/v1/blogs?_id=eq.${id}`, {
+          method: "DELETE",
+          headers: {
+            apikey: config.supabaseKey,
+            Authorization: `Bearer ${config.supabaseKey}`,
+          },
+        });
+        if (res.ok) return true;
+      }
+
+      // 2. Google Apps Script Webhook API
+      if (config.sheetWebhookUrl) {
+        const res = await fetch(config.sheetWebhookUrl, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ action: "deleteBlog", id }),
+        });
+        if (res.ok) return true;
+      }
+    } catch (err) {
+      console.warn("Cloud delete post note:", err);
+    }
+
+    return false;
+  },
+
+  testCloudConnection: async (): Promise<{ success: boolean; message: string }> => {
+    const config = blogStorage.getCloudConfig();
+
+    if (config.provider === "supabase") {
+      if (!config.supabaseUrl || !config.supabaseKey) {
+        return { success: false, message: "Please enter both Supabase URL and Anon Key." };
+      }
+      try {
+        const cleanUrl = config.supabaseUrl.replace(/\/+$/, "");
+        const res = await fetch(`${cleanUrl}/rest/v1/blogs?select=_id,slug&limit=1`, {
+          method: "GET",
+          headers: {
+            apikey: config.supabaseKey,
+            Authorization: `Bearer ${config.supabaseKey}`,
+          },
+        });
+
+        if (res.ok) {
+          return { success: true, message: "Connected to Supabase PostgreSQL successfully! Blogs will be live for everyone." };
+        } 
+        
+        const errText = await res.text().catch(() => "");
+        if (res.status === 404 || errText.includes("does not exist") || errText.includes("PGRST205") || errText.includes("relation")) {
+          return { success: false, message: "Connected to Supabase, but the 'blogs' table has not been created yet. Copy and run the SQL table setup in Supabase SQL Editor." };
+        } else if (res.status === 401 || res.status === 403) {
+          return { success: false, message: "Supabase authorization failed. Please check your Anon Key." };
+        } else {
+          return { success: false, message: `Supabase returned status ${res.status}: ${errText || "Check your credentials."}` };
+        }
+      } catch (e: any) {
+        return { success: false, message: `Connection failed: ${e?.message || "Check your Supabase URL."}` };
+      }
+    }
+
+    if (config.provider === "googlesheet") {
+      if (!config.sheetWebhookUrl) {
+        return { success: false, message: "Please enter your Google Apps Script Webhook URL." };
+      }
+      try {
+        const res = await fetch(config.sheetWebhookUrl, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ action: "ping" }),
+        });
+        if (res.ok) {
+          return { success: true, message: "Connected to Google Apps Script successfully!" };
+        }
+        return { success: false, message: "Webhook returned status " + res.status };
+      } catch (e: any) {
+        return { success: false, message: "Could not reach Google Apps Script webhook." };
+      }
+    }
+
+    return { success: false, message: "Please configure a database provider." };
+  },
+
+  syncAllToCloud: async (): Promise<{ success: boolean; count: number; error?: string }> => {
+    const posts = blogStorage.getPosts();
+    let successCount = 0;
+    let lastError: string | undefined;
+
+    for (const post of posts) {
+      const res = await blogStorage.savePostToCloud(post);
+      if (res.success) {
+        successCount++;
+      } else if (res.error) {
+        lastError = res.error;
+      }
+    }
+
+    return {
+      success: successCount > 0,
+      count: successCount,
+      error: lastError,
+    };
+  },
+
+  // ─── Backup & Migration ─────────────────────────────────────
 
   exportData: (): string => {
     const posts = blogStorage.getPosts();
