@@ -1,0 +1,70 @@
+/* =============================================
+   HERO 3D BACKGROUND STYLES
+   ============================================= */
+
+.hero-3d-wrapper {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    overflow: hidden;
+    background: #060b13;
+}
+
+/* Lightweight CSS gradient replacing heavy WebGL fluid simulation */
+.hero-gradient-bg {
+    position: absolute;
+    inset: 0;
+    background: 
+        radial-gradient(ellipse 80% 60% at 30% 40%, rgba(200, 149, 101, 0.35) 0%, transparent 70%),
+        radial-gradient(ellipse 60% 80% at 70% 60%, rgba(243, 213, 181, 0.25) 0%, transparent 70%),
+        radial-gradient(ellipse 90% 50% at 50% 50%, rgba(140, 90, 50, 0.18) 0%, transparent 70%);
+    animation: heroShift 20s ease-in-out infinite alternate;
+    z-index: 1;
+}
+
+@keyframes heroShift {
+    0%   { transform: scale(1) translate(0, 0); }
+    50%  { transform: scale(1.05) translate(2%, -1%); }
+    100% { transform: scale(1) translate(-1%, 1%); }
+}
+
+/* Legacy ambient glow classes — now unused, kept for reference */
+.ambient-glow { display: none; }
+.glow-primary { display: none; }
+.glow-secondary { display: none; }
+
+/* Vignette for cinematic depth */
+.hero-3d-vignette {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 50% 50%, transparent 40%, rgba(6, 11, 19, 0.7) 100%);
+    pointer-events: none;
+    z-index: 2;
+}
+
+/* Film Grain/Noise overlay - DISABLED for scroll performance */
+.hero-3d-noise {
+    display: none;
+}
+
+/* Fade seamlessly into the site's main warm-to-white gradient */
+.hero-3d-bottom-fade {
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    width: 100%;
+    height: 45vh;
+    background: linear-gradient(to top,
+            #ffffff 0%,
+            rgba(255, 255, 255, 0.8) 20%,
+            rgba(253, 248, 243, 0.4) 60%,
+            transparent 100%);
+    pointer-events: none;
+    z-index: 4;
+}
+
+/* Ensure R3F canvas takes entire wrapper */
+.hero-3d-wrapper>div:first-child {
+    z-index: 1;
+}

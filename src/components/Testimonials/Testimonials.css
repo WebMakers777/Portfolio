@@ -1,0 +1,111 @@
+.testimonials-section {
+    contain: content;
+    position: relative;
+    padding: 60px 2rem 80px;
+    overflow: hidden;
+    background: #0f172a; /* Dark background to suit the evening mountain */
+    z-index: 20;
+}
+
+/* Mountain Background - use static background, no blur filter */
+.testimonials-section::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: url('/review-bg.webp');
+    background-size: cover;
+    background-position: center;
+    opacity: 0.35;
+    z-index: 0;
+    pointer-events: none;
+}
+
+.testimonials-bg-glow {
+    position: absolute;
+    border-radius: 50%;
+    opacity: 0.1;
+    z-index: 0;
+    pointer-events: none;
+}
+
+.testimonials-section .glow-1 {
+    top: 20%;
+    left: -10%;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, var(--color-primary), transparent 70%);
+}
+
+.testimonials-section .glow-2 {
+    bottom: -10%;
+    right: -10%;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, var(--color-secondary), transparent 70%);
+}
+
+.testimonials-header {
+    max-width: 800px;
+    margin: 0 auto 80px;
+    text-align: center;
+    position: relative;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.testimonials-badge {
+    margin-bottom: 24px;
+}
+
+.testimonials-headline {
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    font-weight: 800;
+    line-height: 1.1;
+    letter-spacing: -0.03em;
+    color: #f8fafc; /* White text for dark background */
+    margin-bottom: 24px;
+}
+
+.testimonials-subtext {
+    font-size: 1.25rem;
+    color: #cbd5e1; /* Light gray text for dark background */
+    line-height: 1.6;
+    max-width: 600px;
+}
+
+.testimonials-grid {
+    display: flex;
+    gap: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    height: 650px;
+    position: relative;
+    z-index: 10;
+}
+
+.testimonials-col {
+    flex: 1;
+    height: 100%;
+}
+
+@media (max-width: 1024px) {
+    .hidden-tablet {
+        display: none !important;
+    }
+}
+
+@media (max-width: 768px) {
+    .hidden-mobile {
+        display: none !important;
+    }
+    
+    .testimonials-section {
+        padding: 60px 1rem 80px;
+    }
+    
+    .testimonials-grid {
+        height: 500px;
+    }
+}

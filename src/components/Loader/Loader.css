@@ -1,0 +1,117 @@
+/* ---- Fullscreen Overlay ---- */
+.loader-overlay {
+    position: fixed;
+    inset: 0;
+    background-color: #ffffff;
+    z-index: 9999999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: opacity 0.6s cubic-bezier(0.7, 0, 0.3, 1), visibility 0.6s cubic-bezier(0.7, 0, 0.3, 1);
+}
+
+.loader-overlay.fade-out {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+/* ---- Terminal Loader (From Uiverse.io by jeremyssocial — themed for Elixor) ---- */
+@keyframes blinkCursor {
+    50% {
+        border-right-color: transparent;
+    }
+}
+
+@keyframes typeAndDelete {
+
+    0%,
+    10% {
+        width: 0;
+    }
+
+    45%,
+    55% {
+        width: 6.2em;
+    }
+
+    90%,
+    100% {
+        width: 0;
+    }
+}
+
+.terminal-loader {
+    border: 1px solid #e2e8f0;
+    background-color: #f8fafc;
+    color: #B88052;
+    font-family: "Courier New", Courier, monospace;
+    font-size: 1em;
+    padding: 1.5em 1em;
+    width: 12em;
+    box-shadow:
+        0 10px 30px rgba(0, 0, 0, 0.05),
+        0 0 40px rgba(212, 162, 118, 0.12);
+    border-radius: 8px;
+    position: relative;
+    overflow: hidden;
+    box-sizing: border-box;
+}
+
+.terminal-header {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1.5em;
+    background-color: #e2e8f0;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    padding: 0 0.4em;
+    box-sizing: border-box;
+}
+
+.terminal-controls {
+    float: right;
+}
+
+.control {
+    display: inline-block;
+    width: 0.6em;
+    height: 0.6em;
+    margin-left: 0.4em;
+    border-radius: 50%;
+    background-color: #cbd5e1;
+}
+
+.control.close {
+    background-color: #ef4444;
+}
+
+.control.minimize {
+    background-color: #eab308;
+}
+
+.control.maximize {
+    background-color: #22c55e;
+}
+
+.terminal-title {
+    float: left;
+    line-height: 1.5em;
+    color: #64748b;
+    font-size: 0.75em;
+    font-weight: 500;
+}
+
+.text {
+    display: inline-block;
+    white-space: nowrap;
+    overflow: hidden;
+    border-right: 0.2em solid #B88052;
+    animation:
+        typeAndDelete 4s steps(11) infinite,
+        blinkCursor 0.5s step-end infinite alternate;
+    margin-top: 1.5em;
+    font-weight: 600;
+}

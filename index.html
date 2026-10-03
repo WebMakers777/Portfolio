@@ -69,7 +69,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap"
       rel="stylesheet"
     />
 
@@ -157,9 +157,103 @@
         ]
       }
     </script>
+
+    <!-- JSON-LD: FAQ Page -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "What kind of projects does Vincie Studios handle?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "We specialize in building MVPs, full-stack web apps, SaaS platforms, CRM systems, ERP portals, and company websites. From financial platforms like BookMyCA to enterprise-grade tools like ACTTS CRM."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How fast can you deliver a working product?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "A typical MVP or landing page ships in under 4 weeks. More complex systems like ERP portals or CRM dashboards take 6-8 weeks."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What is your tech stack?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "We work with React, Next.js, Node.js, TypeScript, Tailwind CSS, MongoDB, and PostgreSQL. For payments we integrate Razorpay."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How does the pricing work?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "We offer clear, milestone-based pricing that aligns with your startup's runway. No scope creep or runaway hourly bills."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Do you handle design as well, or just development?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "We're end-to-end. UI/UX design, frontend development, backend engineering, database architecture, and deployment — all handled by us."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What happens after the project is delivered?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "We offer post-launch support, bug fixes, and iterative improvements. Many clients continue working with us from MVP to growth stage."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How do I get started?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Hit the 'Book a Slot' button or 'Start your project' CTA. Fill in your details and we'll set up a discovery call."
+            }
+          }
+        ]
+      }
+    </script>
   </head>
 
   <body>
+    <noscript>
+      <div style="max-width:800px;margin:0 auto;padding:2rem;font-family:Inter,sans-serif;color:#e0e0e0;background:#060b13;">
+        <h1>Vincie Studios — Complete Tech Stack Support, SaaS &amp; Custom Software</h1>
+        <p>Vincie Studios provides complete online tech stack support, SaaS platform development, and custom-tailored software solutions for modern businesses.</p>
+        <h2>Our Services</h2>
+        <ul>
+          <li><strong>MVP Development</strong> — Ship your minimum viable product in under 21 days</li>
+          <li><strong>SaaS Platform Engineering</strong> — Scalable applications with modern tech stacks</li>
+          <li><strong>CRM &amp; ERP Systems</strong> — Custom portals with role-based access and analytics</li>
+          <li><strong>Website Development</strong> — High-performance sites with modern UI/UX</li>
+        </ul>
+        <h2>Tech Stack</h2>
+        <p>React, Next.js, Node.js, TypeScript, Tailwind CSS, MongoDB, PostgreSQL</p>
+        <h2>Why Vincie Studios?</h2>
+        <p>End-to-end development from UI/UX design to deployment. Milestone-based pricing aligned with your startup's runway. Post-launch support and iterative improvements.</p>
+        <h2>Contact Us</h2>
+        <p>Ready to start? <a href="/contact" style="color:#A855F7;">Get in touch</a> at hello@vinciestudios.com or +91 73750 38069.</p>
+        <nav style="margin-top:1rem;">
+          <a href="/" style="color:#A855F7;">Home</a> |
+          <a href="/story" style="color:#A855F7;">Our Story</a> |
+          <a href="/features" style="color:#A855F7;">Services</a> |
+          <a href="/projects" style="color:#A855F7;">Projects</a> |
+          <a href="/faq" style="color:#A855F7;">FAQ</a> |
+          <a href="/team" style="color:#A855F7;">Team</a> |
+          <a href="/contact" style="color:#A855F7;">Contact</a>
+        </nav>
+      </div>
+    </noscript>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>

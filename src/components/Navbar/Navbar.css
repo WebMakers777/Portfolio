@@ -1,0 +1,441 @@
+.navbar-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    padding: 24px;
+    z-index: 1000;
+    pointer-events: none;
+    /* Let container be transparent to clicks */
+}
+
+/* GlassSurface is the .navbar now — it handles glass/backdrop */
+.navbar {
+    pointer-events: auto;
+    width: 100%;
+    max-width: 1200px;
+    min-height: 64px;
+    background: rgba(18, 22, 30, 0.65);
+    backdrop-filter: blur(8px) saturate(1.7);
+    -webkit-backdrop-filter: blur(8px) saturate(1.7);
+    border: 1px solid rgba(148, 163, 184, 0.25);
+    transition: box-shadow 0.4s ease;
+    box-shadow:
+        0 12px 48px rgba(0, 0, 0, 0.35),
+        0 0 40px rgba(20, 184, 166, 0.04);
+    position: relative;
+}
+
+/* The GlassSurface __content child handles padding via .navbar-inner */
+.navbar .glass-surface__content {
+    padding: 0;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: stretch;
+}
+
+.navbar-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    min-height: 64px;
+    padding: 12px 28px;
+}
+
+/* Micro-grain texture to give the glass physical surface presence */
+.navbar::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    opacity: 0.03;
+    pointer-events: none;
+    z-index: 0;
+    border-radius: inherit;
+}
+
+.navbar-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 700;
+    font-size: 1.25rem;
+    color: #f8fafc;
+    /* White text for dark glass navbar */
+    cursor: pointer;
+}
+
+.logo-icon {
+    height: 34px;
+    width: auto;
+    object-fit: contain;
+}
+
+.logo-text {
+    font-family: 'Playfair Display', serif;
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    font-size: 1.3rem;
+    background: linear-gradient(135deg, #FFFFFF 0%, #F7E8D8 55%, #E5C2A3 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.logo-text-accent {
+    font-family: 'Playfair Display', serif;
+    background: linear-gradient(135deg, #FBE8D0 0%, #E5BC96 40%, #D4A276 75%, #B88052 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: 600;
+    font-style: italic;
+}
+
+.navbar-links {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    background: rgba(255, 255, 255, 0.06);
+    padding: 4px 16px;
+    border-radius: var(--border-radius-pill);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.nav-link {
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: #cbd5e1;
+    /* Light slate for readability */
+    padding: 8px 16px;
+    border-radius: var(--border-radius-pill);
+    transition: color 0.2s ease, background 0.2s ease;
+    white-space: nowrap;
+}
+
+.nav-link:hover {
+    color: #ffffff;
+    background: rgba(220, 180, 154, 0.14);
+    /* Subtle Vincie gold glow on hover */
+}
+
+.nav-separator {
+    width: 4px;
+    height: 4px;
+    background-color: rgba(148, 163, 184, 0.4);
+    /* Toned down for dark theme */
+    border-radius: 50%;
+}
+
+.navbar-cta-wrapper {
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.navbar-cta-wrapper:hover {
+    transform: translateY(-2px);
+}
+
+.navbar-cta-wrapper .liquid-badge {
+    padding: 8px 22px;
+    font-size: 0.9rem;
+    height: 40px;
+    /* Keep the navbar button white/clear */
+    background: rgba(255, 255, 255, 0.45);
+}
+
+@media (max-width: 768px) {
+    .navbar-container {
+        padding: 12px;
+    }
+
+    .navbar {
+        min-height: 56px;
+    }
+
+    .navbar-inner {
+        padding: 0 16px;
+    }
+
+    .navbar-links {
+        display: none;
+    }
+
+    .navbar-logo {
+        font-size: 1rem;
+        gap: 8px;
+    }
+
+    .logo-icon {
+        height: 26px;
+        width: auto;
+    }
+
+    .navbar-cta-wrapper .liquid-badge {
+        padding: 6px 16px;
+        font-size: 0.8rem;
+        height: 34px;
+    }
+}
+
+/* Dropdown Container */
+.nav-dropdown-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+/* Dropdown Trigger */
+.dropdown-trigger {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: none;
+  border: none;
+  font-family: inherit;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #f8fafc;
+  cursor: pointer;
+  padding: 8px 12px;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.dropdown-trigger:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.dropdown-arrow {
+  transition: transform 0.3s ease;
+}
+
+.dropdown-arrow.open {
+  transform: rotate(180deg);
+}
+
+/* Mega Menu Wrapper */
+.mega-menu-wrapper {
+  position: relative;
+  width: 100%;
+  z-index: 99;
+}
+
+/* Mega Menu Grid */
+.mega-menu-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1.5fr;
+  gap: 32px;
+  padding: 32px;
+  width: 100%;
+}
+
+.mega-col {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.mega-heading {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: #64748b;
+  margin: 0 0 8px 0;
+}
+
+.mega-link {
+  font-size: 1rem;
+  color: #cbd5e1;
+  text-decoration: none;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  position: relative;
+  width: fit-content;
+}
+
+.mega-link:hover {
+  color: #f8fafc;
+  transform: translateX(4px);
+}
+
+/* Contact Card in Mega Menu */
+.mega-col-contact {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.mega-contact-card {
+  background: rgba(37, 99, 235, 0.15); /* Blue-ish tint like the reference image */
+  border: 1px solid rgba(59, 130, 246, 0.3);
+  border-radius: 16px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+  max-width: 280px;
+  transition: all 0.3s ease;
+}
+
+.mega-contact-card:hover {
+  background: rgba(37, 99, 235, 0.25);
+  border-color: rgba(59, 130, 246, 0.5);
+}
+
+.mega-contact-title {
+  color: #f8fafc;
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.mega-contact-desc {
+  color: #94a3b8;
+  font-size: 0.85rem;
+  line-height: 1.5;
+  margin: 0 0 8px 0;
+}
+
+.mega-contact-btn {
+  background: #ffffff;
+  color: #0f172a;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 16px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: center;
+}
+
+.mega-contact-btn:hover {
+  background: #f1f5f9;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(255, 255, 255, 0.15);
+}
+
+/* Hide on mobile for simplicity, or handle stacked layout */
+@media (max-width: 768px) {
+  .mega-menu-grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+    padding: 20px;
+  }
+  .mega-col-contact {
+    justify-content: flex-start;
+  }
+}
+
+/* Features Mega Menu Overrides */
+.features-mega-grid {
+  grid-template-columns: 1fr 1fr 1.2fr;
+}
+
+.mega-link-icon {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.mega-link-icon svg {
+  opacity: 0.6;
+  transition: opacity 0.2s ease;
+  flex-shrink: 0;
+}
+
+.mega-link-icon:hover svg {
+  opacity: 1;
+}
+
+/* Featured AI Card */
+.mega-col-featured {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.mega-featured-card {
+  background: linear-gradient(135deg, rgba(212, 162, 118, 0.16), rgba(184, 128, 82, 0.08));
+  border: 1px solid rgba(220, 180, 154, 0.28);
+  border-radius: 16px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  transition: all 0.3s ease;
+}
+
+.mega-featured-card:hover {
+  background: linear-gradient(135deg, rgba(212, 162, 118, 0.25), rgba(184, 128, 82, 0.15));
+  border-color: rgba(220, 180, 154, 0.45);
+}
+
+.mega-featured-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  background: rgba(212, 162, 118, 0.2);
+  color: #E5BC96;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mega-featured-title {
+  color: #f8fafc;
+  font-size: 1.15rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.mega-featured-desc {
+  color: #94a3b8;
+  font-size: 0.82rem;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.mega-featured-link {
+  color: #E5BC96;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s ease;
+}
+
+.mega-featured-link:hover {
+  color: #FBE8D0;
+  gap: 10px;
+}
+
+.mega-all-services-link {
+  color: #94a3b8;
+  font-size: 0.9rem;
+  font-weight: 500;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 12px 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  transition: all 0.2s ease;
+}
+
+.mega-all-services-link:hover {
+  color: #f8fafc;
+  gap: 10px;
+}
+
+@media (max-width: 768px) {
+  .features-mega-grid {
+    grid-template-columns: 1fr;
+  }
+}

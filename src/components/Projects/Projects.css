@@ -1,0 +1,954 @@
+/* ==========================================================================
+   PROJECTS SHOWCASE — 4-CARD MERGE INTRO + 4 STICKY OVERLAY SECTIONS
+   Vincie Studios Warm Champagne & Bronze Gold Theme
+   ========================================================================== */
+
+.projects-showcase-root {
+    position: relative;
+    width: 100%;
+    z-index: 10;
+    background: #ffffff;
+}
+
+/* ==========================================================================
+   STAGE 1: 4 PILLAR CARDS CONVERGING & MERGING ON SCROLL
+   ========================================================================== */
+
+.proj-merge-track {
+    position: relative;
+    width: 100%;
+    height: 235vh;
+}
+
+.proj-merge-sticky {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 88px 28px 28px;
+    overflow: hidden;
+    background: radial-gradient(
+        ellipse 80% 60% at 50% 35%,
+        rgba(245, 222, 196, 0.32) 0%,
+        rgba(255, 250, 245, 0.65) 48%,
+        #ffffff 100%
+    );
+}
+
+.proj-ambient-orb {
+    position: absolute;
+    top: 18%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 780px;
+    height: 440px;
+    background: radial-gradient(
+        circle,
+        rgba(200, 149, 101, 0.16) 0%,
+        rgba(220, 180, 154, 0.08) 50%,
+        transparent 72%
+    );
+    filter: blur(70px);
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* ── Intro Header (Appears & Disappears like Hero Text) ── */
+.proj-merge-header {
+    position: relative;
+    z-index: 4;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 760px;
+    margin-bottom: 34px;
+    will-change: transform, opacity, filter;
+}
+
+.proj-merge-headline {
+    font-size: clamp(2.3rem, 4.4vw, 3.85rem);
+    font-weight: 400;
+    color: #0f172a;
+    line-height: 1.08;
+    letter-spacing: -0.035em;
+    margin: 14px 0 12px;
+}
+
+.proj-gold-gradient-text {
+    font-weight: 600;
+    background: linear-gradient(135deg, #C89565 0%, #B88052 50%, #7A4B24 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.proj-merge-subtext {
+    font-size: clamp(0.95rem, 1.15vw, 1.08rem);
+    color: #475569;
+    line-height: 1.6;
+    max-width: 620px;
+    justify-content: center;
+}
+
+/* ── 4 Pillar Cards Stage ── */
+.proj-merge-stage-wrap {
+    position: relative;
+    width: 100%;
+    max-width: 1220px;
+    z-index: 3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.proj-merge-aura {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 480px;
+    height: 480px;
+    border-radius: 50%;
+    background: radial-gradient(
+        circle,
+        rgba(200, 149, 101, 0.42) 0%,
+        rgba(229, 188, 150, 0.22) 42%,
+        transparent 70%
+    );
+    filter: blur(45px);
+    opacity: 0;
+    transform: translate3d(-50%, -50%, 0) scale(0.75);
+    pointer-events: none;
+    z-index: 1;
+    will-change: transform, opacity;
+}
+
+.proj-merge-grid {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 22px;
+    align-items: stretch;
+}
+
+.proj-pillar-card {
+    position: relative;
+    border-radius: 22px;
+    overflow: hidden;
+    background: linear-gradient(160deg, #ffffff 0%, #fdf8f3 100%);
+    border: 1px solid rgba(200, 149, 101, 0.28);
+    box-shadow:
+        0 18px 48px rgba(15, 23, 42, 0.08),
+        0 2px 10px rgba(184, 128, 82, 0.08),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.85);
+    display: flex;
+    flex-direction: column;
+    cursor: pointer;
+    will-change: transform, opacity;
+    transform-origin: center center;
+    backface-visibility: hidden;
+    transition: box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.proj-pillar-card:hover {
+    border-color: rgba(200, 149, 101, 0.65);
+    box-shadow:
+        0 24px 60px rgba(184, 128, 82, 0.18),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.95);
+}
+
+.proj-pillar-card-image {
+    position: relative;
+    width: 100%;
+    height: 155px;
+    overflow: hidden;
+    background: #0f172a;
+}
+
+.proj-pillar-card-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.5s ease;
+}
+
+.proj-pillar-card:hover .proj-pillar-card-image img {
+    transform: scale(1.05);
+}
+
+.proj-pillar-card-img-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        to bottom,
+        rgba(15, 23, 42, 0.15) 0%,
+        transparent 45%,
+        rgba(15, 23, 42, 0.55) 100%
+    );
+    pointer-events: none;
+}
+
+.proj-pillar-num {
+    position: absolute;
+    top: 12px;
+    left: 14px;
+    padding: 4px 10px;
+    border-radius: 99px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    color: #fffaf5;
+    background: rgba(15, 23, 42, 0.68);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(245, 222, 196, 0.35);
+}
+
+.proj-pillar-card-body {
+    padding: 20px 20px 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    flex: 1;
+}
+
+.proj-pillar-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 4px;
+}
+
+.proj-pillar-icon {
+    width: 38px;
+    height: 38px;
+    border-radius: 11px;
+    background: linear-gradient(135deg, #F5DEC4 0%, #DCB49A 100%);
+    color: #7A4B24;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 12px rgba(200, 149, 101, 0.25);
+}
+
+.proj-pillar-count {
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #8C5A32;
+    background: rgba(200, 149, 101, 0.12);
+    padding: 4px 10px;
+    border-radius: 99px;
+    border: 1px solid rgba(200, 149, 101, 0.22);
+}
+
+.proj-pillar-title {
+    font-size: 1.32rem;
+    font-weight: 700;
+    color: #0f172a;
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+}
+
+.proj-pillar-subtitle {
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: #B88052;
+    letter-spacing: 0.02em;
+}
+
+.proj-pillar-desc {
+    font-size: 0.84rem;
+    color: #475569;
+    line-height: 1.55;
+    margin-top: 4px;
+}
+
+/* ── Scroll Hint ── */
+.proj-scroll-hint {
+    position: relative;
+    z-index: 4;
+    margin-top: 28px;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.76rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #8C5A32;
+}
+
+.proj-scroll-line {
+    width: 28px;
+    height: 1.5px;
+    background: linear-gradient(90deg, transparent, #C89565);
+}
+
+/* ==========================================================================
+   STAGE 2: 4 STICKY CATEGORY SECTIONS
+   Screen stays sticky while project cards overlay on each other on scroll;
+   Text stays stationary and appears/disappears like Hero section text.
+   ========================================================================== */
+
+.proj-cat-track {
+    position: relative;
+    width: 100%;
+    height: 360vh;
+}
+
+.proj-cat-sticky {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 84px 36px 32px;
+    overflow: hidden;
+}
+
+/* Subtle alternating warm backgrounds per section */
+.proj-cat-track-websites .proj-cat-sticky {
+    background: linear-gradient(180deg, #ffffff 0%, #fdf9f5 100%);
+}
+
+.proj-cat-track-softwares .proj-cat-sticky {
+    background: linear-gradient(180deg, #fdf9f5 0%, #faf3ec 100%);
+}
+
+.proj-cat-track-automations .proj-cat-sticky {
+    background: linear-gradient(180deg, #faf3ec 0%, #fdf9f5 100%);
+}
+
+.proj-cat-track-saas .proj-cat-sticky {
+    background: linear-gradient(180deg, #fdf9f5 0%, #ffffff 100%);
+}
+
+/* ── Split Grid Layout (Alternating Left/Right Placement) ── */
+.proj-cat-split {
+    width: 100%;
+    max-width: 1240px;
+    height: 100%;
+    max-height: 640px;
+    display: grid;
+    align-items: center;
+    gap: 56px;
+}
+
+/* Placement 1 & 3 (Websites, Automations): Text on LEFT, Sticky Overlay Cards on RIGHT */
+.proj-cat-split.layout-text-left {
+    grid-template-columns: 0.92fr 1.18fr;
+}
+
+.proj-cat-split.layout-text-left .proj-split-text-col {
+    order: 1;
+}
+
+.proj-cat-split.layout-text-left .proj-split-stack-col {
+    order: 2;
+}
+
+/* Placement 2 & 4 (Softwares, SaaS): Sticky Overlay Cards on LEFT, Text on RIGHT */
+.proj-cat-split.layout-text-right {
+    grid-template-columns: 1.18fr 0.92fr;
+}
+
+.proj-cat-split.layout-text-right .proj-split-stack-col {
+    order: 1;
+}
+
+.proj-cat-split.layout-text-right .proj-split-text-col {
+    order: 2;
+}
+
+/* ==========================================================================
+   STATIONARY TEXT COLUMN (HERO-STYLE BLUR APPEAR / DISAPPEAR)
+   ========================================================================== */
+
+.proj-split-text-col {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100%;
+    position: relative;
+    z-index: 5;
+}
+
+.proj-cat-header-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 26px;
+}
+
+.proj-cat-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 16px;
+    border-radius: 99px;
+    background: linear-gradient(135deg, rgba(245, 222, 196, 0.45) 0%, rgba(220, 180, 154, 0.2) 100%);
+    border: 1px solid rgba(200, 149, 101, 0.35);
+    box-shadow: 0 4px 16px rgba(184, 128, 82, 0.08);
+}
+
+.proj-cat-pill-num {
+    font-size: 0.76rem;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    color: #8C5A32;
+}
+
+.proj-cat-pill-divider {
+    width: 1px;
+    height: 13px;
+    background: rgba(140, 90, 50, 0.3);
+}
+
+.proj-cat-pill-icon {
+    display: inline-flex;
+    color: #B88052;
+}
+
+.proj-cat-pill-label {
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #0f172a;
+}
+
+/* Step Dots (01 / 02 / 03) */
+.proj-step-indicators {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.proj-step-dot {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    color: #64748b;
+    background: rgba(255, 255, 255, 0.85);
+    border: 1px solid rgba(200, 149, 101, 0.28);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.25s ease;
+}
+
+.proj-step-dot:hover {
+    border-color: #C89565;
+    color: #8C5A32;
+}
+
+.proj-step-dot.passed {
+    background: rgba(245, 222, 196, 0.45);
+    color: #8C5A32;
+    border-color: rgba(200, 149, 101, 0.45);
+}
+
+.proj-step-dot.active {
+    background: linear-gradient(135deg, #C89565 0%, #8C5A32 100%);
+    color: #ffffff;
+    border-color: transparent;
+    box-shadow: 0 6px 18px rgba(184, 128, 82, 0.35);
+    transform: scale(1.06);
+}
+
+/* Stationary Active Project Text Stage */
+.proj-active-text-stage {
+    position: relative;
+    min-height: 340px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.proj-active-text-inner {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.proj-active-kicker {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+}
+
+.proj-kicker-index {
+    color: #B88052;
+}
+
+.proj-kicker-sep {
+    color: #cbd5e1;
+}
+
+.proj-kicker-sub {
+    color: #64748b;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    text-transform: none;
+}
+
+/* Hero Word-by-Word Blur Containers */
+.hero-blur-words {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.hero-blur-word {
+    display: inline-block;
+    will-change: transform, filter, opacity;
+}
+
+.proj-active-title {
+    font-size: clamp(1.85rem, 3vw, 2.65rem);
+    font-weight: 600;
+    color: #0f172a;
+    line-height: 1.14;
+    letter-spacing: -0.03em;
+    margin: 0;
+}
+
+.proj-active-desc {
+    font-size: clamp(0.95rem, 1.08vw, 1.05rem);
+    color: #475569;
+    line-height: 1.68;
+    margin: 0;
+}
+
+.proj-active-metric {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    align-self: flex-start;
+    padding: 8px 16px;
+    border-radius: 12px;
+    background: rgba(245, 222, 196, 0.32);
+    border: 1px solid rgba(200, 149, 101, 0.3);
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: #7A4B24;
+}
+
+.proj-metric-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #C89565;
+    box-shadow: 0 0 0 4px rgba(200, 149, 101, 0.22);
+}
+
+.proj-active-footer {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    margin-top: 4px;
+}
+
+.proj-tags-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.proj-gold-tag {
+    font-size: 0.73rem;
+    font-weight: 600;
+    padding: 6px 13px;
+    border-radius: 99px;
+    background: rgba(255, 250, 245, 0.9);
+    color: #8C5A32;
+    border: 1px solid rgba(200, 149, 101, 0.32);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+}
+
+.proj-live-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 24px;
+    border-radius: 99px;
+    background: linear-gradient(135deg, #C89565 0%, #8C5A32 100%);
+    color: #ffffff;
+    font-size: 0.86rem;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    box-shadow: 0 10px 28px rgba(140, 90, 50, 0.28);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.proj-live-cta:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 14px 34px rgba(140, 90, 50, 0.38);
+}
+
+/* ==========================================================================
+   STICKY OVERLAY PROJECT STACK COLUMN
+   ========================================================================== */
+
+.proj-split-stack-col {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 4;
+}
+
+.proj-overlay-stack-stage {
+    position: relative;
+    width: 100%;
+    height: 470px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.proj-overlay-card {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 26px;
+    overflow: hidden;
+    background: linear-gradient(145deg, #1e293b 0%, #0f172a 100%);
+    border: 1px solid rgba(229, 188, 150, 0.35);
+    box-shadow:
+        0 28px 70px rgba(15, 23, 42, 0.22),
+        0 4px 16px rgba(184, 128, 82, 0.12),
+        inset 0 1px 0 rgba(255, 255, 255, 0.25);
+    display: flex;
+    flex-direction: column;
+    will-change: transform, opacity;
+    transform-origin: top center;
+    backface-visibility: hidden;
+}
+
+.proj-overlay-card-glow {
+    position: absolute;
+    top: -60px;
+    right: -60px;
+    width: 240px;
+    height: 240px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(229, 188, 150, 0.35) 0%, transparent 70%);
+    filter: blur(40px);
+    pointer-events: none;
+    z-index: 2;
+}
+
+/* Top Window Chrome Bar */
+.proj-overlay-card-chrome {
+    height: 44px;
+    padding: 0 18px;
+    background: rgba(15, 23, 42, 0.92);
+    border-bottom: 1px solid rgba(229, 188, 150, 0.16);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-shrink: 0;
+    z-index: 3;
+}
+
+.chrome-dots {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.chrome-dots .dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+}
+
+.dot-gold-1 {
+    background: #F5DEC4;
+}
+
+.dot-gold-2 {
+    background: #C89565;
+}
+
+.dot-gold-3 {
+    background: #8C5A32;
+}
+
+.chrome-title {
+    font-size: 0.74rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: rgba(245, 222, 196, 0.75);
+}
+
+.chrome-live-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 4px 11px;
+    border-radius: 99px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: #0f172a;
+    background: linear-gradient(135deg, #F5DEC4, #DCB49A);
+    text-decoration: none;
+    transition: transform 0.2s ease;
+}
+
+.chrome-live-badge:hover {
+    transform: scale(1.05);
+}
+
+.chrome-tag-badge {
+    padding: 4px 10px;
+    border-radius: 99px;
+    font-size: 0.68rem;
+    font-weight: 600;
+    color: #F5DEC4;
+    background: rgba(200, 149, 101, 0.18);
+    border: 1px solid rgba(229, 188, 150, 0.25);
+}
+
+/* Card Media & Bottom Overlay Bar */
+.proj-overlay-card-media {
+    position: relative;
+    flex: 1;
+    width: 100%;
+    overflow: hidden;
+    background: #0f172a;
+}
+
+.proj-overlay-card-media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top center;
+    display: block;
+    transition: transform 0.6s ease;
+}
+
+.proj-overlay-card:hover .proj-overlay-card-media img {
+    transform: scale(1.03);
+}
+
+.proj-overlay-card-gradient {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        to top,
+        rgba(15, 23, 42, 0.92) 0%,
+        rgba(15, 23, 42, 0.35) 38%,
+        transparent 70%
+    );
+    pointer-events: none;
+}
+
+.proj-overlay-card-caption {
+    position: absolute;
+    left: 22px;
+    right: 22px;
+    bottom: 20px;
+    z-index: 3;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 16px;
+}
+
+.caption-step {
+    display: block;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    color: #E5BC96;
+    margin-bottom: 4px;
+}
+
+.caption-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #ffffff;
+    letter-spacing: -0.015em;
+    margin: 0;
+}
+
+.caption-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    justify-content: flex-end;
+}
+
+.caption-pill {
+    padding: 4px 10px;
+    border-radius: 99px;
+    font-size: 0.68rem;
+    font-weight: 600;
+    color: #F5DEC4;
+    background: rgba(15, 23, 42, 0.72);
+    border: 1px solid rgba(229, 188, 150, 0.3);
+    backdrop-filter: blur(6px);
+}
+
+/* ==========================================================================
+   RESPONSIVE BREAKPOINTS
+   ========================================================================== */
+
+@media (max-width: 1080px) {
+    .proj-merge-grid {
+        gap: 14px;
+    }
+
+    .proj-pillar-card-image {
+        height: 125px;
+    }
+
+    .proj-pillar-card-body {
+        padding: 16px;
+    }
+
+    .proj-pillar-title {
+        font-size: 1.12rem;
+    }
+
+    .proj-cat-split {
+        gap: 36px;
+    }
+
+    .proj-overlay-stack-stage {
+        height: 410px;
+    }
+}
+
+@media (max-width: 900px) {
+    .proj-merge-grid {
+        grid-template-columns: repeat(2, 1fr);
+        max-width: 640px;
+    }
+
+    .proj-pillar-card-image {
+        height: 110px;
+    }
+
+    .proj-pillar-desc {
+        display: none;
+    }
+
+    .proj-cat-sticky {
+        padding: 76px 20px 20px;
+    }
+
+    .proj-cat-split,
+    .proj-cat-split.layout-text-left,
+    .proj-cat-split.layout-text-right {
+        grid-template-columns: 1fr;
+        gap: 20px;
+        max-height: none;
+    }
+
+    /* Keep alternating feel on tablet/mobile or stack cleanly inside sticky viewport */
+    .proj-cat-split.layout-text-left .proj-split-text-col,
+    .proj-cat-split.layout-text-right .proj-split-text-col {
+        order: 1;
+    }
+
+    .proj-cat-split.layout-text-left .proj-split-stack-col,
+    .proj-cat-split.layout-text-right .proj-split-stack-col {
+        order: 2;
+    }
+
+    .proj-active-text-stage {
+        min-height: 210px;
+    }
+
+    .proj-active-title {
+        font-size: 1.55rem;
+    }
+
+    .proj-active-desc {
+        font-size: 0.88rem;
+        line-height: 1.5;
+    }
+
+    .proj-overlay-stack-stage {
+        height: 290px;
+    }
+}
+
+@media (max-width: 600px) {
+    .proj-merge-sticky {
+        padding: 74px 14px 18px;
+    }
+
+    .proj-merge-header {
+        margin-bottom: 18px;
+    }
+
+    .proj-merge-headline {
+        font-size: 1.85rem;
+    }
+
+    .proj-merge-grid {
+        gap: 10px;
+    }
+
+    .proj-pillar-card-image {
+        height: 84px;
+    }
+
+    .proj-pillar-card-body {
+        padding: 12px;
+    }
+
+    .proj-pillar-title {
+        font-size: 1rem;
+    }
+
+    .proj-pillar-subtitle,
+    .proj-pillar-count {
+        font-size: 0.65rem;
+    }
+
+    .proj-cat-header-bar {
+        margin-bottom: 12px;
+    }
+
+    .proj-active-text-stage {
+        min-height: 190px;
+    }
+
+    .proj-overlay-stack-stage {
+        height: 240px;
+    }
+
+    .caption-tags {
+        display: none;
+    }
+}

@@ -1,0 +1,357 @@
+.execution-section {
+    contain: content;
+    padding: 160px 20px 200px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    z-index: 10;
+    /* Soft Blue to White Gradient */
+    background: linear-gradient(to top, #f0f9ff 0%, #ffffff 600px);
+    overflow: hidden;
+}
+
+/* Granular Pixelated Texture - DISABLED for scroll performance */
+.execution-section::before {
+    display: none;
+}
+
+/* Finer White Vertical Frequency Lines */
+.execution-section::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100px;
+    background-image: repeating-linear-gradient(to right, rgba(255, 255, 255, 0.95) 0px, rgba(255, 255, 255, 0.95) 1.5px, transparent 1.5px, transparent 16px);
+    mask-image: linear-gradient(to top, black 25px, transparent 100px);
+    -webkit-mask-image: linear-gradient(to top, black 25px, transparent 100px);
+    opacity: 0.95;
+    z-index: 2;
+    pointer-events: none;
+}
+
+.execution-bg-glow {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    height: 400px;
+    background: radial-gradient(circle at bottom, rgba(165, 243, 252, 0.25) 0%, rgba(191, 219, 254, 0.12) 30%, transparent 70%);
+    pointer-events: none;
+    z-index: 1;
+}
+
+
+.execution-header {
+    text-align: center;
+    position: relative;
+    z-index: 2;
+    margin-bottom: 80px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.section-badge {
+    margin-bottom: 24px;
+}
+
+.execution-headline {
+    font-size: clamp(2.5rem, 5vw, 4.5rem);
+    font-weight: 800;
+    color: #0f172a;
+    line-height: 1.1;
+    letter-spacing: -0.04em;
+    margin-bottom: 24px;
+}
+
+.execution-subtext {
+    font-size: 1.25rem;
+    color: #475569;
+    line-height: 1.6;
+    max-width: 600px;
+}
+
+
+/* BENTO GRID */
+.bento-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-auto-rows: minmax(250px, auto);
+    gap: 24px;
+    width: 100%;
+    max-width: 1200px;
+    position: relative;
+    z-index: 5;
+}
+
+.bento-card {
+    background: rgba(255, 255, 255, 0.9);
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    border-radius: 32px;
+    overflow: hidden;
+    position: relative;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.04), inset 0 0 0 1px rgba(255,255,255,0.5);
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+    display: flex;
+    flex-direction: column;
+}
+
+.bento-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 30px 60px rgba(0,0,0,0.08), inset 0 0 0 1px rgba(255,255,255,0.8);
+}
+
+.bento-large {
+    grid-column: span 2;
+    grid-row: span 2;
+    padding: 60px;
+    background: rgba(255, 255, 255, 0.85);
+}
+
+.bento-tall {
+    grid-column: span 1;
+    grid-row: span 2;
+}
+
+.bento-wide {
+    grid-column: span 2;
+    grid-row: span 1;
+}
+
+/* TEXT CONTENT */
+.bento-content {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    justify-content: center;
+}
+
+.bento-icon-wrapper {
+    background: #f1f5f9;
+    width: 48px;
+    height: 48px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 24px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+.bento-title {
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: #0f172a;
+    letter-spacing: -0.03em;
+    margin-bottom: 16px;
+}
+
+.bento-desc {
+    font-size: 1.15rem;
+    color: #475569;
+    line-height: 1.6;
+    margin-bottom: 40px;
+}
+
+/* 21 DAYS COMPARISON GRAPHIC */
+.comparison-graphic {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 24px;
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.comp-row {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.comp-label {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #0f172a;
+}
+
+.comp-bar-wrapper {
+    width: 100%;
+    height: 40px;
+    background: #e2e8f0;
+    border-radius: 20px;
+    overflow: hidden;
+    position: relative;
+}
+
+.comp-bar {
+    height: 100%;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+    font-weight: 600;
+    color: white;
+    font-size: 0.95rem;
+}
+
+.elixor-bar-fill {
+    width: 15%;
+    background: linear-gradient(90deg, #10b981, #059669);
+    min-width: fit-content;
+    gap: 8px;
+    position: relative;
+    overflow: hidden;
+}
+
+.elixor-bar-fill::after {
+    content: '';
+    position: absolute;
+    top: 0; left: -100%; width: 50%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+    animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+    100% { left: 200%; }
+}
+
+.traditional-bar-fill {
+    width: 100%;
+    background: #94a3b8;
+}
+
+.bento-note {
+    font-size: 0.9rem;
+    color: #94a3b8;
+    font-style: italic;
+}
+
+/* IMAGE CARDS */
+.image-card {
+    padding: 0;
+}
+
+.bento-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    position: absolute;
+    top: 0;
+    left: 0;
+    transition: transform 0.6s ease;
+}
+
+/* Split Video Grid Effect */
+.video-frame-1 {
+    object-position: right top;
+}
+.video-frame-2 {
+    object-position: left bottom;
+}
+.video-frame-3 {
+    object-position: right bottom;
+}
+
+.image-card:hover .bento-image {
+    transform: scale(1.05);
+}
+
+.bento-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 30px;
+    background: linear-gradient(to top, rgba(15,23,42,0.95) 0%, rgba(15,23,42,0.6) 60%, transparent 100%);
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+
+.bento-overlay .bento-title {
+    color: white;
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+}
+
+.bento-overlay .bento-desc {
+    color: rgba(255,255,255,0.8);
+    font-size: 0.95rem;
+    margin-bottom: 0;
+}
+
+
+/* RESPONSIVE */
+@media (max-width: 1024px) {
+    .bento-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .bento-large {
+        grid-column: span 2;
+        grid-row: auto;
+    }
+    
+    .bento-tall {
+        grid-column: span 1;
+        grid-row: span 1;
+        min-height: 400px;
+    }
+    
+    .bento-wide {
+        grid-column: span 2;
+    }
+}
+
+@media (max-width: 768px) {
+    .execution-section {
+        padding: 80px 16px 100px;
+    }
+
+    .execution-headline {
+        font-size: 2.2rem;
+    }
+
+    .bento-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .bento-large, .bento-tall, .bento-wide {
+        grid-column: span 1;
+        grid-row: auto;
+    }
+
+    .bento-large {
+        padding: 30px 20px;
+    }
+
+    .bento-title {
+        font-size: 1.8rem;
+    }
+
+    .bento-tall, .bento-wide, .image-card {
+        min-height: 350px;
+    }
+}
+
+@media (max-width: 480px) {
+    .execution-section {
+        padding: 60px 12px 80px;
+    }
+
+    .execution-headline {
+        font-size: 1.6rem;
+    }
+
+    .bento-title {
+        font-size: 1.5rem;
+    }
+}

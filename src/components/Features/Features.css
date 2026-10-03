@@ -1,0 +1,545 @@
+.features-section {
+    contain: content;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 160px 24px 200px;
+    position: relative;
+    z-index: 10;
+    /* Soft Indigo Gradient emerging from bottom - Matching Screenshot Style */
+    background: linear-gradient(to top, #e0e7ff 0%, #ffffff 600px);
+    overflow: hidden;
+}
+
+/* Granular Pixelated Texture - DISABLED for scroll performance */
+.features-section::before {
+    display: none;
+}
+
+/* Finer White Vertical Frequency Lines */
+.features-section::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100px;
+    background-image: repeating-linear-gradient(to right, rgba(255, 255, 255, 0.95) 0px, rgba(255, 255, 255, 0.95) 1.5px, transparent 1.5px, transparent 16px);
+    mask-image: linear-gradient(to top, black 25px, transparent 100px);
+    -webkit-mask-image: linear-gradient(to top, black 25px, transparent 100px);
+    opacity: 0.95;
+    z-index: 2;
+    pointer-events: none;
+}
+
+/* Central Soft Glow — static, no blur filter */
+.section-glow {
+    position: absolute;
+    top: 100px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 600px;
+    height: 300px;
+    background: radial-gradient(circle, rgba(134, 239, 172, 0.12) 0%, rgba(147, 197, 253, 0.12) 50%, transparent 70%);
+    z-index: -1;
+    pointer-events: none;
+}
+
+/* 1. TRUSTED BADGE WITH DRIPPING ELIXIR */
+.features-section .liquid-badge-wrapper {
+    margin-bottom: 24px;
+}
+
+.trusted-badge-wrapper {
+    position: relative;
+    margin-bottom: 24px;
+    z-index: 5;
+}
+
+.trusted-badge {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.4));
+    border: 1px solid rgba(255, 255, 255, 0.9);
+    padding: 8px 20px;
+    border-radius: 99px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: #1e293b;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
+    position: relative;
+    /* Glowing elixir shadow on the button itself */
+    box-shadow: 0 4px 15px rgba(20, 184, 166, 0.3), inset 0 0 10px rgba(45, 212, 191, 0.4);
+}
+
+/* Internal Liquid Waves */
+.liquid-container {
+    position: absolute;
+    inset: 0;
+    border-radius: 99px;
+    overflow: hidden;
+    z-index: 0;
+    /* Soft reflection inner shadow */
+    box-shadow: inset 0 -4px 10px rgba(0, 0, 0, 0.05), inset 0 2px 4px rgba(255, 255, 255, 0.5);
+}
+
+/* Liquid waves - DISABLED for performance */
+.liquid-wave {
+    display: none;
+}
+
+@keyframes liquidSpin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* 2. MAIN HEADLINE */
+.stats-main-headline {
+    text-align: center;
+    font-size: clamp(1.8rem, 3.5vw, 2.5rem);
+    font-weight: 300;
+    line-height: 1.15;
+    color: #1e293b;
+    letter-spacing: -0.04em;
+    margin-bottom: 50px;
+    z-index: 5;
+}
+
+/* 3. STATS CARDS ROW */
+.stats-cards-row {
+    display: flex;
+    gap: 24px;
+    flex-wrap: wrap;
+    justify-content: center;
+    max-width: 1100px;
+    width: 100%;
+    margin-bottom: 80px;
+}
+
+.stat-card {
+    display: flex;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.9);
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    border-radius: 20px;
+    padding: 16px 24px;
+    gap: 16px;
+    flex: 1;
+    min-width: 280px;
+    max-width: 340px;
+    box-shadow:
+        0 20px 50px rgba(0, 0, 0, 0.06),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.4),
+        0 4px 12px rgba(0, 0, 0, 0.02);
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-4px);
+    box-shadow:
+        0 20px 40px rgba(0, 0, 0, 0.08),
+        inset 0 0 15px rgba(255, 255, 255, 0.6);
+}
+
+/* The three different background patterns for the glass cards */
+.card-pattern-dots::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(rgba(30, 58, 138, 0.08) 1.5px, transparent 1.5px);
+    background-size: 10px 10px;
+    z-index: -1;
+    pointer-events: none;
+}
+
+.card-pattern-waves::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: repeating-radial-gradient(circle at 0 0, transparent 0, #ffffff 13px), repeating-linear-gradient(rgba(30, 58, 138, 0.03), rgba(30, 58, 138, 0.03));
+    background-size: 20px 20px;
+    z-index: -1;
+    pointer-events: none;
+}
+
+.card-pattern-lines::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: repeating-linear-gradient(45deg, rgba(30, 58, 138, 0.03) 0, rgba(30, 58, 138, 0.03) 2px, transparent 2px, transparent 10px);
+    z-index: -1;
+    pointer-events: none;
+}
+
+.stat-card-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    background: white;
+    border-radius: 50%;
+    color: #3b82f6;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    flex-shrink: 0;
+}
+
+.stat-card-text {
+    font-size: 1.05rem;
+    color: #0f172a;
+    line-height: 1.4;
+    font-weight: 400;
+    /* Keeping it thin and modern */
+}
+
+/* 4. MARQUEE ROW */
+.marquee-wrapper {
+    width: 100vw;
+    max-width: 100%;
+    overflow: hidden;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 40px 0;
+    margin-bottom: 80px;
+    mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
+    -webkit-mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
+}
+
+.marquee-content {
+    display: flex;
+    align-items: center;
+    gap: 80px;
+    width: max-content;
+    animation: scrollMarquee 25s linear infinite;
+}
+
+.logo-font {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #64748b;
+    letter-spacing: -0.02em;
+    opacity: 0.6;
+}
+
+@keyframes scrollMarquee {
+    0% {
+        transform: translateX(0);
+    }
+
+    100% {
+        transform: translateX(calc(-50% - 40px));
+    }
+}
+
+/* 5. WHY ELIXORTECH - MASSIVE GRID CARDS */
+.features-secondary-content {
+    width: 100%;
+    max-width: 1200px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* Centered */
+    padding: 80px 24px;
+    position: relative;
+    /* For the glow */
+}
+
+.features-secondary-content .liquid-badge-wrapper {
+    margin-bottom: 24px;
+}
+
+.secondary-glow {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 800px;
+    height: 400px;
+    background: radial-gradient(circle, rgba(148, 163, 184, 0.06) 0%, rgba(148, 163, 184, 0.03) 40%, transparent 70%);
+    z-index: -1;
+}
+
+.why-labs-badge {
+    background: rgba(255, 255, 255, 0.9);
+    border: 1px solid rgba(255, 255, 255, 0.9);
+    padding: 6px 16px;
+    border-radius: 99px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: #475569;
+    margin-bottom: 24px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.02);
+}
+
+.why-labs-headline {
+    font-size: clamp(1.8rem, 3.5vw, 2.5rem);
+    font-weight: 300;
+    line-height: 1.15;
+    color: #1e293b;
+    /* Softer slate instead of pure dark */
+    letter-spacing: -0.04em;
+    /* Match top section's tight spacing */
+    margin-bottom: 50px;
+    max-width: 800px;
+    text-align: center;
+}
+
+.blue-highlight {
+    background: linear-gradient(120deg, rgba(59, 130, 246, 0.15) 0%, rgba(59, 130, 246, 0.05) 100%);
+    background-size: 100% 40%;
+    background-repeat: no-repeat;
+    background-position: 0 88%;
+    color: #334155;
+    padding: 0 2px;
+}
+
+/* For contrast on dark text highlights */
+.highlight-dark {
+    color: #0f172a;
+    font-weight: 500;
+    position: relative;
+    display: inline-block;
+    padding: 0 4px;
+}
+
+.highlight-dark::after {
+    content: '';
+    position: absolute;
+    bottom: 4px;
+    left: 0;
+    width: 100%;
+    height: 35%;
+    background: rgba(15, 23, 42, 0.06);
+    z-index: -1;
+    border-radius: 2px;
+}
+
+/* CARDS GRID */
+.why-cards-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 32px;
+    width: 100%;
+}
+
+@media (max-width: 900px) {
+    .why-cards-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* DUSTY SPACE CARD EFFECT */
+.why-card {
+    background: rgba(255, 255, 255, 0.9);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    border-radius: 24px;
+    padding: 28px 20px;
+    box-shadow:
+        0 30px 60px rgba(0, 0, 0, 0.08),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.5),
+        0 4px 15px rgba(0, 0, 0, 0.03);
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+/* Micro Grid Background Effect for Cards */
+.why-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: repeating-linear-gradient(0deg, transparent, transparent 19px, rgba(148, 163, 184, 0.3) 19px, rgba(148, 163, 184, 0.3) 20px),
+        repeating-linear-gradient(90deg, transparent, transparent 19px, rgba(148, 163, 184, 0.3) 19px, rgba(148, 163, 184, 0.3) 20px);
+    background-size: 20px 20px;
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.5;
+    mask-image: linear-gradient(to bottom, black 0%, transparent 60%);
+    -webkit-mask-image: linear-gradient(to bottom, black 0%, transparent 60%);
+}
+
+.card-top-gradient-strip {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 120px;
+    z-index: 1;
+}
+
+/* Card ambient glow — no blur filter */
+.card-ambient-glow {
+    position: absolute;
+    top: -50px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 200px;
+    height: 150px;
+    z-index: 0;
+    opacity: 0.3;
+}
+
+/* DUSTY SPACE COLORS */
+.strip-blue {
+    background: linear-gradient(to bottom, rgba(100, 116, 139, 0.2), transparent);
+    /* Slate */
+}
+
+.glow-blue {
+    background: #94a3b8;
+    /* Slate shadow */
+}
+
+.strip-orange {
+    background: linear-gradient(to bottom, rgba(168, 162, 158, 0.2), transparent);
+    /* Stone dust */
+}
+
+.glow-orange {
+    background: #d6d3d1;
+    /* Stone glow */
+}
+
+.strip-teal {
+    background: linear-gradient(to bottom, rgba(113, 113, 122, 0.2), transparent);
+    /* Zinc */
+}
+
+.glow-teal {
+    background: #a1a1aa;
+    /* Zinc glow */
+}
+
+.why-card:hover {
+    transform: translateY(-8px);
+    box-shadow:
+        0 30px 60px rgba(0, 0, 0, 0.08),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.9),
+        inset 0 0 40px rgba(255, 255, 255, 0.6);
+}
+
+.why-card-iconbox {
+    position: relative;
+    z-index: 5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    /* Slightly reduced */
+    height: 44px;
+    border-radius: 10px;
+    font-size: 1.25rem;
+    box-shadow:
+        0 10px 20px rgba(0, 0, 0, 0.08),
+        inset 0 2px 4px rgba(255, 255, 255, 0.8);
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    margin-bottom: 24px;
+    align-self: center;
+    /* Ensure it stays centered */
+}
+
+/* DUSTY METALLIC ICONS */
+.icon-blue {
+    background: linear-gradient(135deg, #e2e8f0 0%, #94a3b8 100%);
+    /* Dusty Slate */
+}
+
+.icon-orange {
+    background: linear-gradient(135deg, #f5f5f4 0%, #d6d3d1 100%);
+    /* Dusty Stone */
+}
+
+.icon-teal {
+    background: linear-gradient(135deg, #f4f4f5 0%, #a1a1aa 100%);
+    /* Dusty Zinc */
+}
+
+.why-card-content {
+    position: relative;
+    z-index: 5;
+    flex: 1;
+}
+
+.why-card-content h3 {
+    font-size: 1.15rem;
+    font-weight: 500;
+    color: #0f172a;
+    margin-bottom: 12px;
+}
+
+.why-card-content p {
+    font-size: 0.9rem;
+    line-height: 1.5;
+    color: #475569;
+}
+
+/* ---- RESPONSIVE ---- */
+@media (max-width: 900px) {
+    .why-cards-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .features-section {
+        padding: 80px 16px 100px;
+    }
+
+    .stats-main-headline {
+        font-size: 1.6rem;
+        margin-bottom: 30px;
+    }
+
+    .stats-cards-row {
+        gap: 16px;
+        margin-bottom: 50px;
+    }
+
+    .stat-card {
+        min-width: 100%;
+        max-width: 100%;
+        padding: 14px 18px;
+    }
+
+    .features-secondary-content {
+        padding: 40px 0;
+    }
+
+    .why-labs-headline {
+        font-size: 1.5rem;
+        margin-bottom: 30px;
+    }
+
+    .why-cards-grid {
+        gap: 20px;
+    }
+
+    .why-card {
+        padding: 24px 18px;
+    }
+}
+
+@media (max-width: 480px) {
+    .features-section {
+        padding: 60px 12px 80px;
+    }
+
+    .stat-card-text {
+        font-size: 0.9rem;
+    }
+
+    .why-card-content h3 {
+        font-size: 1.05rem;
+    }
+
+    .why-card-content p {
+        font-size: 0.85rem;
+    }
+}

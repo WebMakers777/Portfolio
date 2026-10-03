@@ -1,0 +1,351 @@
+.process-section {
+    contain: content;
+    height: 350vh; /* Scroll space for animation */
+    padding: 0;
+    display: block;
+    position: relative;
+    z-index: 10;
+    background: linear-gradient(to bottom, #f8fafc 0%, #e2e8f0 100%);
+}
+
+.sticky-glass-wrapper {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    padding: 40px 60px;
+    overflow: hidden;
+}
+
+.process-glass-container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    justify-content: center;
+    align-items: center;
+}
+
+/* CENTRAL DETAILS */
+.process-center-details {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    max-width: 450px;
+    z-index: 5;
+}
+
+.center-badge {
+    margin-bottom: 24px;
+}
+
+.process-headline {
+    font-size: clamp(2.5rem, 4vw, 3.5rem);
+    font-weight: 300;
+    color: #0f172a;
+    line-height: 1.1;
+    letter-spacing: -0.03em;
+    margin: 0 0 16px 0;
+}
+
+.process-description {
+    font-size: 1.1rem;
+    color: #475569;
+    line-height: 1.6;
+    margin: 0;
+}
+
+/* ROADMAP CONTAINER */
+.process-roadmap-container {
+    position: relative;
+    width: 100%;
+    max-width: 1600px;
+    height: 100%;
+    max-height: 900px;
+    aspect-ratio: 16 / 9;
+    margin: 0 auto;
+}
+
+.roadmap-svg-wrapper {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.roadmap-svg {
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+}
+
+/* ABSOLUTE CARDS */
+.process-card-absolute {
+    position: absolute;
+    width: 280px;
+    height: 320px; 
+    z-index: 10;
+    will-change: transform, opacity;
+}
+
+/* Center cards on checkpoints based on 1600x900 viewBox (Ellipse Orbital) */
+/* Half of card is 140x160 */
+/* CP1 (Top Left): 340, 238 */
+.card-1 { left: calc(21.25% - 140px); top: calc(26.44% - 160px); }
+/* CP2 (Top Right): 1260, 238 */
+.card-2 { left: calc(78.75% - 140px); top: calc(26.44% - 160px); }
+/* CP3 (Bottom Right): 1260, 662 */
+.card-3 { left: calc(78.75% - 140px); top: calc(73.55% - 160px); }
+/* CP4 (Bottom Left): 340, 662 */
+.card-4 { left: calc(21.25% - 140px); top: calc(73.55% - 160px); }
+
+/* PREMIUM CARD STYLING */
+.process-card-inner {
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.75);
+    backdrop-filter: blur(24px) saturate(1.2);
+    border: 1px solid rgba(255, 255, 255, 0.9);
+    border-radius: 24px;
+    box-shadow: 
+        0 24px 48px rgba(15, 23, 42, 0.06),
+        inset 0 1px 0 rgba(255, 255, 255, 1),
+        inset 0 0 20px rgba(255, 255, 255, 0.4);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.process-card-absolute:hover .process-card-inner {
+    transform: translateY(-5px);
+    box-shadow: 
+        0 32px 64px rgba(15, 23, 42, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 1),
+        inset 0 0 20px rgba(255, 255, 255, 0.6);
+}
+
+.card-visual {
+    height: 150px;
+    background: linear-gradient(135deg, rgba(248, 250, 252, 0.8), rgba(241, 245, 249, 0.5));
+    border-bottom: 1px solid rgba(255, 255, 255, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.card-content {
+    padding: 20px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+.step-number {
+    position: absolute;
+    top: 14px;
+    right: 20px;
+    font-size: 3rem;
+    font-weight: 200;
+    color: rgba(148, 163, 184, 0.15);
+    line-height: 1;
+}
+
+.step-title {
+    font-size: 1.35rem;
+    font-weight: 600;
+    color: #0369a1;
+    margin-bottom: 8px;
+    margin-top: 5px;
+}
+
+.step-text {
+    font-size: 0.9rem;
+    color: #475569;
+    line-height: 1.5;
+}
+
+/* MINI VERSIONS OF EXISTING VISUALS FOR COMPACT CARDS */
+.discovery-nodes-wrapper.mini {
+    transform: scale(0.6);
+}
+.discovery-nodes-wrapper {
+    position: relative;
+    width: 200px;
+    height: 200px;
+}
+.node-center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 50px;
+    height: 50px;
+    background: #ffffff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 10px 20px rgba(14, 165, 233, 0.2);
+    z-index: 10;
+}
+.node-glow {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(14, 165, 233, 0.3) 0%, transparent 70%);
+    z-index: -1;
+}
+.node {
+    position: absolute;
+    width: 32px;
+    height: 32px;
+    background: #ffffff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    z-index: 5;
+}
+.node-1 { top: 30px; left: 20px; }
+.node-2 { top: 20px; right: 20px; }
+.node-3 { bottom: 30px; left: 20px; }
+.node-4 { bottom: 20px; right: 20px; }
+
+/* Tilted Cards */
+.tilted-cards-wrapper.mini {
+    transform: perspective(800px) rotateX(10deg) rotateY(-15deg) rotateZ(5deg) scale(0.6);
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0; left: 0;
+}
+.tilted-card {
+    position: absolute;
+    width: 70%;
+    height: 60%;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.9);
+    border: 1px solid rgba(255, 255, 255, 1);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+.card-back { top: 10%; left: 20%; transform: translateZ(-30px); opacity: 0.6; }
+.card-mid { top: 20%; left: 10%; transform: translateZ(0px); opacity: 0.8; }
+.card-front {
+    top: 30%; left: 0%; transform: translateZ(30px);
+    display: flex; flex-direction: column; overflow: hidden;
+}
+.ui-header { height: 15%; background: #f8fafc; border-bottom: 1px solid #e2e8f0; }
+.ui-body { display: flex; flex: 1; }
+.ui-sidebar { width: 25%; background: #f1f5f9; border-right: 1px solid #e2e8f0; }
+.ui-content-area { flex: 1; padding: 12px; display: flex; flex-direction: column; gap: 8px; }
+.ui-line { height: 8px; background: #e2e8f0; border-radius: 4px; }
+
+/* Code Mock */
+.code-block-mock.mini {
+    background: rgba(15, 23, 42, 0.92);
+    border-radius: 12px;
+    padding: 16px;
+    font-family: monospace;
+    font-size: 0.75rem;
+    color: #e2e8f0;
+    line-height: 1.5;
+    transform: scale(0.75);
+}
+.code-line.keyword { color: #c678dd; }
+.code-line.string { color: #98c379; }
+.code-line.function { color: #61afef; }
+.code-line.component { color: #e5c07b; }
+
+/* Rocket Badge */
+.rocket-badge.mini {
+    width: 80px;
+    height: 80px;
+    background: white;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05), inset 0 0 0 1px rgba(226, 232, 240, 1);
+    transform: scale(0.85);
+}
+
+/* RESPONSIVE */
+@media (max-width: 1200px) {
+    .process-card-absolute {
+        transform: scale(0.85);
+    }
+}
+
+@media (max-width: 1024px) {
+    .sticky-glass-wrapper {
+        padding: 20px;
+    }
+    .process-center-details {
+        max-width: 300px;
+    }
+    .process-headline {
+        font-size: 2rem;
+    }
+    .process-card-absolute {
+        width: 240px;
+        height: 280px;
+        transform: scale(1);
+    }
+    .card-visual { height: 120px; }
+    .card-1 { left: calc(21.25% - 120px); top: calc(26.44% - 140px); }
+    .card-2 { left: calc(78.75% - 120px); top: calc(26.44% - 140px); }
+    .card-3 { left: calc(78.75% - 120px); top: calc(73.55% - 140px); }
+    .card-4 { left: calc(21.25% - 120px); top: calc(73.55% - 140px); }
+}
+
+@media (max-width: 768px) {
+    .process-roadmap-container {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 20px;
+        overflow-y: auto;
+        aspect-ratio: auto;
+    }
+    .process-center-details {
+        position: relative;
+        top: 0; left: 0;
+        transform: none;
+        margin-bottom: 30px;
+        max-width: 100%;
+    }
+    .roadmap-svg-wrapper {
+        display: none;
+    }
+    .process-card-absolute {
+        position: relative;
+        width: 100%;
+        height: auto;
+        left: 0 !important;
+        top: 0 !important;
+        transform: none !important;
+        opacity: 1 !important;
+    }
+    .process-section {
+        height: auto;
+    }
+    .sticky-glass-wrapper {
+        position: relative;
+        height: auto;
+    }
+}

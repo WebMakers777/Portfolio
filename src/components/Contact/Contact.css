@@ -1,0 +1,317 @@
+.contact-section {
+    position: relative;
+    padding: 100px 2rem 140px;
+    overflow: hidden;
+    background: #ffffff;
+    z-index: 20;
+}
+
+/* Ambient glow blobs */
+.contact-bg-glow {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(100px);
+    opacity: 0.15;
+    z-index: 0;
+    pointer-events: none;
+}
+.glow-1 {
+    top: -10%;
+    left: 20%;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, #e0e7ff, transparent 70%);
+}
+.glow-2 {
+    bottom: -10%;
+    right: 10%;
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, #dcfce7, transparent 70%);
+}
+
+.contact-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+
+    /* Uplifted Glassy Card Effect */
+    background: rgba(255, 255, 255, 0.9);
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    border-radius: 2.5rem;
+    box-shadow: 0 40px 80px -20px rgba(0, 0, 0, 0.12), inset 0 0 0 1px rgba(255, 255, 255, 0.5);
+    display: flex;
+    overflow: hidden; /* Clips the image gracefully */
+}
+
+/* Left Side (Form + Text) */
+.contact-left {
+    flex: 1.1;
+    display: flex;
+    flex-direction: column;
+    padding: 4rem;
+}
+
+.support-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: rgba(254, 243, 199, 0.8);
+    color: #b45309;
+    font-weight: 600;
+    font-size: 0.875rem;
+    padding: 0.4rem 1rem;
+    border-radius: 2rem;
+    align-self: flex-start;
+    margin-bottom: 2rem;
+    border: 1px solid rgba(251, 191, 36, 0.3);
+}
+
+.support-badge .dot {
+    width: 6px;
+    height: 6px;
+    background-color: #f59e0b;
+    border-radius: 50%;
+}
+
+.contact-headline {
+    font-size: clamp(2.5rem, 4vw, 3.5rem);
+    font-weight: 700;
+    line-height: 1.1;
+    color: #111;
+    margin-bottom: 1.5rem;
+    letter-spacing: -0.03em;
+}
+
+.contact-motivational {
+    font-size: 1.1rem;
+    color: #555;
+    line-height: 1.6;
+    margin-bottom: 3rem;
+    max-width: 90%;
+}
+
+/* Form Styles */
+.elixor-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.25rem;
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.input-group.full-width {
+    grid-column: 1 / -1;
+}
+
+/* Glassy Inputs - Slightly adjusted to contrast the new card background */
+.elixor-form input,
+.elixor-form select,
+.elixor-form textarea {
+    width: 100%;
+    background: rgba(255, 255, 255, 0.92);
+    border: 1px solid rgba(255, 255, 255, 0.9);
+    border-radius: 0.75rem;
+    padding: 1rem 1.25rem;
+    color: #333;
+    font-family: inherit;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02);
+}
+
+.elixor-form input::placeholder,
+.elixor-form textarea::placeholder {
+    color: #94a3b8;
+}
+
+.elixor-form select {
+    color: #94a3b8;
+    appearance: none;
+    cursor: pointer;
+}
+
+.elixor-form select:focus,
+.elixor-form select:not([value=""]) {
+    color: #333;
+}
+
+.select-wrapper {
+    position: relative;
+}
+
+.select-wrapper::after {
+    content: '';
+    position: absolute;
+    right: 1.25rem;
+    top: 50%;
+    transform: translateY(-50%);
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 5px solid #94a3b8;
+    pointer-events: none;
+}
+
+.elixor-form input:focus,
+.elixor-form select:focus,
+.elixor-form textarea:focus {
+    outline: none;
+    border-color: #cbd5e1;
+    background: rgba(255, 255, 255, 0.95);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05), 0 0 0 4px rgba(226, 232, 240, 0.5);
+}
+
+.elixor-form textarea {
+    resize: vertical;
+    min-height: 140px;
+}
+
+/* Checkbox */
+.checkbox-group {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    margin-top: 0.5rem;
+}
+
+.checkbox-group input[type="checkbox"] {
+    appearance: none;
+    width: 1.25rem;
+    height: 1.25rem;
+    min-width: 1.25rem;
+    border: 1px solid #cbd5e1;
+    border-radius: 0.25rem;
+    background: rgba(255, 255, 255, 0.7);
+    cursor: pointer;
+    position: relative;
+    margin-top: 0.15rem;
+}
+
+.checkbox-group input[type="checkbox"]:checked {
+    background: #111;
+    border-color: #111;
+}
+
+.checkbox-group input[type="checkbox"]:checked::after {
+    content: '';
+    position: absolute;
+    left: 6px;
+    top: 2px;
+    width: 5px;
+    height: 10px;
+    border: solid white;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+}
+
+.checkbox-group label {
+    font-size: 0.85rem;
+    color: #64748b;
+    line-height: 1.5;
+    cursor: pointer;
+}
+
+/* Submit Button */
+.submit-btn {
+    margin-top: 1rem;
+    background: #111;
+    color: #fff;
+    border: none;
+    border-radius: 0.75rem;
+    padding: 1.1rem 2rem;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    transition: all 0.3s ease;
+    align-self: flex-start;
+}
+
+.submit-btn:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.15);
+}
+
+.submit-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.submit-btn.success {
+    background: #10b981;
+}
+
+.spin-icon {
+    animation: spin 1s linear infinite;
+}
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+/* Right Side (Artwork) */
+.contact-right {
+    flex: 0.9;
+    height: auto;
+    position: relative;
+}
+
+.contact-image-glass {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.contact-artwork {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.glass-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, transparent 100%);
+    pointer-events: none;
+}
+
+/* Responsive */
+@media (max-width: 968px) {
+    .contact-container {
+        flex-direction: column;
+    }
+    .contact-left {
+        padding: 3rem;
+    }
+    .contact-right {
+        order: -1;
+        width: 100%;
+        height: 350px;
+    }
+}
+@media (max-width: 640px) {
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+    .contact-left {
+        padding: 2rem;
+    }
+    .contact-section {
+        padding: 60px 1.5rem 100px;
+    }
+}
