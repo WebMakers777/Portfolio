@@ -320,26 +320,32 @@
 }
 
 @media (max-width: 768px) {
+    .footer {
+        padding-top: 48px;
+    }
+
     .footer-container {
         padding: 0 16px;
     }
 
     .footer-cta-card {
-        padding: 40px 20px;
+        padding: 32px 20px;
         border-radius: 24px;
     }
 
     .cta-headline {
-        font-size: 1.4rem;
+        font-size: 1.5rem;
     }
 
     .cta-subtext {
-        font-size: 0.9rem;
+        font-size: 0.95rem;
+        margin-bottom: 24px;
     }
 
     .cta-actions {
         flex-direction: column;
-        gap: 12px;
+        align-items: flex-start;
+        gap: 16px;
     }
 
     .footer-cols {
@@ -360,21 +366,35 @@
         flex-direction: column;
         gap: 16px;
         text-align: center;
-        margin-top: 40px;
+        margin-top: 32px;
     }
 
     .footer-legal {
         gap: 20px;
+        flex-wrap: wrap;
+        justify-content: center;
     }
 }
 
 @media (max-width: 480px) {
     .footer-cta-card {
-        padding: 30px 16px;
+        padding: 28px 18px;
     }
 
     .cta-headline {
-        font-size: 1.2rem;
+        font-size: 1.3rem;
+    }
+
+    .cta-actions {
+        align-items: stretch;
+    }
+
+    .cta-main-btn .liquid-badge {
+        width: 100%;
+    }
+
+    .cta-secondary-btn {
+        justify-content: center;
     }
 
     .links-group {

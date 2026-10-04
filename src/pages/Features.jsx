@@ -292,7 +292,7 @@ const FeaturesPage = () => {
           variants={staggerContainer}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, margin: "-50px" }}
+          viewport={{ once: true, amount: 0.05 }}
         >
           {capabilities.map((cap, i) => (
             <motion.div 
@@ -331,7 +331,7 @@ const FeaturesPage = () => {
           variants={staggerContainer}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, margin: "-50px" }}
+          viewport={{ once: true, amount: 0.05 }}
         >
           {processSteps.map((step, i) => (
             <motion.div key={i} className="process-step" variants={fadeUp}>
@@ -355,7 +355,7 @@ const FeaturesPage = () => {
           variants={staggerContainer}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, margin: "-50px" }}
+          viewport={{ once: true, amount: 0.05 }}
         >
           {technologies.map((tech, i) => (
             <motion.div key={i} className="tech-item" variants={fadeUp}>
@@ -384,7 +384,7 @@ const FeaturesPage = () => {
           variants={staggerContainer}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, margin: "-50px" }}
+          viewport={{ once: true, amount: 0.05 }}
         >
           {whyChooseUs.map((item, i) => (
             <motion.div key={i} className="why-item" variants={fadeUp}>
@@ -402,7 +402,7 @@ const FeaturesPage = () => {
           className="features-cta-card"
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, margin: "-50px" }}
+          viewport={{ once: true, amount: 0.05 }}
           variants={fadeUp}
         >
           <div className="features-cta-content">

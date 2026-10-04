@@ -31,7 +31,7 @@ const Features = () => {
                 className="features-secondary-content"
                 initial="hidden"
                 whileInView="visible"
-                viewport={{ once: true, margin: "-100px" }}
+                viewport={{ once: true, amount: 0.08 }}
                 variants={fadeUp}
             >
                 <div className="secondary-glow"></div>
@@ -59,7 +59,7 @@ const Features = () => {
                     variants={staggerContainer}
                     initial="hidden"
                     whileInView="visible"
-                    viewport={{ once: true, margin: "-50px" }}
+                    viewport={{ once: true, amount: 0.08 }}
                 >
 
                     {/* Card 1 */}

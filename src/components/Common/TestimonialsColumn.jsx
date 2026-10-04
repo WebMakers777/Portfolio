@@ -8,11 +8,12 @@ export const TestimonialsColumn = (props) => {
       className={props.className} 
       style={{ 
         overflow: 'hidden', 
-        maskImage: 'linear-gradient(to bottom, transparent 0%, black 30%, black 70%, transparent 100%)',
-        WebkitMaskImage: 'linear-gradient(to bottom, transparent 0%, black 30%, black 70%, transparent 100%)'
+        maskImage: 'linear-gradient(to bottom, transparent 0%, black 22%, black 78%, transparent 100%)',
+        WebkitMaskImage: 'linear-gradient(to bottom, transparent 0%, black 22%, black 78%, transparent 100%)'
       }}
     >
       <motion.div
+        className="testimonials-col-track"
         animate={{
           translateY: "-50%",
         }}
@@ -25,8 +26,6 @@ export const TestimonialsColumn = (props) => {
         style={{ 
           display: 'flex', 
           flexDirection: 'column', 
-          gap: '24px', 
-          paddingBottom: '24px',
           willChange: 'transform'
         }}
       >
@@ -38,30 +37,27 @@ export const TestimonialsColumn = (props) => {
                 return (
                 <div 
                   key={i} 
+                  className={`testimonial-card-item ${isDark ? 'is-dark' : 'is-light'}`}
                   style={{ 
-                    padding: '36px 30px', 
-                    borderRadius: '24px', 
                     border: isDark ? '1px solid rgba(255,255,255,0.12)' : '1px solid rgba(255,255,255,0.5)', 
                     boxShadow: isDark ? '0 10px 30px rgba(0,0,0,0.3)' : '0 10px 30px rgba(0,0,0,0.08)', 
                     background: isDark ? 'linear-gradient(135deg, rgba(25,25,30,0.92), rgba(15,15,20,0.95))' : 'linear-gradient(135deg, rgba(255,255,255,0.92), rgba(245,245,250,0.88))',
-                    maxWidth: '350px',
                     width: '100%',
                     display: 'flex',
                     flexDirection: 'column',
-                    gap: '24px'
                   }}
                 >
-                  <div style={{ display: 'flex', gap: '4px' }}>
+                  <div className="testimonial-stars" style={{ display: 'flex', gap: '4px' }}>
                     {[...Array(5)].map((_, starIdx) => (
-                      <Star key={starIdx} size={16} fill="#3b82f6" color="#3b82f6" />
+                      <Star key={starIdx} size={15} fill="#3b82f6" color="#3b82f6" />
                     ))}
                   </div>
-                  <div style={{ fontSize: '1.05rem', color: isDark ? 'rgba(255,255,255,0.9)' : '#1e293b', lineHeight: '1.6' }}>
+                  <div className="testimonial-text" style={{ color: isDark ? 'rgba(255,255,255,0.9)' : '#1e293b' }}>
                     {text}
                   </div>
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', marginTop: '10px' }}>
-                    <div style={{ fontWeight: 700, color: isDark ? '#fff' : '#0f172a', fontSize: '1rem' }}>{name}</div>
-                    <div style={{ fontSize: '0.85rem', color: isDark ? 'rgba(255,255,255,0.5)' : '#64748b', fontWeight: 500 }}>{role}</div>
+                  <div className="testimonial-author" style={{ display: 'flex', flexDirection: 'column', gap: '3px' }}>
+                    <div className="testimonial-name" style={{ fontWeight: 700, color: isDark ? '#fff' : '#0f172a' }}>{name}</div>
+                    <div className="testimonial-role" style={{ color: isDark ? 'rgba(255,255,255,0.5)' : '#64748b', fontWeight: 500 }}>{role}</div>
                   </div>
                 </div>
               )})}

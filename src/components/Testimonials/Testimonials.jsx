@@ -31,7 +31,7 @@ const Testimonials = () => {
       <div className="testimonials-bg-glow glow-1"></div>
       <div className="testimonials-bg-glow glow-2"></div>
       
-      <div className="testimonials-header" style={{ display: 'flex', justifyContent: 'center', marginBottom: '20px', marginTop: '-40px', position: 'relative', zIndex: 10 }}>
+      <div className="testimonials-header">
         <div className="liquid-badge-wrapper testimonials-badge">
           <div className="liquid-badge">
             <span className="badge-content-text">Wall Of Love</span>

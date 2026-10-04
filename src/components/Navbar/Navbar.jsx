@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Globe, Layers, ShoppingBag, Cloud, Users, Building2, LayoutDashboard, Sparkles, HeartHandshake, ArrowRight } from 'lucide-react';
+import { Globe, Layers, ShoppingBag, Cloud, Users, Building2, LayoutDashboard, Sparkles, HeartHandshake, ArrowRight, Menu, X, ChevronDown } from 'lucide-react';
 import MagneticButton from '../Common/MagneticButton';
 import GlassSurface from '../Common/GlassSurface';
 import './Navbar.css';
@@ -28,26 +28,52 @@ const Navbar = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownTimeoutRef = useRef(null);
 
+  const [featuresDropdownOpen, setFeaturesDropdownOpen] = useState(false);
+  const featuresTimeoutRef = useRef(null);
+
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [mobileSection, setMobileSection] = useState(null); // 'about' | 'features' | null
+
+  useEffect(() => {
+    setDropdownOpen(false);
+    setFeaturesDropdownOpen(false);
+    setMobileMenuOpen(false);
+    setMobileSection(null);
+  }, [location.pathname]);
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth > 960 && mobileMenuOpen) {
+        setMobileMenuOpen(false);
+      }
+    };
+    window.addEventListener('resize', handleResize, { passive: true });
+    return () => window.removeEventListener('resize', handleResize);
+  }, [mobileMenuOpen]);
+
   const handleMouseEnter = () => {
+    if (window.innerWidth <= 960) return;
     if (dropdownTimeoutRef.current) clearTimeout(dropdownTimeoutRef.current);
+    setFeaturesDropdownOpen(false);
     setDropdownOpen(true);
   };
 
   const handleMouseLeave = () => {
+    if (window.innerWidth <= 960) return;
     dropdownTimeoutRef.current = setTimeout(() => {
       setDropdownOpen(false);
     }, 150);
   };
 
-  const [featuresDropdownOpen, setFeaturesDropdownOpen] = useState(false);
-  const featuresTimeoutRef = useRef(null);
-
   const handleFeaturesMouseEnter = () => {
+    if (window.innerWidth <= 960) return;
     if (featuresTimeoutRef.current) clearTimeout(featuresTimeoutRef.current);
+    setDropdownOpen(false);
     setFeaturesDropdownOpen(true);
   };
 
   const handleFeaturesMouseLeave = () => {
+    if (window.innerWidth <= 960) return;
     featuresTimeoutRef.current = setTimeout(() => {
       setFeaturesDropdownOpen(false);
     }, 150);
@@ -59,10 +85,8 @@ const Navbar = () => {
     // If it's a hash link (e.g. #features)
     if (path.startsWith('#')) {
       if (location.pathname !== '/') {
-        // We are on a sub-page, navigate to home then to hash
         navigate('/' + path);
       } else {
-        // We are already on home page, use Lenis for smooth scroll
         if (window.lenis) {
           window.lenis.scrollTo(path, { offset: -80 });
         } else {
@@ -70,9 +94,7 @@ const Navbar = () => {
         }
       }
     } else {
-      // It's a page route (e.g. /story)
       navigate(path);
-      // Reset scroll position instantly for new pages
       window.scrollTo(0, 0);
       if (window.lenis) {
         window.lenis.scrollTo(0, { immediate: true });
@@ -80,6 +102,12 @@ const Navbar = () => {
     }
     setDropdownOpen(false);
     setFeaturesDropdownOpen(false);
+    setMobileMenuOpen(false);
+    setMobileSection(null);
+  };
+
+  const toggleMobileSection = (section) => {
+    setMobileSection((prev) => (prev === section ? null : section));
   };
 
   const navLinks = [
@@ -106,7 +134,7 @@ const Navbar = () => {
         greenOffset={6}
         blueOffset={12}
         mixBlendMode="difference"
-        className={`navbar ${scrolled ? 'scrolled' : ''} ${dropdownOpen || featuresDropdownOpen ? 'dropdown-open' : ''}`}
+        className={`navbar ${scrolled ? 'scrolled' : ''} ${dropdownOpen || featuresDropdownOpen || mobileMenuOpen ? 'dropdown-open' : ''}`}
         style={{ 
           maxWidth: 1200, 
           transition: 'background 0.4s ease',
@@ -127,7 +155,15 @@ const Navbar = () => {
               onMouseEnter={handleMouseEnter}
               onMouseLeave={handleMouseLeave}
             >
-              <button className="nav-link dropdown-trigger" aria-haspopup="true" aria-expanded={dropdownOpen}>
+              <button
+                className="nav-link dropdown-trigger"
+                aria-haspopup="true"
+                aria-expanded={dropdownOpen}
+                onClick={() => {
+                  setFeaturesDropdownOpen(false);
+                  setDropdownOpen((prev) => !prev);
+                }}
+              >
                 About Us
                 <svg className={`dropdown-arrow ${dropdownOpen ? 'open' : ''}`} width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <polyline points="6 9 12 15 18 9"></polyline>
@@ -139,7 +175,15 @@ const Navbar = () => {
 
             {/* Features Dropdown Trigger */}
             <li className="nav-dropdown-container" onMouseEnter={handleFeaturesMouseEnter} onMouseLeave={handleFeaturesMouseLeave}>
-              <button className="nav-link dropdown-trigger" aria-haspopup="true" aria-expanded={featuresDropdownOpen}>
+              <button
+                className="nav-link dropdown-trigger"
+                aria-haspopup="true"
+                aria-expanded={featuresDropdownOpen}
+                onClick={() => {
+                  setDropdownOpen(false);
+                  setFeaturesDropdownOpen((prev) => !prev);
+                }}
+              >
                 Features
                 <svg className={`dropdown-arrow ${featuresDropdownOpen ? 'open' : ''}`} width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <polyline points="6 9 12 15 18 9"></polyline>
@@ -163,18 +207,35 @@ const Navbar = () => {
             ))}
           </ul>
 
-          {/* Magnetic Button with an extended hover radius effect */}
-          <a href="/contact" className="navbar-cta-link" style={{ textDecoration: 'none' }} onClick={(e) => handleNavClick(e, '/contact')}>
-            <MagneticButton className="liquid-badge-wrapper navbar-cta-wrapper" elasticity={0.25} magneticRadius={120}>
-              <div className="liquid-badge">
-                <span className="badge-content-text">Book a slot ↗</span>
-                <div className="liquid-container">
-                  <div className="liquid-wave wave-1"></div>
-                  <div className="liquid-wave wave-2"></div>
+          <div className="navbar-actions">
+            {/* Magnetic Button with an extended hover radius effect */}
+            <a href="/contact" className="navbar-cta-link" style={{ textDecoration: 'none' }} onClick={(e) => handleNavClick(e, '/contact')}>
+              <MagneticButton className="liquid-badge-wrapper navbar-cta-wrapper" elasticity={0.25} magneticRadius={120}>
+                <div className="liquid-badge">
+                  <span className="badge-content-text">Book a slot ↗</span>
+                  <div className="liquid-container">
+                    <div className="liquid-wave wave-1"></div>
+                    <div className="liquid-wave wave-2"></div>
+                  </div>
                 </div>
-              </div>
-            </MagneticButton>
-          </a>
+              </MagneticButton>
+            </a>
+
+            {/* Mobile / Tablet Hamburger Toggle */}
+            <button
+              type="button"
+              className="navbar-mobile-toggle"
+              aria-label={mobileMenuOpen ? 'Close navigation menu' : 'Open navigation menu'}
+              aria-expanded={mobileMenuOpen}
+              onClick={() => {
+                setDropdownOpen(false);
+                setFeaturesDropdownOpen(false);
+                setMobileMenuOpen((prev) => !prev);
+              }}
+            >
+              {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
+            </button>
+          </div>
         </nav>
 
         {/* Mega Menu Dropdown Integrated into Navbar */}
@@ -276,6 +337,136 @@ const Navbar = () => {
             </div>
           </div>
         </motion.div>
+
+        {/* Mobile & Tablet Navigation Drawer */}
+        <AnimatePresence>
+          {mobileMenuOpen && (
+            <motion.div
+              className="mobile-menu-drawer"
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: 'auto', opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+              style={{ overflow: 'hidden', width: '100%' }}
+            >
+              <div className="mobile-menu-inner">
+                {/* Accordion 1: About Us */}
+                <div className="mobile-accordion">
+                  <button
+                    type="button"
+                    className={`mobile-accordion-trigger ${mobileSection === 'about' ? 'active' : ''}`}
+                    onClick={() => toggleMobileSection('about')}
+                  >
+                    <span>About Us</span>
+                    <ChevronDown size={16} className={`mobile-chevron ${mobileSection === 'about' ? 'open' : ''}`} />
+                  </button>
+                  <AnimatePresence>
+                    {mobileSection === 'about' && (
+                      <motion.div
+                        className="mobile-accordion-content"
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: 'auto', opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ duration: 0.25 }}
+                      >
+                        <div className="mobile-sublinks-grid">
+                          <Link to="/story" className="mobile-sublink" onClick={() => setMobileMenuOpen(false)}>Story</Link>
+                          <Link to="/team" className="mobile-sublink" onClick={() => setMobileMenuOpen(false)}>Team</Link>
+                          <Link to="/partners" className="mobile-sublink" onClick={() => setMobileMenuOpen(false)}>Partners</Link>
+                          <Link to="/integrations" className="mobile-sublink" onClick={() => setMobileMenuOpen(false)}>Integrations</Link>
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+
+                {/* Accordion 2: Features */}
+                <div className="mobile-accordion">
+                  <button
+                    type="button"
+                    className={`mobile-accordion-trigger ${mobileSection === 'features' ? 'active' : ''}`}
+                    onClick={() => toggleMobileSection('features')}
+                  >
+                    <span>Features &amp; Services</span>
+                    <ChevronDown size={16} className={`mobile-chevron ${mobileSection === 'features' ? 'open' : ''}`} />
+                  </button>
+                  <AnimatePresence>
+                    {mobileSection === 'features' && (
+                      <motion.div
+                        className="mobile-accordion-content"
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: 'auto', opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ duration: 0.25 }}
+                      >
+                        <div className="mobile-sublinks-grid">
+                          <Link to="/features/web-mobile" className="mobile-sublink" onClick={() => setMobileMenuOpen(false)}>
+                            <Globe size={15} /><span>Web &amp; Mobile</span>
+                          </Link>
+                          <Link to="/features/saas" className="mobile-sublink" onClick={() => setMobileMenuOpen(false)}>
+                            <Layers size={15} /><span>SaaS Platforms</span>
+                          </Link>
+                          <Link to="/features/ecommerce" className="mobile-sublink" onClick={() => setMobileMenuOpen(false)}>
+                            <ShoppingBag size={15} /><span>E-Commerce</span>
+                          </Link>
+                          <Link to="/features/cloud-enterprise" className="mobile-sublink" onClick={() => setMobileMenuOpen(false)}>
+                            <Cloud size={15} /><span>Cloud &amp; Enterprise</span>
+                          </Link>
+                          <Link to="/features/crm" className="mobile-sublink" onClick={() => setMobileMenuOpen(false)}>
+                            <Users size={15} /><span>CRM Solutions</span>
+                          </Link>
+                          <Link to="/features/erp" className="mobile-sublink" onClick={() => setMobileMenuOpen(false)}>
+                            <Building2 size={15} /><span>ERP Systems</span>
+                          </Link>
+                          <Link to="/features/portals" className="mobile-sublink" onClick={() => setMobileMenuOpen(false)}>
+                            <LayoutDashboard size={15} /><span>Business Portals</span>
+                          </Link>
+                          <Link to="/features/wedding-invitation" className="mobile-sublink" onClick={() => setMobileMenuOpen(false)}>
+                            <HeartHandshake size={15} /><span>Wedding Invites</span>
+                          </Link>
+                          <Link to="/features/ai-automation" className="mobile-sublink mobile-sublink-gold" onClick={() => setMobileMenuOpen(false)}>
+                            <Sparkles size={15} /><span>AI &amp; Automation</span>
+                          </Link>
+                          <Link to="/features" className="mobile-sublink mobile-sublink-all" onClick={() => setMobileMenuOpen(false)}>
+                            <span>View All Services</span><ArrowRight size={14} />
+                          </Link>
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+
+                {/* Direct Nav Links */}
+                {navLinks.map((link) => (
+                  <a
+                    key={link.name}
+                    href={link.path}
+                    className="mobile-direct-link"
+                    onClick={(e) => handleNavClick(e, link.path)}
+                  >
+                    <span>{link.name}</span>
+                    <ArrowRight size={15} />
+                  </a>
+                ))}
+
+                {/* Mobile Drawer CTA */}
+                <a
+                  href="/contact"
+                  className="mobile-drawer-cta-link"
+                  onClick={(e) => handleNavClick(e, '/contact')}
+                >
+                  <div className="liquid-badge mobile-drawer-liquid-badge">
+                    <span className="badge-content-text">Book a slot ↗</span>
+                    <div className="liquid-container">
+                      <div className="liquid-wave wave-1"></div>
+                      <div className="liquid-wave wave-2"></div>
+                    </div>
+                  </div>
+                </a>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </GlassSurface>
     </div>
   );

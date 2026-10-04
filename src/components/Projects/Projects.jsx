@@ -27,34 +27,40 @@ const PILLAR_CARDS = [
         id: 'websites',
         number: '01',
         title: 'Websites',
-        subtitle: 'Brand & Corporate Web',
-        description: 'High-converting, WebGL-enhanced digital flagships and ultra-fast marketing websites.',
+        subtitle: 'Web & Mobile Development',
+        description: 'High-converting, WebGL-enhanced digital flagships and ultra-fast enterprise web platforms.',
         count: '03 Case Studies',
         icon: <Globe size={22} />,
         image: '/hansha.webp',
-        accent: '#C89565',
+        colorTheme: 'blue',
+        serviceSlug: '/features/web-mobile',
+        accent: '#8BACD9',
     },
     {
         id: 'softwares',
         number: '02',
         title: 'Softwares',
-        subtitle: 'Enterprise & Custom Systems',
+        subtitle: 'CRM, ERP & Custom Systems',
         description: 'Bespoke CRMs, ERP portals, and mission-critical internal software architectures.',
         count: '03 Case Studies',
         icon: <Layers size={22} />,
         image: '/actts-crm.webp',
-        accent: '#B88052',
+        colorTheme: 'emerald',
+        serviceSlug: '/features/crm',
+        accent: '#8CBCA8',
     },
     {
         id: 'automations',
         number: '03',
         title: 'Automations',
-        subtitle: 'AI Workflows & Pipelines',
+        subtitle: 'AI & Workflow Automation',
         description: 'Autonomous billing, AI lead triage, and zero-latency multi-system synchronization.',
         count: '03 Case Studies',
         icon: <Zap size={22} />,
         image: '/services/ai-automation.jpg',
-        accent: '#D4A276',
+        colorTheme: 'pink',
+        serviceSlug: '/features/ai-automation',
+        accent: '#D4A0B8',
     },
     {
         id: 'saas',
@@ -65,7 +71,9 @@ const PILLAR_CARDS = [
         count: '03 Case Studies',
         icon: <Sparkles size={22} />,
         image: '/bookmyca.webp',
-        accent: '#8C5A32',
+        colorTheme: 'purple',
+        serviceSlug: '/features/saas',
+        accent: '#B09ED6',
     },
 ];
 
@@ -76,6 +84,8 @@ const CATEGORY_SECTIONS = [
         label: 'Websites & Digital Flagships',
         tagline: 'High-velocity web experiences engineered for brand authority and conversion.',
         placement: 'text-left', // Left: Text, Right: Sticky Overlay Project Cards
+        colorTheme: 'blue',
+        serviceSlug: '/features/web-mobile',
         icon: <Globe size={20} />,
         projects: [
             {
@@ -118,6 +128,8 @@ const CATEGORY_SECTIONS = [
         label: 'Custom Softwares & Systems',
         tagline: 'Enterprise-grade internal tools, CRMs, and ERPs tailored to your exact operations.',
         placement: 'text-right', // Left: Sticky Overlay Project Cards, Right: Text
+        colorTheme: 'emerald',
+        serviceSlug: '/features/crm',
         icon: <Layers size={20} />,
         projects: [
             {
@@ -158,6 +170,8 @@ const CATEGORY_SECTIONS = [
         label: 'AI & Workflow Automations',
         tagline: 'Autonomous pipelines that eliminate manual bottlenecks and scale operations 24/7.',
         placement: 'text-left', // Left: Text, Right: Sticky Overlay Project Cards
+        colorTheme: 'pink',
+        serviceSlug: '/features/ai-automation',
         icon: <Zap size={20} />,
         projects: [
             {
@@ -198,6 +212,8 @@ const CATEGORY_SECTIONS = [
         label: 'SaaS Platforms & Cloud Products',
         tagline: 'Full-scale multi-tenant software-as-a-service platforms built for recurring revenue.',
         placement: 'text-right', // Left: Sticky Overlay Project Cards, Right: Text
+        colorTheme: 'purple',
+        serviceSlug: '/features/saas',
         icon: <Sparkles size={20} />,
         projects: [
             {
@@ -246,45 +262,81 @@ const smoothstep = (edge0, edge1, x) => {
     return t * t * (3 - 2 * t);
 };
 
-const easeOutCubic = (t) => 1 - Math.pow(1 - clamp(t, 0, 1), 3);
+// Blended smoothstep + cubic ease-out for cushioned start & silky landing
+const smoothOverlayEase = (x) => {
+    const t = clamp(x, 0, 1);
+    const s = t * t * (3 - 2 * t);
+    const c = 1 - Math.pow(1 - t, 3);
+    return s * 0.32 + c * 0.68;
+};
 
 /**
- * Renders words that appear and disappear in-place with the exact Hero section
- * blur + opacity + y-offset wave animation (no scrolling text).
+ * Renders words that appear and disappear in-place with the Hero section
+ * blur + opacity + y-offset wave animation.
+ * For long paragraphs (>8 words), blur is applied on the parent container while
+ * words stagger y + opacity to avoid running 30 concurrent GPU blur filters.
  */
-const HeroAnimatedWords = ({ text, className = '', wordDelay = 0.022, baseDelay = 0, as: Tag = 'div' }) => {
+const HeroAnimatedWords = ({ text, className = '', wordDelay = 0.022, baseDelay = 0, as = 'div' }) => {
     const words = text.split(' ');
+    const isLongCopy = words.length > 8;
+    const MotionTag = motion[as] || motion.div;
 
     return (
-        <Tag className={`hero-blur-words ${className}`.trim()}>
+        <MotionTag
+            className={`hero-blur-words ${className}`.trim()}
+            initial={isLongCopy ? { filter: 'blur(8px)' } : undefined}
+            animate={isLongCopy ? { filter: 'blur(0px)' } : undefined}
+            exit={
+                isLongCopy
+                    ? { filter: 'blur(8px)', transition: { duration: 0.2, ease: 'easeIn' } }
+                    : undefined
+            }
+            transition={isLongCopy ? { duration: 0.42, delay: baseDelay, ease: 'easeOut' } : undefined}
+        >
             {words.map((word, i) => (
                 <motion.span
                     key={`${word}-${i}`}
                     className="hero-blur-word"
-                    initial={{ filter: 'blur(10px)', opacity: 0, y: 26 }}
-                    animate={{
-                        filter: ['blur(10px)', 'blur(4px)', 'blur(0px)'],
-                        opacity: [0, 0.55, 1],
-                        y: [26, -3, 0],
-                    }}
-                    exit={{
-                        filter: 'blur(10px)',
-                        opacity: 0,
-                        y: -20,
-                        transition: { duration: 0.22, delay: Math.min(i * 0.008, 0.12), ease: 'easeIn' },
-                    }}
+                    initial={
+                        isLongCopy
+                            ? { opacity: 0, y: 18 }
+                            : { filter: 'blur(10px)', opacity: 0, y: 24 }
+                    }
+                    animate={
+                        isLongCopy
+                            ? { opacity: 1, y: 0 }
+                            : {
+                                  filter: ['blur(10px)', 'blur(3px)', 'blur(0px)'],
+                                  opacity: [0, 0.65, 1],
+                                  y: [24, -2, 0],
+                              }
+                    }
+                    exit={
+                        isLongCopy
+                            ? {
+                                  opacity: 0,
+                                  y: -12,
+                                  transition: { duration: 0.18, delay: Math.min(i * 0.004, 0.06), ease: 'easeIn' },
+                              }
+                            : {
+                                  filter: 'blur(8px)',
+                                  opacity: 0,
+                                  y: -18,
+                                  transition: { duration: 0.2, delay: Math.min(i * 0.008, 0.08), ease: 'easeIn' },
+                              }
+                    }
                     transition={{
-                        duration: 0.48,
-                        times: [0, 0.6, 1],
+                        duration: isLongCopy ? 0.38 : 0.48,
+                        times: isLongCopy ? undefined : [0, 0.62, 1],
                         delay: baseDelay + i * wordDelay,
-                        ease: 'easeOut',
+                        ease: [0.22, 1, 0.36, 1],
                     }}
                 >
                     {word}
                     {i < words.length - 1 ? '\u00A0' : ''}
                 </motion.span>
             ))}
-        </Tag>
+        </MotionTag>
     );
 };
 
@@ -297,6 +349,7 @@ const CategoryTextPanel = ({
     activeIndex,
     isSectionVisible,
     onSelectProject,
+    progressBarRef,
 }) => {
     const project = section.projects[activeIndex] || section.projects[0];
 
@@ -311,7 +364,7 @@ const CategoryTextPanel = ({
                         ? { filter: 'blur(0px)', opacity: 1, y: 0 }
                         : { filter: 'blur(10px)', opacity: 0, y: -16 }
                 }
-                transition={{ duration: 0.45, ease: 'easeOut' }}
+                transition={{ duration: 0.46, ease: [0.22, 1, 0.36, 1] }}
             >
                 <div className="proj-cat-pill">
                     <span className="proj-cat-pill-num">{section.number}</span>
@@ -335,6 +388,11 @@ const CategoryTextPanel = ({
                         </button>
                     ))}
                 </div>
+
+                {/* Smooth Section Progress Line */}
+                <div className="proj-cat-progress-rail" aria-hidden="true">
+                    <div className="proj-cat-progress-fill" ref={progressBarRef} />
+                </div>
             </motion.div>
 
             {/* Active Project Text — Appears & Disappears in-place like Hero text */}
@@ -344,17 +402,18 @@ const CategoryTextPanel = ({
                         <motion.div
                             key={`${section.id}-proj-${activeIndex}`}
                             className="proj-active-text-inner"
-                            initial={{ opacity: 1 }}
+                            initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
-                            exit={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            transition={{ duration: 0.14 }}
                         >
                             {/* Subtitle / Counter */}
                             <motion.div
                                 className="proj-active-kicker"
-                                initial={{ filter: 'blur(8px)', opacity: 0, y: 18 }}
+                                initial={{ filter: 'blur(8px)', opacity: 0, y: 16 }}
                                 animate={{ filter: 'blur(0px)', opacity: 1, y: 0 }}
-                                exit={{ filter: 'blur(8px)', opacity: 0, y: -14, transition: { duration: 0.2 } }}
-                                transition={{ duration: 0.38, ease: 'easeOut' }}
+                                exit={{ filter: 'blur(8px)', opacity: 0, y: -12, transition: { duration: 0.18 } }}
+                                transition={{ duration: 0.38, ease: [0.22, 1, 0.36, 1] }}
                             >
                                 <span className="proj-kicker-index">
                                     PROJECT 0{activeIndex + 1} / 0{section.projects.length}
@@ -368,40 +427,40 @@ const CategoryTextPanel = ({
                                 as="h3"
                                 text={project.title}
                                 className="proj-active-title"
-                                wordDelay={0.035}
-                                baseDelay={0.03}
+                                wordDelay={0.032}
+                                baseDelay={0.02}
                             />
 
-                            {/* Project Description — Hero Word-by-Word Blur Appear/Disappear */}
+                            {/* Project Description — Hero Blur Appear/Disappear */}
                             <HeroAnimatedWords
                                 as="p"
                                 text={project.description}
                                 className="proj-active-desc"
-                                wordDelay={0.014}
-                                baseDelay={0.08}
+                                wordDelay={0.01}
+                                baseDelay={0.06}
                             />
 
                             {/* Impact Metric Highlight */}
                             {project.metrics && (
                                 <motion.div
                                     className="proj-active-metric"
-                                    initial={{ filter: 'blur(8px)', opacity: 0, y: 16 }}
-                                    animate={{ filter: 'blur(0px)', opacity: 1, y: 0 }}
-                                    exit={{ filter: 'blur(8px)', opacity: 0, y: -12, transition: { duration: 0.2 } }}
-                                    transition={{ duration: 0.42, delay: 0.18, ease: 'easeOut' }}
+                                    initial={{ filter: 'blur(6px)', opacity: 0, y: 14, scale: 0.97 }}
+                                    animate={{ filter: 'blur(0px)', opacity: 1, y: 0, scale: 1 }}
+                                    exit={{ filter: 'blur(6px)', opacity: 0, y: -10, transition: { duration: 0.18 } }}
+                                    transition={{ duration: 0.4, delay: 0.14, ease: [0.22, 1, 0.36, 1] }}
                                 >
                                     <span className="proj-metric-dot" />
                                     <span>{project.metrics}</span>
                                 </motion.div>
                             )}
 
-                            {/* Tech Tags & Live Link */}
+                            {/* Tech Tags & Consistent Action Row */}
                             <motion.div
                                 className="proj-active-footer"
-                                initial={{ filter: 'blur(10px)', opacity: 0, y: 20 }}
+                                initial={{ filter: 'blur(8px)', opacity: 0, y: 16 }}
                                 animate={{ filter: 'blur(0px)', opacity: 1, y: 0 }}
-                                exit={{ filter: 'blur(10px)', opacity: 0, y: -16, transition: { duration: 0.2 } }}
-                                transition={{ duration: 0.45, delay: 0.22, ease: 'easeOut' }}
+                                exit={{ filter: 'blur(8px)', opacity: 0, y: -12, transition: { duration: 0.18 } }}
+                                transition={{ duration: 0.42, delay: 0.18, ease: [0.22, 1, 0.36, 1] }}
                             >
                                 <div className="proj-tags-row">
                                     {project.tech.map((t) => (
@@ -411,20 +470,42 @@ const CategoryTextPanel = ({
                                     ))}
                                 </div>
 
-                                {project.demoUrl && (
-                                    <MagneticIcon>
+                                <div className="proj-cta-row">
+                                    {project.demoUrl ? (
+                                        <MagneticIcon>
+                                            <a
+                                                href={project.demoUrl}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className="proj-live-cta"
+                                                aria-label={`Visit ${project.title} live website`}
+                                            >
+                                                <span>Visit Live Project</span>
+                                                <ArrowUpRight size={16} />
+                                            </a>
+                                        </MagneticIcon>
+                                    ) : (
                                         <a
-                                            href={project.demoUrl}
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                            className="proj-live-cta"
-                                            aria-label={`Visit ${project.title} live website`}
+                                            href="/contact"
+                                            className="proj-live-cta proj-live-cta-secondary"
+                                            aria-label={`Request architecture walkthrough for ${project.title}`}
                                         >
-                                            <span>Visit Live Project</span>
-                                            <ArrowUpRight size={16} />
+                                            <span>Request Case Study</span>
+                                            <ArrowUpRight size={15} />
                                         </a>
-                                    </MagneticIcon>
-                                )}
+                                    )}
+
+                                    {section.serviceSlug && (
+                                        <a
+                                            href={section.serviceSlug}
+                                            className="proj-service-link"
+                                            aria-label={`Explore ${section.label} service details`}
+                                        >
+                                            <span>Explore Service</span>
+                                            <ArrowUpRight size={14} />
+                                        </a>
+                                    )}
+                                </div>
                             </motion.div>
                         </motion.div>
                     )}
@@ -444,14 +525,17 @@ const Projects = () => {
     const mergeGridRef = useRef(null);
     const mergeHeaderRef = useRef(null);
     const mergeAuraRef = useRef(null);
+    const scrollHintRef = useRef(null);
     const pillarCardRefs = useRef([]);
     const pillarDeltaXRef = useRef([0, 0, 0, 0]);
+    const pillarDeltaYRef = useRef([0, 0, 0, 0]);
     const mergeMetricsRef = useRef({ top: 0, scrollable: 1 });
 
     // Refs for Stage 2: 4 Sticky Category Sections
     const sectionTrackRefs = useRef([]);
     const sectionMetricsRef = useRef([]);
     const sectionCardRefs = useRef(CATEGORY_SECTIONS.map(() => []));
+    const sectionProgressRefs = useRef([]);
 
     // Active project index per category section (triggers Hero blur text transition)
     const [activeIndices, setActiveIndices] = useState([0, 0, 0, 0]);
@@ -461,7 +545,10 @@ const Projects = () => {
     const [sectionVisible, setSectionVisible] = useState([true, false, false, false]);
     const sectionVisibleRef = useRef([true, false, false, false]);
 
+    // Smooth damped scroll state for zero-jitter 60/120fps choreography
     const rafIdRef = useRef(null);
+    const targetScrollYRef = useRef(0);
+    const smoothScrollYRef = useRef(0);
 
     const getDocTop = useCallback((el) => {
         if (!el) return 0;
@@ -483,21 +570,26 @@ const Projects = () => {
             };
         }
 
-        // Measure horizontal distance from each of the 4 pillar cards to the row center
+        // Measure horizontal & vertical distance from each of the 4 pillar cards to the stage center
+        // Using offsetLeft/offsetTop avoids layout thrashing and is unaffected by active CSS transforms
         if (mergeGridRef.current && pillarCardRefs.current.length === 4) {
-            const gridRect = mergeGridRef.current.getBoundingClientRect();
-            const gridCenterX = gridRect.left + gridRect.width / 2;
+            const gridEl = mergeGridRef.current;
+            const gridCenterX = gridEl.clientWidth / 2;
+            const gridCenterY = gridEl.clientHeight / 2;
 
-            pillarDeltaXRef.current = pillarCardRefs.current.map((cardEl) => {
-                if (!cardEl) return 0;
-                // Temporarily reset transform to read natural layout position accurately
-                const prevTransform = cardEl.style.transform;
-                cardEl.style.transform = 'none';
-                const rect = cardEl.getBoundingClientRect();
-                cardEl.style.transform = prevTransform;
-                const cardCenterX = rect.left + rect.width / 2;
-                return gridCenterX - cardCenterX;
+            const nextDeltaX = [0, 0, 0, 0];
+            const nextDeltaY = [0, 0, 0, 0];
+
+            pillarCardRefs.current.forEach((cardEl, idx) => {
+                if (!cardEl) return;
+                const cardCenterX = cardEl.offsetLeft + cardEl.offsetWidth / 2;
+                const cardCenterY = cardEl.offsetTop + cardEl.offsetHeight / 2;
+                nextDeltaX[idx] = gridCenterX - cardCenterX;
+                nextDeltaY[idx] = gridCenterY - cardCenterY;
             });
+
+            pillarDeltaXRef.current = nextDeltaX;
+            pillarDeltaYRef.current = nextDeltaY;
         }
 
         // 2. Measure each of the 4 sticky category tracks
@@ -514,10 +606,9 @@ const Projects = () => {
     }, [getDocTop]);
 
     /* ── Per-frame GPU transform update ── */
-    const updateScrollAnimation = useCallback(() => {
-        const scrollY = window.scrollY;
+    const renderAtScroll = useCallback((scrollY) => {
         const vh = window.innerHeight;
-        const isMobile = window.innerWidth <= 768;
+        const isCompact = window.innerWidth <= 900;
 
         /* =========================================================
            1. STAGE 1: FOUR CATEGORY CARDS COME CLOSER & MERGE
@@ -525,53 +616,63 @@ const Projects = () => {
         const { top: mergeTop, scrollable: mergeScrollable } = mergeMetricsRef.current;
         const mergeProgress = clamp((scrollY - mergeTop) / mergeScrollable, 0, 1);
 
-        // Convergence phase (0.02 -> 0.72): cards glide horizontally toward center
-        const convergeT = smoothstep(0.02, 0.72, mergeProgress);
-        // Merge lock & handoff phase (0.72 -> 1.0): cards compress into unified stack
-        const lockT = smoothstep(0.72, 0.98, mergeProgress);
+        // Convergence phase (0.0 -> 0.68): cards glide toward center with gradual momentum
+        const convergeT = smoothstep(0.0, 0.68, mergeProgress);
+        // Merge lock & handoff phase (0.68 -> 1.0): cards compress into unified stack
+        const lockT = smoothstep(0.68, 1.0, mergeProgress);
+
+        // Optical centering lift: as header dissolves, lift converging deck toward true viewport center
+        const centerLiftY = -convergeT * (isCompact ? 24 : 46);
 
         // Header blurs & fades out like Hero text as cards come closer
         if (mergeHeaderRef.current) {
-            const headerFade = smoothstep(0.18, 0.62, mergeProgress);
+            const headerFade = smoothstep(0.14, 0.56, mergeProgress);
             const blurPx = (headerFade * 10).toFixed(1);
             const opacity = (1 - headerFade).toFixed(3);
-            const ty = (-headerFade * 28).toFixed(1);
+            const ty = (-headerFade * (isCompact ? 20 : 32)).toFixed(1);
             mergeHeaderRef.current.style.transform = `translate3d(0, ${ty}px, 0)`;
             mergeHeaderRef.current.style.opacity = opacity;
             mergeHeaderRef.current.style.filter = headerFade > 0.01 ? `blur(${blurPx}px)` : 'none';
         }
 
-        // Golden aura intensifies as the 4 cards merge in the center
-        if (mergeAuraRef.current) {
-            const auraOpacity = smoothstep(0.35, 0.78, mergeProgress) * (1 - lockT * 0.35);
-            const auraScale = 0.75 + convergeT * 0.45;
-            mergeAuraRef.current.style.opacity = auraOpacity.toFixed(3);
-            mergeAuraRef.current.style.transform = `translate3d(-50%, -50%, 0) scale(${auraScale.toFixed(3)})`;
+        // Scroll hint fades out cleanly once scrolling starts
+        if (scrollHintRef.current) {
+            const hintFade = smoothstep(0.03, 0.25, mergeProgress);
+            scrollHintRef.current.style.opacity = (0.85 * (1 - hintFade)).toFixed(3);
+            scrollHintRef.current.style.transform = `translate3d(0, ${(hintFade * 12).toFixed(1)}px, 0)`;
         }
 
-        const fanY = isMobile ? [0, 0, 0, 0] : [18, 0, 0, 18];
-        const fanRot = isMobile ? [0, 0, 0, 0] : [-4.5, -1.5, 1.5, 4.5];
+        // Golden aura intensifies as the 4 cards merge in the center
+        if (mergeAuraRef.current) {
+            const auraOpacity = smoothstep(0.32, 0.76, mergeProgress) * (1 - lockT * 0.3);
+            const auraScale = 0.75 + convergeT * 0.45;
+            mergeAuraRef.current.style.opacity = auraOpacity.toFixed(3);
+            mergeAuraRef.current.style.transform = `translate3d(-50%, calc(-50% + ${centerLiftY.toFixed(1)}px), 0) scale(${auraScale.toFixed(3)})`;
+        }
+
+        const fanY = isCompact ? [0, 0, 0, 0] : [16, 0, 0, 16];
+        const fanRot = isCompact ? [-1.8, 1.8, -1.8, 1.8] : [-3.8, -1.2, 1.2, 3.8];
 
         pillarCardRefs.current.forEach((cardEl, i) => {
             if (!cardEl) return;
             const deltaX = pillarDeltaXRef.current[i] || 0;
+            const deltaY = pillarDeltaYRef.current[i] || 0;
 
-            // Move horizontally toward center so all 4 cards meet and overlap at center
+            // Move horizontally & vertically toward center so all 4 cards meet at center on any grid layout
             const tx = deltaX * convergeT;
 
-            // Initial slight arc straightens out, then forms a tight stacked cascade at center
-            const stackOffsetY = (i - 1.5) * 10 * convergeT * (1 - lockT * 0.65);
-            const ty = fanY[i] * (1 - convergeT) + stackOffsetY;
+            // Initial slight arc straightens out, then forms a tight stacked cascade at optical center
+            const stackOffsetY = (i - 1.5) * (isCompact ? 6 : 9) * convergeT * (1 - lockT * 0.6);
+            const ty = deltaY * convergeT + fanY[i] * (1 - convergeT) + stackOffsetY + centerLiftY;
 
             // Fan rotation straightens to 0deg as they merge
             const rot = fanRot[i] * (1 - convergeT);
 
-            // Depth scale in merged stack (front card slightly larger, back cards nestled behind)
-            const depthIndex = 3 - i; // card 0 on top or card 3 on top — let's make card 0 (Websites) rise to the front!
-            const mergedScale = 1 - i * 0.032 * convergeT - lockT * 0.04;
+            // Depth scale in merged stack (Websites card 0 on top)
+            const mergedScale = 1 - i * 0.03 * convergeT - lockT * 0.035;
 
             // Subtle opacity dimming for back cards once merged so Websites (card 0) leads into Section 1
-            const mergedOpacity = i === 0 ? 1 : 1 - lockT * (0.18 * i);
+            const mergedOpacity = i === 0 ? 1 : 1 - lockT * (0.16 * i);
 
             cardEl.style.transform = `translate3d(${tx.toFixed(2)}px, ${ty.toFixed(2)}px, 0) scale(${mergedScale.toFixed(4)}) rotate(${rot.toFixed(2)}deg)`;
             cardEl.style.opacity = mergedOpacity.toFixed(3);
@@ -589,6 +690,11 @@ const Projects = () => {
         const nextIndices = [...activeIndicesRef.current];
         const nextVisible = [...sectionVisibleRef.current];
 
+        const slideDistance = isCompact ? Math.min(vh * 0.5, 310) : vh * 0.78;
+        const peekShift = isCompact ? 10 : 18;
+        const card1RestOffset = isCompact ? 10 : 16;
+        const card2RestOffset = isCompact ? 20 : 32;
+
         CATEGORY_SECTIONS.forEach((section, secIdx) => {
             const metrics = sectionMetricsRef.current[secIdx];
             if (!metrics) return;
@@ -596,25 +702,27 @@ const Projects = () => {
             const rawProgress = (scrollY - metrics.top) / metrics.scrollable;
             const progress = clamp(rawProgress, 0, 1);
 
+            // Update real-time section progress bar fill
+            const progressBarEl = sectionProgressRefs.current[secIdx];
+            if (progressBarEl) {
+                const fillPct = clamp(0.12 + progress * 0.88, 0.12, 1);
+                progressBarEl.style.transform = `scaleX(${fillPct.toFixed(3)})`;
+            }
+
             // Is this section currently in the active viewport window?
             const isInWindow =
                 scrollY + vh * 0.65 >= metrics.top &&
-                scrollY <= metrics.top + metrics.height - vh * 0.25;
+                scrollY <= metrics.top + metrics.height - vh * 0.2;
 
             if (nextVisible[secIdx] !== isInWindow) {
                 nextVisible[secIdx] = isInWindow;
                 visibleChanged = true;
             }
 
-            // Determine which of the 3 projects in this section is active
-            // Segment thresholds aligned with card overlay transitions:
-            // Card 0: 0.00 -> 0.30
-            // Card 1 slides over Card 0: 0.14 -> 0.46 (text switches at 0.27)
-            // Card 2 slides over Card 1: 0.54 -> 0.86 (text switches at 0.67)
             let activeProj = 0;
-            if (progress >= 0.67) {
+            if (progress >= 0.66) {
                 activeProj = 2;
-            } else if (progress >= 0.27) {
+            } else if (progress >= 0.26) {
                 activeProj = 1;
             } else {
                 activeProj = 0;
@@ -627,26 +735,25 @@ const Projects = () => {
 
             // Compute sticky overlay transforms for the 3 project cards in this section
             const cards = sectionCardRefs.current[secIdx] || [];
-            const enter1 = easeOutCubic((progress - 0.14) / (0.46 - 0.14)); // Card 1 overlay progress (0 -> 1)
-            const enter2 = easeOutCubic((progress - 0.54) / (0.86 - 0.54)); // Card 2 overlay progress (0 -> 1)
+            const enter1 = smoothOverlayEase((progress - 0.1) / (0.44 - 0.1)); // Card 1 overlay entrance
+            const enter2 = smoothOverlayEase((progress - 0.5) / (0.84 - 0.5)); // Card 2 overlay entrance
 
-            // Card 0 (Base card in the sticky stack)
+            // Card 0 (Base card in the sticky stack — stays crisp and steps back in depth)
             if (cards[0]) {
-                const scale0 = 1 - enter1 * 0.065 - enter2 * 0.055; // 1 -> 0.935 -> 0.88
-                const ty0 = -enter1 * 22 - enter2 * 20; // shifts up slightly so top edge peeks out behind overlay
-                const brightness0 = 1 - enter1 * 0.08 - enter2 * 0.08;
+                const scale0 = 1 - enter1 * 0.048 - enter2 * 0.042;
+                const ty0 = -enter1 * peekShift - enter2 * (peekShift * 0.85);
                 cards[0].style.transform = `translate3d(0, ${ty0.toFixed(2)}px, 0) scale(${scale0.toFixed(4)})`;
-                cards[0].style.opacity = String(brightness0.toFixed(3));
+                cards[0].style.opacity = '1';
                 cards[0].style.zIndex = '1';
             }
 
             // Card 1 (Second card — slides up from bottom and overlays on Card 0)
             if (cards[1]) {
-                const slideY1 = (1 - enter1) * (vh * 0.78);
-                const stackShift1 = -enter2 * 22;
-                const ty1 = slideY1 + 16 * enter1 + stackShift1;
-                const scale1 = 1 - enter2 * 0.065;
-                const opacity1 = smoothstep(0.12, 0.24, progress);
+                const slideY1 = (1 - enter1) * slideDistance;
+                const stackShift1 = -enter2 * peekShift;
+                const ty1 = slideY1 + card1RestOffset * enter1 + stackShift1;
+                const scale1 = (0.96 + 0.04 * enter1) * (1 - enter2 * 0.048);
+                const opacity1 = smoothstep(0.09, 0.2, progress);
                 cards[1].style.transform = `translate3d(0, ${ty1.toFixed(2)}px, 0) scale(${scale1.toFixed(4)})`;
                 cards[1].style.opacity = String(opacity1.toFixed(3));
                 cards[1].style.zIndex = '2';
@@ -655,10 +762,11 @@ const Projects = () => {
 
             // Card 2 (Third card — slides up from bottom and overlays on Card 1 & Card 0)
             if (cards[2]) {
-                const slideY2 = (1 - enter2) * (vh * 0.78);
-                const ty2 = slideY2 + 32 * enter2;
-                const opacity2 = smoothstep(0.52, 0.64, progress);
-                cards[2].style.transform = `translate3d(0, ${ty2.toFixed(2)}px, 0) scale(1)`;
+                const slideY2 = (1 - enter2) * slideDistance;
+                const ty2 = slideY2 + card2RestOffset * enter2;
+                const scale2 = 0.96 + 0.04 * enter2;
+                const opacity2 = smoothstep(0.49, 0.6, progress);
+                cards[2].style.transform = `translate3d(0, ${ty2.toFixed(2)}px, 0) scale(${scale2.toFixed(4)})`;
                 cards[2].style.opacity = String(opacity2.toFixed(3));
                 cards[2].style.zIndex = '3';
                 cards[2].style.pointerEvents = enter2 > 0.5 ? 'auto' : 'none';
@@ -675,30 +783,53 @@ const Projects = () => {
         }
     }, []);
 
-    const onScroll = useCallback(() => {
-        if (rafIdRef.current) return;
-        rafIdRef.current = requestAnimationFrame(() => {
+    /* ── Damped RAF loop for silky-smooth scroll choreography across wheel & touch ── */
+    const tickScroll = useCallback(() => {
+        const target = targetScrollYRef.current;
+        const current = smoothScrollYRef.current;
+        const diff = target - current;
+
+        // Higher lerp when Lenis is already smoothing; softer lerp for native wheel/touch
+        const lerpFactor = window.lenis ? 0.34 : 0.24;
+
+        if (Math.abs(diff) > 0.15) {
+            smoothScrollYRef.current = current + diff * lerpFactor;
+            renderAtScroll(smoothScrollYRef.current);
+            rafIdRef.current = requestAnimationFrame(tickScroll);
+        } else {
+            smoothScrollYRef.current = target;
+            renderAtScroll(target);
             rafIdRef.current = null;
-            updateScrollAnimation();
-        });
-    }, [updateScrollAnimation]);
+        }
+    }, [renderAtScroll]);
+
+    const onScroll = useCallback(() => {
+        targetScrollYRef.current = window.scrollY;
+        if (!rafIdRef.current) {
+            rafIdRef.current = requestAnimationFrame(tickScroll);
+        }
+    }, [tickScroll]);
 
     useEffect(() => {
+        targetScrollYRef.current = window.scrollY;
+        smoothScrollYRef.current = window.scrollY;
         measureAll();
-        updateScrollAnimation();
+        renderAtScroll(window.scrollY);
 
         const handleResize = () => {
+            targetScrollYRef.current = window.scrollY;
+            smoothScrollYRef.current = window.scrollY;
             measureAll();
-            updateScrollAnimation();
+            renderAtScroll(window.scrollY);
         };
 
         window.addEventListener('scroll', onScroll, { passive: true });
         window.addEventListener('resize', handleResize, { passive: true });
 
-        // Re-measure after images settle
+        // Re-measure after images & fonts settle
         const timer = setTimeout(() => {
             measureAll();
-            updateScrollAnimation();
+            renderAtScroll(window.scrollY);
         }, 350);
 
         return () => {
@@ -710,16 +841,16 @@ const Projects = () => {
                 rafIdRef.current = null;
             }
         };
-    }, [measureAll, onScroll, updateScrollAnimation]);
+    }, [measureAll, onScroll, renderAtScroll]);
 
     /* ── Helper to scroll smoothly to a specific category or project step ── */
     const scrollToCategory = (secIdx, projIdx = 0) => {
         const metrics = sectionMetricsRef.current[secIdx];
         if (!metrics) return;
-        const targetRatios = [0.05, 0.46, 0.88];
+        const targetRatios = [0.04, 0.45, 0.86];
         const targetY = metrics.top + metrics.scrollable * (targetRatios[projIdx] ?? 0);
         if (window.lenis) {
-            window.lenis.scrollTo(targetY, { duration: 1.1 });
+            window.lenis.scrollTo(targetY, { duration: 1.15 });
         } else {
             window.scrollTo({ top: targetY, behavior: 'smooth' });
         }
@@ -733,6 +864,7 @@ const Projects = () => {
             <div className="proj-merge-track" ref={mergeTrackRef}>
                 <div className="proj-merge-sticky">
                     <div className="proj-ambient-orb" />
+                    <div className="proj-section-lines" aria-hidden="true" />
 
                     {/* Intro Header — Appears & Disappears like Hero Section Text */}
                     <div className="proj-merge-header" ref={mergeHeaderRef}>
@@ -773,7 +905,7 @@ const Projects = () => {
                                     ref={(el) => {
                                         pillarCardRefs.current[i] = el;
                                     }}
-                                    className={`proj-pillar-card proj-pillar-card-${i}`}
+                                    className={`proj-pillar-card proj-pillar-card-${i} color-${card.colorTheme}`}
                                     onClick={() => scrollToCategory(i, 0)}
                                     role="button"
                                     tabIndex={0}
@@ -802,25 +934,30 @@ const Projects = () => {
                                         <h2 className="proj-pillar-title">{card.title}</h2>
                                         <span className="proj-pillar-subtitle">{card.subtitle}</span>
                                         <p className="proj-pillar-desc">{card.description}</p>
+                                        <div className="proj-pillar-explore">
+                                            <span>Explore Domain</span>
+                                            <ArrowUpRight size={14} />
+                                        </div>
                                     </div>
                                 </div>
                             ))}
                         </div>
                     </div>
 
-                    <div className="proj-scroll-hint">
+                    <div className="proj-scroll-hint" ref={scrollHintRef}>
                         <span className="proj-scroll-line" />
                         <span>Scroll to merge &amp; explore</span>
+                        <span className="proj-scroll-line proj-scroll-line-right" />
                     </div>
                 </div>
             </div>
 
             {/* =================================================================
                 STAGE 2: 4 STICKY CATEGORY SECTIONS WITH ALTERNATING PLACEMENT
-                1. Websites    -> Text Left,  Image Stack Right
-                2. Softwares   -> Image Stack Left, Text Right
-                3. Automations -> Text Left,  Image Stack Right
-                4. SaaS        -> Image Stack Left, Text Right
+                1. Websites    -> Text Left,  Image Stack Right (Blue)
+                2. Softwares   -> Image Stack Left, Text Right (Emerald)
+                3. Automations -> Text Left,  Image Stack Right (Pink)
+                4. SaaS        -> Image Stack Left, Text Right (Purple)
                 ================================================================= */}
             {CATEGORY_SECTIONS.map((section, secIdx) => {
                 const isTextLeft = section.placement === 'text-left';
@@ -831,12 +968,13 @@ const Projects = () => {
                     <div
                         key={section.id}
                         id={`projects-${section.id}`}
-                        className={`proj-cat-track proj-cat-track-${section.id}`}
+                        className={`proj-cat-track proj-cat-track-${section.id} theme-${section.colorTheme}`}
                         ref={(el) => {
                             sectionTrackRefs.current[secIdx] = el;
                         }}
                     >
                         <div className="proj-cat-sticky">
+                            <div className="proj-section-lines" aria-hidden="true" />
                             <div
                                 className={`proj-cat-split ${
                                     isTextLeft ? 'layout-text-left' : 'layout-text-right'
@@ -848,6 +986,9 @@ const Projects = () => {
                                     activeIndex={activeProjIdx}
                                     isSectionVisible={isVis}
                                     onSelectProject={(projIdx) => scrollToCategory(secIdx, projIdx)}
+                                    progressBarRef={(el) => {
+                                        sectionProgressRefs.current[secIdx] = el;
+                                    }}
                                 />
 
                                 {/* Sticky Overlay Project Image Stack Side */}

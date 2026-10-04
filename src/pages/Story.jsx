@@ -30,7 +30,7 @@ const Story = () => {
   const fadeInUp = {
     initial: { opacity: 0, y: 30 },
     whileInView: { opacity: 1, y: 0 },
-    viewport: { once: true, margin: "-100px" },
+    viewport: { once: true, amount: 0.06 },
     transition: { duration: 0.6, ease: "easeOut" }
   };
 
@@ -144,7 +144,7 @@ const Story = () => {
         </div>
 
         <GlassSurface width="100%" height="auto" borderRadius={32} borderWidth={1} blur={16} padding="0">
-          <div className="story-split" style={{ gap: '40px', padding: '40px' }}>
+          <div className="story-split workspace-split-inner">
             <div className="story-split-content" style={{ position: 'static' }}>
               <div className="workspace-tabs">
                 {['Workspace', 'Process', 'Culture'].map((tab) => (

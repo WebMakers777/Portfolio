@@ -86,7 +86,13 @@ const Team = () => {
       </motion.div>
 
       {/* Join Our Team Section */}
-      <motion.div variants={fadeUp} className="join-team-section">
+      <motion.div
+        variants={fadeUp}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.08 }}
+        className="join-team-section"
+      >
         <GlassSurface
           className="join-team-card"
           width="100%"
@@ -112,7 +118,7 @@ const Team = () => {
                 <span className="position-badge">Customer Success Lead</span>
                 <span className="position-badge">QA Engineer</span>
                 <span className="position-badge">Data Analyst</span>
-                <span className="position-badge">Growth Marketing Manager</span>
+                <span className="position-badge">Cloud &amp; DevOps Engineer</span>
               </div>
             </div>
           </div>

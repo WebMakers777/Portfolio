@@ -102,7 +102,7 @@ const FAQBubble = ({ item, index }) => {
       <motion.div 
         initial={{ opacity: 0, y: 24, scale: 0.96 }}
         whileInView={{ opacity: 1, y: 0, scale: 1 }}
-        viewport={{ once: true, margin: "-40px" }}
+        viewport={{ once: true, amount: 0.06 }}
         transition={{ duration: 0.45, delay: (index % 3) * 0.06, ease: [0.22, 1, 0.36, 1] }}
         style={{ width: '100%' }}
         className={`faq-bubble color-${item.color}`}
@@ -159,7 +159,7 @@ const FAQPage = () => {
         className="faq-contact-section"
         initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, amount: 0.3 }}
+        viewport={{ once: true, amount: 0.08 }}
         transition={{ duration: 0.6 }}
       >
         <div className="faq-contact-card">

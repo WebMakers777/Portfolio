@@ -22,7 +22,7 @@
 
 .hero-container {
     width: 100%;
-    max-width: 1100px;
+    max-width: 1200px;
     padding: 0 24px;
     display: flex;
     flex-direction: column;
@@ -46,6 +46,7 @@
     border: 1px solid rgba(255, 255, 255, 0.15);
     padding: 6px 16px 6px 6px;
     border-radius: 99px;
+    max-width: 100%;
     box-shadow:
         0 10px 30px rgba(0, 0, 0, 0.05),
         inset 0 0 20px rgba(255, 255, 255, 0.5);
@@ -54,6 +55,7 @@
 .avatar-group {
     display: flex;
     align-items: center;
+    flex-shrink: 0;
 }
 
 .avatar-group img {
@@ -89,6 +91,7 @@
     display: flex;
     align-items: center;
     gap: 4px;
+    flex-shrink: 0;
 }
 
 /* 2. Main Layout Split */
@@ -99,10 +102,10 @@
     align-items: center;
 }
 
-@media (max-width: 900px) {
+@media (max-width: 960px) {
     .hero-main {
         grid-template-columns: 1fr;
-        gap: 30px;
+        gap: 28px;
     }
 }
 
@@ -112,9 +115,9 @@
 }
 
 .hero-title {
-    font-size: clamp(3rem, 5.5vw, 4.5rem);
+    font-size: clamp(2.4rem, 5.2vw, 4.5rem);
     font-weight: 400;
-    line-height: 1.1;
+    line-height: 1.12;
     color: #ffffff;
     /* Stark white to contrast deep 3D background */
     letter-spacing: -0.04em;
@@ -167,7 +170,7 @@
     gap: 24px;
 }
 
-@media (max-width: 900px) {
+@media (max-width: 960px) {
     .hero-right {
         align-items: flex-start;
         text-align: left;
@@ -175,12 +178,12 @@
 }
 
 .hero-subtitle {
-    font-size: clamp(1.1rem, 2vw, 1.3rem);
-    line-height: 1.5;
+    font-size: clamp(1rem, 1.8vw, 1.3rem);
+    line-height: 1.55;
     color: #e2e8f0;
     /* Crisp icy gray for readability on dark */
     font-weight: 400;
-    max-width: 480px;
+    max-width: 520px;
 }
 
 .hero-cta-wrapper {
@@ -214,13 +217,13 @@
 .hero-features {
     display: flex;
     align-items: center;
-    justify-content: center;
-    gap: 80px;
+    justify-content: space-around;
+    gap: clamp(16px, 4.5vw, 72px);
     width: 100%;
     background: linear-gradient(135deg, rgba(30, 41, 59, 0.7) 0%, rgba(30, 41, 59, 0.5) 100%);
     border: 1px solid rgba(255, 255, 255, 0.15);
     border-radius: 99px;
-    padding: 16px 40px;
+    padding: 16px clamp(20px, 3.5vw, 40px);
     margin-top: 20px;
     box-shadow:
         0 20px 50px rgba(0, 0, 0, 0.08),
@@ -243,11 +246,11 @@
 .feature {
     display: flex;
     align-items: center;
-    gap: 12px;
-    font-size: 1.1rem;
+    gap: 10px;
+    font-size: clamp(0.92rem, 1.3vw, 1.1rem);
     font-weight: 500;
     color: #f8fafc;
-    /* Keep crisp white */
+    white-space: nowrap;
 }
 
 .feature-icon {
@@ -256,6 +259,7 @@
     justify-content: center;
     width: 36px;
     height: 36px;
+    flex-shrink: 0;
     background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(226, 232, 240, 0.9) 100%);
     border: 1px solid rgba(255, 255, 255, 1);
     border-radius: 10px;
@@ -265,44 +269,63 @@
     font-size: 1.1rem;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
     .hero-section {
-        padding-top: calc(var(--navbar-height) + 60px);
-        padding-bottom: 100px;
+        padding-top: calc(var(--navbar-height) + 84px);
+        padding-bottom: 140px;
     }
 
     .hero-container {
-        gap: 36px;
+        gap: 44px;
+    }
+}
+
+@media (max-width: 768px) {
+    .hero-section {
+        padding-top: calc(var(--navbar-height) + 44px);
+        padding-bottom: 72px;
+    }
+
+    .hero-container {
+        gap: 26px;
         padding: 0 16px;
     }
 
     .hero-title {
-        font-size: clamp(2rem, 8vw, 3rem);
+        font-size: clamp(2rem, 7.6vw, 2.85rem);
     }
 
     .glass-icon {
         width: 32px;
         height: 32px;
-        border-radius: 8px;
-        margin: 0 4px;
+        border-radius: 9px;
+        margin: 0 5px;
+    }
+
+    .glass-icon svg {
+        width: 17px;
+        height: 17px;
     }
 
     .hero-subtitle {
-        font-size: 1rem;
+        font-size: 0.96rem;
+        max-width: 100%;
     }
 
     .hero-cta-wrapper .liquid-badge {
-        padding: 12px 32px;
-        font-size: 1rem;
-        height: 48px;
+        padding: 11px 28px;
+        font-size: 0.95rem;
+        height: 46px;
     }
 
     .hero-features {
-        flex-direction: column;
-        border-radius: 20px;
-        gap: 16px;
-        padding: 20px;
-        align-items: flex-start;
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        border-radius: 18px;
+        gap: 8px;
+        padding: 12px 10px;
+        align-items: center;
+        margin-top: 6px;
     }
 
     .hero-features-wrapper {
@@ -310,24 +333,52 @@
     }
 
     .feature {
-        font-size: 0.95rem;
-        gap: 10px;
+        flex-direction: column;
+        text-align: center;
+        justify-content: center;
+        font-size: 0.76rem;
+        gap: 6px;
+        white-space: normal;
+        line-height: 1.25;
     }
 
     .feature-icon {
-        width: 30px;
-        height: 30px;
+        width: 28px;
+        height: 28px;
+        border-radius: 8px;
+    }
+
+    .feature-icon svg {
+        width: 14px;
+        height: 14px;
     }
 }
 
 @media (max-width: 480px) {
     .hero-section {
-        padding-top: calc(var(--navbar-height) + 40px);
-        padding-bottom: 60px;
+        padding-top: calc(var(--navbar-height) + 32px);
+        padding-bottom: 56px;
+    }
+
+    .hero-container {
+        gap: 22px;
+        padding: 0 14px;
     }
 
     .hero-title {
-        font-size: 1.8rem;
+        font-size: clamp(1.8rem, 8vw, 2.25rem);
+    }
+
+    .glass-icon {
+        width: 28px;
+        height: 28px;
+        border-radius: 7px;
+        margin: 0 4px;
+    }
+
+    .glass-icon svg {
+        width: 15px;
+        height: 15px;
     }
 
     .hero-subtitle {
@@ -335,12 +386,44 @@
     }
 
     .hero-badge-container .hero-trust-badge {
-        flex-wrap: wrap;
         gap: 8px;
-        padding: 6px 12px;
+        padding: 5px 10px 5px 5px;
+    }
+
+    .avatar-group img {
+        width: 22px;
+        height: 22px;
     }
 
     .badge-text {
-        font-size: 0.75rem;
+        font-size: 0.72rem;
+    }
+
+    .badge-highlight {
+        font-size: 0.66rem;
+        padding: 2px 6px;
+    }
+
+    .hero-cta-wrapper .liquid-badge {
+        padding: 10px 24px;
+        font-size: 0.9rem;
+        height: 42px;
+    }
+
+    .hero-features {
+        padding: 10px 8px;
+        gap: 6px;
+        border-radius: 16px;
+    }
+
+    .feature {
+        font-size: 0.68rem;
+        gap: 5px;
+    }
+
+    .feature-icon {
+        width: 24px;
+        height: 24px;
+        border-radius: 7px;
     }
 }

@@ -161,17 +161,78 @@
 }
 
 @media (max-width: 768px) {
+    .integrations-page {
+        padding-top: 110px;
+        padding-bottom: 60px;
+    }
+
+    .int-hero-section {
+        margin-bottom: 48px;
+    }
+
+    .int-hero-title {
+        font-size: clamp(2rem, 7vw, 2.5rem);
+    }
+
+    .int-hero-desc {
+        font-size: 1.05rem;
+    }
+
+    .int-logos-section {
+        padding: 0 20px;
+        margin-bottom: 72px;
+    }
+
+    .int-logos-grid {
+        gap: 28px 32px;
+    }
+
+    .int-logo-img {
+        width: 52px;
+        height: 52px;
+    }
+
+    .int-logo-name {
+        opacity: 1;
+        transform: translateY(0);
+        font-size: 0.82rem;
+    }
+
     .int-cta-card {
         flex-direction: column;
         text-align: center;
         padding: 40px 24px;
     }
-    
-    .int-hero-title {
-        font-size: 2.5rem;
+
+    .int-cta-content h2 {
+        font-size: 1.75rem;
     }
 
+    .int-cta-content p {
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
     .int-logos-grid {
-        gap: 30px 40px;
+        gap: 24px 24px;
+    }
+
+    .int-logo-img {
+        width: 44px;
+        height: 44px;
+    }
+
+    .int-cta-card {
+        padding: 32px 20px;
+        border-radius: 24px;
+        gap: 24px;
+    }
+
+    .int-cta-btn {
+        width: 100%;
+        justify-content: center;
+        padding: 14px 24px;
+        font-size: 1rem;
     }
 }

@@ -51,7 +51,7 @@ const Execution = () => {
                 className="execution-header"
                 initial="hidden"
                 whileInView="visible"
-                viewport={{ once: true, margin: "-50px" }}
+                viewport={{ once: true, amount: 0.08 }}
                 variants={fadeUp}
             >
                 <div className="liquid-badge-wrapper section-badge">
@@ -76,7 +76,7 @@ const Execution = () => {
                 variants={staggerContainer}
                 initial="hidden"
                 whileInView="visible"
-                viewport={{ once: true, margin: "-50px" }}
+                viewport={{ once: true, amount: 0.08 }}
             >
                 {/* 1. Massive 21 Days Card */}
                 <motion.div className="bento-card bento-large bento-21-days" variants={fadeUp}>
@@ -110,7 +110,7 @@ const Execution = () => {
 
                 {/* 2. Architecture Card */}
                 <motion.div className="bento-card bento-tall image-card" variants={fadeUp}>
-                    <video className="bento-image video-frame-1" loop muted playsInline preload="none" poster="/exec-arch.webp">
+                    <video className="bento-image video-frame-1" autoPlay loop muted playsInline preload="metadata" poster="/exec-arch.webp">
                         <source src="https://cdn.coverr.co/videos/coverr-abstract-neon-lines-4113/1080p.mp4" type="video/mp4" />
                     </video>
                     <div className="bento-overlay">
@@ -122,7 +122,7 @@ const Execution = () => {
 
                 {/* 3. Speed & Velocity Card */}
                 <motion.div className="bento-card bento-wide image-card" variants={fadeUp}>
-                    <video className="bento-image video-frame-2" loop muted playsInline preload="none" poster="/exec-speed.webp">
+                    <video className="bento-image video-frame-2" autoPlay loop muted playsInline preload="metadata" poster="/exec-speed.webp">
                         <source src="https://cdn.coverr.co/videos/coverr-abstract-neon-lines-4113/1080p.mp4" type="video/mp4" />
                     </video>
                     <div className="bento-overlay">
@@ -134,7 +134,7 @@ const Execution = () => {
 
                 {/* 4. Launch Card */}
                 <motion.div className="bento-card image-card" variants={fadeUp}>
-                    <video className="bento-image video-frame-3" loop muted playsInline preload="none" poster="/exec-launch.webp">
+                    <video className="bento-image video-frame-3" autoPlay loop muted playsInline preload="metadata" poster="/exec-launch.webp">
                         <source src="https://cdn.coverr.co/videos/coverr-abstract-neon-lines-4113/1080p.mp4" type="video/mp4" />
                     </video>
                     <div className="bento-overlay">

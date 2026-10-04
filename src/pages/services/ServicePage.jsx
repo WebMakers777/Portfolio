@@ -272,7 +272,7 @@ const ServicePage = () => {
           className="service-section-header"
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, margin: '-80px' }}
+          viewport={{ once: true, amount: 0.06 }}
           variants={fadeUp}
         >
           <span className="service-section-pretitle">Business Impact</span>
@@ -287,7 +287,7 @@ const ServicePage = () => {
           variants={staggerContainer}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, margin: '-50px' }}
+          viewport={{ once: true, amount: 0.06 }}
         >
           {service.businessValue.map((item, i) => (
             <motion.div key={i} className="value-card" variants={fadeUp}>
@@ -309,7 +309,7 @@ const ServicePage = () => {
           className="service-section-header"
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, margin: '-80px' }}
+          viewport={{ once: true, amount: 0.06 }}
           variants={fadeUp}
         >
           <span className="service-section-pretitle">Our Process</span>
@@ -324,7 +324,7 @@ const ServicePage = () => {
           variants={staggerContainer}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, margin: '-50px' }}
+          viewport={{ once: true, amount: 0.06 }}
         >
           {service.elixorApproach.map((step, i) => (
             <motion.div key={i} className="approach-step" variants={fadeLeft}>
@@ -346,7 +346,7 @@ const ServicePage = () => {
           className="service-section-header"
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, margin: '-80px' }}
+          viewport={{ once: true, amount: 0.06 }}
           variants={fadeUp}
         >
           <span className="service-section-pretitle">Capabilities</span>
@@ -358,7 +358,7 @@ const ServicePage = () => {
           variants={staggerContainer}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, margin: '-50px' }}
+          viewport={{ once: true, amount: 0.06 }}
         >
           {service.features.map((feat, i) => (
             <motion.div key={i} className="capability-card" variants={scaleIn}>

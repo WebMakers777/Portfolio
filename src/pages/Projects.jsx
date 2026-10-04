@@ -39,9 +39,10 @@ const ProjectsPage = () => {
         className="projects-metrics"
         initial="hidden"
         whileInView="visible"
-        viewport={{ once: true, margin: "-100px" }}
+        viewport={{ once: true, amount: 0.08 }}
         variants={staggerContainer}
       >
+        <div className="projects-metrics-lines" aria-hidden="true" />
         <div className="metrics-grid">
           <motion.div variants={fadeUp} style={{ height: '100%' }}>
             <div className="metric-card">

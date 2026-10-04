@@ -45,14 +45,11 @@ function App() {
     return () => clearTimeout(timer);
   }, []);
 
-  // Only enable the WebGL cursor on capable desktop devices
+  // Enable the WebGL fluid cursor unless user prefers reduced motion
   useEffect(() => {
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const isTouch = window.matchMedia('(pointer: coarse)').matches;
-    const isLowEnd = navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 4;
-    
-    if (!prefersReducedMotion && !isTouch && !isLowEnd) {
-      const t = setTimeout(() => setShowCursor(true), 1000);
+    if (!prefersReducedMotion) {
+      const t = setTimeout(() => setShowCursor(true), 700);
       return () => clearTimeout(t);
     }
   }, []);

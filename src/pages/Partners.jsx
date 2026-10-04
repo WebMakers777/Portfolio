@@ -168,7 +168,7 @@ const Partners = () => {
   }, []);
 
   return (
-    <div className="page-container" style={{ display: 'block', maxWidth: '1240px', paddingTop: '180px', margin: '0 auto' }}>
+    <div className="page-container partners-container">
       <motion.div
         initial={{ opacity: 0, y: 40 }}
         animate={{ opacity: 1, y: 0 }}
@@ -201,7 +201,7 @@ const Partners = () => {
               variants={staggerContainer}
               initial="hidden"
               whileInView="visible"
-              viewport={{ once: true, margin: "-50px" }}
+              viewport={{ once: true, amount: 0.06 }}
             >
               {trustIndicators.map((indicator, idx) => (
                 <motion.div 
@@ -237,7 +237,7 @@ const Partners = () => {
                     variants={staggerContainer}
                     initial="hidden"
                     whileInView="visible"
-                    viewport={{ once: true, margin: "-50px" }}
+                    viewport={{ once: true, amount: 0.06 }}
                   >
                     {category.items.map((item, idx) => (
                       <motion.div 

@@ -291,67 +291,203 @@
 
 /* RESPONSIVE */
 @media (max-width: 1024px) {
+    .execution-section {
+        padding: 110px 20px 140px;
+    }
+
+    .execution-header {
+        margin-bottom: 56px;
+    }
+
     .bento-grid {
         grid-template-columns: repeat(2, 1fr);
+        grid-auto-flow: dense;
+        gap: 20px;
     }
     
     .bento-large {
         grid-column: span 2;
         grid-row: auto;
+        padding: 40px 32px;
     }
     
     .bento-tall {
         grid-column: span 1;
         grid-row: span 1;
-        min-height: 400px;
+        min-height: 360px;
     }
     
     .bento-wide {
         grid-column: span 2;
+        min-height: 320px;
+    }
+
+    .image-card {
+        min-height: 360px;
     }
 }
 
 @media (max-width: 768px) {
     .execution-section {
-        padding: 80px 16px 100px;
+        padding: 56px 14px 72px;
+    }
+
+    .execution-header {
+        margin-bottom: 28px;
     }
 
     .execution-headline {
-        font-size: 2.2rem;
+        font-size: clamp(1.75rem, 6.5vw, 2.3rem);
+        margin-bottom: 12px;
+    }
+
+    .execution-subtext {
+        font-size: 0.96rem;
     }
 
     .bento-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        grid-auto-rows: auto;
+        gap: 12px;
     }
     
-    .bento-large, .bento-tall, .bento-wide {
-        grid-column: span 1;
+    .bento-large {
+        grid-column: span 2;
         grid-row: auto;
+        padding: 20px 16px;
+        border-radius: 20px;
     }
 
-    .bento-large {
-        padding: 30px 20px;
+    .bento-tall,
+    .bento-wide {
+        grid-column: span 1;
+        grid-row: auto;
+        min-height: 200px;
+    }
+
+    .bento-grid > .bento-card:last-child {
+        grid-column: span 2;
+        min-height: 175px;
+    }
+
+    .bento-card {
+        border-radius: 20px;
+    }
+
+    .bento-icon-wrapper {
+        width: 34px;
+        height: 34px;
+        border-radius: 10px;
+        margin-bottom: 10px;
+    }
+
+    .bento-icon-wrapper svg {
+        width: 17px;
+        height: 17px;
     }
 
     .bento-title {
-        font-size: 1.8rem;
+        font-size: 1.3rem;
+        margin-bottom: 8px;
     }
 
-    .bento-tall, .bento-wide, .image-card {
-        min-height: 350px;
+    .bento-desc {
+        font-size: 0.84rem;
+        line-height: 1.48;
+        margin-bottom: 16px;
+    }
+
+    .comparison-graphic {
+        padding: 14px 12px;
+        border-radius: 14px;
+        gap: 10px;
+        margin-bottom: 12px;
+    }
+
+    .comp-row {
+        gap: 6px;
+    }
+
+    .comp-label {
+        font-size: 0.8rem;
+    }
+
+    .comp-bar-wrapper {
+        height: 30px;
+    }
+
+    .comp-bar {
+        padding: 0 12px;
+        font-size: 0.78rem;
+    }
+
+    .bento-note {
+        font-size: 0.75rem;
+    }
+
+    .bento-overlay {
+        padding: 14px 12px;
+    }
+
+    .bento-overlay .bento-title {
+        font-size: 1.02rem;
+        margin-bottom: 4px;
+    }
+
+    .bento-overlay .bento-desc {
+        font-size: 0.76rem;
+        line-height: 1.38;
     }
 }
 
 @media (max-width: 480px) {
     .execution-section {
-        padding: 60px 12px 80px;
+        padding: 44px 12px 56px;
     }
 
     .execution-headline {
-        font-size: 1.6rem;
+        font-size: 1.55rem;
+    }
+
+    .execution-subtext {
+        font-size: 0.88rem;
+    }
+
+    .bento-grid {
+        gap: 10px;
+    }
+
+    .bento-large {
+        padding: 16px 14px;
+        border-radius: 18px;
     }
 
     .bento-title {
-        font-size: 1.5rem;
+        font-size: 1.15rem;
+    }
+
+    .bento-desc {
+        font-size: 0.8rem;
+    }
+
+    .bento-tall,
+    .bento-wide {
+        min-height: 175px;
+    }
+
+    .bento-grid > .bento-card:last-child {
+        min-height: 155px;
+    }
+
+    .bento-overlay {
+        padding: 12px 10px;
+    }
+
+    .bento-overlay .bento-title {
+        font-size: 0.92rem;
+    }
+
+    .bento-overlay .bento-desc {
+        font-size: 0.72rem;
     }
 }

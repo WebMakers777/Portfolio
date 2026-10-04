@@ -665,7 +665,7 @@
 @media (max-width: 1024px) {
   .service-hero {
     grid-template-columns: 1fr;
-    gap: 48px;
+    gap: 40px;
     text-align: center;
   }
 
@@ -679,7 +679,7 @@
 
   .service-hero-visual {
     order: -1;
-    max-width: 560px;
+    max-width: 520px;
     margin: 0 auto;
   }
 
@@ -688,117 +688,234 @@
   }
 
   .business-value-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
   }
 
   .features-capability-grid {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
   }
 }
 
 @media (max-width: 768px) {
   .service-page {
-    padding-top: 120px;
-    padding-bottom: 80px;
+    padding-top: 100px;
+    padding-bottom: 64px;
   }
 
   .service-hero {
-    padding: 0 20px;
-    gap: 32px;
-  }
-
-  .service-hero-title {
-    font-size: 2.2rem;
-  }
-
-  .service-hero-desc {
-    font-size: 1.05rem;
-  }
-
-  .service-section {
-    padding: 80px 20px;
-  }
-
-  .service-section-title {
-    font-size: 2rem;
-  }
-
-  .features-capability-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .service-stats-row {
-    flex-wrap: wrap;
+    padding: 0 16px;
     gap: 24px;
   }
 
+  .service-hero-visual {
+    max-width: 400px;
+  }
+
+  .service-hero-title {
+    font-size: 2rem;
+  }
+
+  .service-hero-desc {
+    font-size: 0.98rem;
+  }
+
+  .service-section {
+    padding: 56px 16px;
+  }
+
+  .service-section-header {
+    margin-bottom: 36px;
+    gap: 10px;
+  }
+
+  .service-section-title {
+    font-size: 1.75rem;
+  }
+
+  .service-section-desc {
+    font-size: 0.95rem;
+  }
+
+  .business-value-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
+
+  .value-card {
+    padding: 18px 14px;
+    border-radius: 16px;
+    gap: 10px;
+  }
+
+  .value-card-icon {
+    width: 36px;
+    height: 36px;
+  }
+
+  .value-card-title {
+    font-size: 0.95rem;
+    line-height: 1.25;
+  }
+
+  .value-card-desc {
+    font-size: 0.8rem;
+    line-height: 1.45;
+  }
+
+  .features-capability-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
+
+  .capability-card {
+    padding: 18px 14px;
+    border-radius: 16px;
+    gap: 10px;
+  }
+
+  .capability-icon {
+    width: 36px;
+    height: 36px;
+  }
+
+  .capability-title {
+    font-size: 0.95rem;
+    line-height: 1.25;
+  }
+
+  .capability-desc {
+    font-size: 0.8rem;
+    line-height: 1.45;
+  }
+
+  .service-stats-row {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
+    width: 100%;
+    margin-top: 20px;
+  }
+
   .stat-item {
-    min-width: 80px;
+    min-width: 0;
+    background: rgba(248, 250, 252, 0.9);
+    border: 1px solid rgba(15, 23, 42, 0.06);
+    border-radius: 14px;
+    padding: 12px 8px;
+    align-items: center;
+  }
+
+  .stat-value {
+    font-size: 1.45rem;
+  }
+
+  .stat-label {
+    font-size: 0.72rem;
+    text-align: center;
   }
 
   .approach-step {
-    gap: 20px;
-    padding: 24px 0;
+    gap: 16px;
+    padding: 18px 0;
   }
 
   .approach-step-number {
-    width: 52px;
-    height: 52px;
-    min-width: 52px;
-    font-size: 1.05rem;
+    width: 44px;
+    height: 44px;
+    min-width: 44px;
+    font-size: 0.95rem;
   }
 
   .approach-timeline::before {
-    left: 26px;
+    left: 22px;
   }
 
   .approach-step-title {
-    font-size: 1.1rem;
+    font-size: 1.02rem;
+  }
+
+  .approach-step-desc {
+    font-size: 0.85rem;
   }
 
   .service-cta-card {
     flex-direction: column;
     text-align: center;
-    padding: 40px 24px;
+    padding: 32px 20px;
+    border-radius: 24px;
+    gap: 24px;
   }
 
   .service-cta-content h2 {
-    font-size: 1.8rem;
+    font-size: 1.5rem;
   }
 
   .service-cta-content p {
     max-width: 100%;
+    font-size: 0.95rem;
   }
 
   .tech-marquee-section {
-    padding: 60px 20px;
+    padding: 44px 16px;
   }
 
   .tech-marquee-wrapper::before,
   .tech-marquee-wrapper::after {
-    width: 60px;
+    width: 40px;
   }
 
   .use-cases-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+
+  .use-case-item {
+    padding: 14px 12px;
+    border-radius: 14px;
+    gap: 10px;
+    font-size: 0.82rem;
   }
 }
 
 @media (max-width: 480px) {
   .service-hero-title {
-    font-size: 1.9rem;
+    font-size: 1.7rem;
   }
 
   .stat-value {
-    font-size: 1.6rem;
+    font-size: 1.25rem;
   }
 
   .service-stats-row {
-    gap: 20px;
+    gap: 8px;
   }
 
   .service-section-title {
-    font-size: 1.75rem;
+    font-size: 1.5rem;
+  }
+
+  .business-value-grid,
+  .features-capability-grid,
+  .use-cases-grid {
+    gap: 10px;
+  }
+
+  .value-card,
+  .capability-card {
+    padding: 14px 12px;
+    border-radius: 14px;
+  }
+
+  .value-card-title,
+  .capability-title {
+    font-size: 0.88rem;
+  }
+
+  .value-card-desc,
+  .capability-desc {
+    font-size: 0.75rem;
   }
 }
 

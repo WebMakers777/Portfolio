@@ -1,29 +1,36 @@
 {
-    "name": "Vincie Studios - Complete Tech Stack Support, SaaS & Custom Software",
+    "name": "Vincie Studios — Custom Software Engineering, SaaS & AI Automation",
     "short_name": "Vincie Studios",
-    "description": "Complete online tech stack support, SaaS development, and custom-tailored software engineering for modern businesses.",
+    "description": "Software engineering studio specializing in SaaS platform development, custom CRM & ERP systems, AI workflow automation, and web & mobile applications.",
     "start_url": "/",
     "scope": "/",
     "display": "standalone",
     "orientation": "portrait-primary",
-    "background_color": "#0A0A0A",
-    "theme_color": "#0A0A0A",
+    "background_color": "#0A101E",
+    "theme_color": "#0A101E",
     "icons": [
         {
-            "src": "/vinciestudio.png",
+            "src": "/favicon-32x32.png?v=2",
+            "sizes": "32x32",
+            "type": "image/png",
+            "purpose": "any"
+        },
+        {
+            "src": "/favicon-192x192.png?v=2",
             "sizes": "192x192",
             "type": "image/png",
             "purpose": "any"
         },
         {
-            "src": "/vinciestudio.png",
+            "src": "/favicon-512x512.png?v=2",
             "sizes": "512x512",
             "type": "image/png",
-            "purpose": "maskable"
+            "purpose": "any maskable"
         }
     ],
     "categories": [
         "business",
-        "technology"
+        "technology",
+        "developer tools"
     ]
 }

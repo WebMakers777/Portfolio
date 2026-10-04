@@ -108,3 +108,10 @@
 .liquid-container::after {
   display: none;
 }
+
+@media (max-width: 640px) {
+  .liquid-badge {
+    padding: 8px 18px;
+    font-size: 0.8rem;
+  }
+}
